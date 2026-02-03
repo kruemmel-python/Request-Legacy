@@ -1,11 +1,12 @@
-# Deprecated!
+# Request-Legacy 3.00.0
 
-As of Feb 11th 2020, request is fully deprecated. No new changes are expected to land. In fact, none have landed for some time.
+Upstream `request` was deprecated on Feb 11, 2020. This repository is a maintained fork for Node.js >= 18 with security hardening.
+Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
 
-For more information about why request is deprecated and possible alternatives refer to
+For upstream context and historical alternatives, see:
 [this issue](https://github.com/request/request/issues/3142).
 
-# Request - Simplified HTTP client
+# Request-Legacy - Simplified HTTP client
 
 [![npm package](https://nodei.co/npm/request.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/request/)
 
@@ -15,6 +16,10 @@ For more information about why request is deprecated and possible alternatives r
 [![Dependency Status](https://img.shields.io/david/request/request.svg?style=flat-square)](https://david-dm.org/request/request)
 [![Known Vulnerabilities](https://snyk.io/test/npm/request/badge.svg?style=flat-square)](https://snyk.io/test/npm/request)
 [![Gitter](https://img.shields.io/badge/gitter-join_chat-blue.svg?style=flat-square)](https://gitter.im/request/request?utm_source=badge)
+
+Package name for compatibility: `request`
+
+Install: `npm install request`
 
 
 ## Super simple to use
