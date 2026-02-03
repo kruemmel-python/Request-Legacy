@@ -1,4 +1,5 @@
 # Request-Legacy 3.00.0
+<img width="2752" height="1536" alt="unnamed (1)" src="https://github.com/user-attachments/assets/b1ed2ae0-ab53-4c95-ba03-571d35a24941" />
 
 Maintained fork for Node.js >= 18 with security hardening.
 Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
