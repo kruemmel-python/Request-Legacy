@@ -1,13 +1,17 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var request = helpers.request
-var http = helpers.http
-var fs = helpers.fs
-var rimraf = require('rimraf')
-var assert = helpers.assert
-var tape = helpers.tape
-var url = helpers.url
+const request = helpers.request
+const http = helpers.http
+const fs = helpers.fs
+const rmSync = function (target) {
+  if (fs.existsSync(target)) {
+    fs.rmSync(target, { force: true })
+  }
+}
+const assert = helpers.assert
+const tape = helpers.tape
+const url = helpers.url
 
 if (process.platform === 'win32') {
   tape('skip unix socket tests on windows', function (t) {
@@ -15,17 +19,17 @@ if (process.platform === 'win32') {
     t.end()
   })
 } else {
-  var rawPath = [null, 'raw', 'path'].join('/')
-  var queryPath = [null, 'query', 'path'].join('/')
-  var searchString = '?foo=bar'
-  var socket = [__dirname, 'tmp-socket'].join('/')
-  var expectedBody = 'connected'
-  var statusCode = 200
+  const rawPath = [null, 'raw', 'path'].join('/')
+  const queryPath = [null, 'query', 'path'].join('/')
+  const searchString = '?foo=bar'
+  const socket = [__dirname, 'tmp-socket'].join('/')
+  const expectedBody = 'connected'
+  const statusCode = 200
 
-  rimraf.sync(socket)
+  rmSync(socket)
 
-  var s = http.createServer(function (req, res) {
-    var incomingUrl = url.parse(req.url)
+  const s = http.createServer(function (req, res) {
+    const incomingUrl = url.parse(req.url)
     switch (incomingUrl.pathname) {
       case rawPath:
         assert.equal(incomingUrl.pathname, rawPath, 'requested path is sent to server')

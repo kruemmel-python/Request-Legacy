@@ -1,26 +1,26 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
 // a test where we validate the siguature of the keys
 // otherwise exactly the same as the ssl test
 
-var server = helpers.server
-var request = helpers.request
-var fs = helpers.fs
-var path = helpers.path
-var tape = helpers.tape
+const server = helpers.server
+const request = helpers.request
+const fs = helpers.fs
+const path = helpers.path
+const tape = helpers.tape
 
-var s = server.createSSLServer()
-var opts = {
+const s = server.createSSLServer()
+const opts = {
   ciphers: 'AES256-SHA',
   key: path.resolve(__dirname, 'ssl/server.key'),
   cert: path.resolve(__dirname, 'ssl/server.crt')
 }
-var serverCert = fs.readFileSync(path.resolve(__dirname, 'ssl/server.crt'))
-var sStrict = server.createSSLServer(opts)
+const serverCert = fs.readFileSync(path.resolve(__dirname, 'ssl/server.crt'))
+const sStrict = server.createSSLServer(opts)
 
 function runAllTests (strict, s) {
-  var strictMsg = (strict ? 'strict ' : 'relaxed ')
+  const strictMsg = (strict ? 'strict ' : 'relaxed ')
 
   tape(strictMsg + 'setup', function (t) {
     s.listen(0, function () {
@@ -33,13 +33,13 @@ function runAllTests (strict, s) {
       s.on('/' + name, test.resp)
       test.uri = s.url + '/' + name
       if (strict) {
-      test.strictSSL = true
-      test.headers = { host: 'testing.request.mikealrogers.com' }
-      test.ca = serverCert
-      test.rejectUnauthorized = true
-      test.agentOptions = test.agentOptions || {}
-      test.agentOptions.rejectUnauthorized = true
-      test.agentOptions.ca = serverCert
+        test.strictSSL = true
+        test.headers = { host: 'testing.request.mikealrogers.com' }
+        test.ca = serverCert
+        test.rejectUnauthorized = true
+        test.agentOptions = test.agentOptions || {}
+        test.agentOptions.rejectUnauthorized = true
+        test.agentOptions.ca = serverCert
         test.agentOptions.strictSSL = false
       } else {
         test.rejectUnauthorized = false
@@ -60,7 +60,7 @@ function runAllTests (strict, s) {
 
   runTest('testGetChunkBreak', {
     resp: server.createChunkResponse(
-      [ Buffer.from([239]),
+      [Buffer.from([239]),
         Buffer.from([163]),
         Buffer.from([191]),
         Buffer.from([206]),
@@ -73,7 +73,7 @@ function runAllTests (strict, s) {
   })
 
   runTest('testGetJSON', {
-    resp: server.createGetResponse('{"test":true}', 'application/json'), json: true, expectBody: {'test': true}
+    resp: server.createGetResponse('{"test":true}', 'application/json'), json: true, expectBody: { test: true }
   })
 
   runTest('testPutString', {
@@ -85,7 +85,7 @@ function runAllTests (strict, s) {
   })
 
   runTest('testPutJSON', {
-    resp: server.createPostValidator(JSON.stringify({foo: 'bar'})), method: 'PUT', json: {foo: 'bar'}
+    resp: server.createPostValidator(JSON.stringify({ foo: 'bar' })), method: 'PUT', json: { foo: 'bar' }
   })
 
   runTest('testPutMultipart', {
@@ -99,8 +99,8 @@ function runAllTests (strict, s) {
       '\r\n--__BOUNDARY__--'
     ),
     method: 'PUT',
-    multipart: [ {'content-type': 'text/html', 'body': '<html><body>Oh hi.</body></html>'},
-      {'body': 'Oh hi.'}
+    multipart: [{ 'content-type': 'text/html', body: '<html><body>Oh hi.</body></html>' },
+      { body: 'Oh hi.' }
     ]
   })
 

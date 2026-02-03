@@ -1,14 +1,14 @@
 'use strict'
-var server = require('./server')
-var tape = require('tape')
-var request = require('../index')
-var https = require('https')
-var net = require('net')
-var fs = require('fs')
-var path = require('path')
-var util = require('util')
-var url = require('url')
-var destroyable = require('server-destroy')
+const server = require('./server')
+const tape = require('tape')
+const request = require('../index')
+const https = require('https')
+const net = require('net')
+const fs = require('fs')
+const path = require('path')
+const util = require('util')
+const url = require('url')
+const destroyable = require('./helpers/destroyable')
 
 if (process.platform === 'win32') {
   tape('skip test-tunnel on Windows', function (t) {
@@ -20,19 +20,19 @@ if (process.platform === 'win32') {
 }
 
 function runTunnelTests () {
-  var events = []
-  var caFile = path.resolve(__dirname, 'ssl/ca/ca.crt')
-  var ca = fs.readFileSync(caFile)
-  var clientCert = fs.readFileSync(path.resolve(__dirname, 'ssl/ca/client.crt'))
-  var clientKey = fs.readFileSync(path.resolve(__dirname, 'ssl/ca/client-enc.key'))
-  var clientPassword = 'password'
-  var sslOpts = {
+  let events = []
+  const caFile = path.resolve(__dirname, 'ssl/ca/ca.crt')
+  const ca = fs.readFileSync(caFile)
+  const clientCert = fs.readFileSync(path.resolve(__dirname, 'ssl/ca/client.crt'))
+  const clientKey = fs.readFileSync(path.resolve(__dirname, 'ssl/ca/client-enc.key'))
+  const clientPassword = 'password'
+  const sslOpts = {
     key: path.resolve(__dirname, 'ssl/ca/localhost.key'),
     cert: path.resolve(__dirname, 'ssl/ca/localhost.crt'),
     rejectUnauthorized: false
   }
 
-  var mutualSSLOpts = {
+  const mutualSSLOpts = {
     key: path.resolve(__dirname, 'ssl/ca/localhost.key'),
     cert: path.resolve(__dirname, 'ssl/ca/localhost.crt'),
     ca: caFile,
@@ -40,14 +40,14 @@ function runTunnelTests () {
     rejectUnauthorized: false
   }
 
-  var httpsOpts = https.globalAgent.options
+  const httpsOpts = https.globalAgent.options
   httpsOpts.ca = httpsOpts.ca || []
   httpsOpts.ca.push(ca)
   httpsOpts.rejectUnauthorized = false
 
-  var s = server.createServer()
-  var ss = server.createSSLServer(sslOpts)
-  var ss2 = server.createSSLServer(mutualSSLOpts)
+  const s = server.createServer()
+  const ss = server.createSSLServer(sslOpts)
+  const ss2 = server.createSSLServer(mutualSSLOpts)
 
   destroyable(s)
   destroyable(ss)
@@ -65,8 +65,8 @@ function runTunnelTests () {
 
     server.on('request', function (req, res) {
       if (/^https?:/.test(req.url)) {
-        var dest = req.url.split(':')[0]
-        var match = req.url.match(/\/redirect\/(https?)$/)
+        let dest = req.url.split(':')[0]
+        const match = req.url.match(/\/redirect\/(https?)$/)
         if (match) {
           dest += '->' + match[1]
         }
@@ -99,7 +99,7 @@ function runTunnelTests () {
     })
 
     server.on('connect', function (req, client, head) {
-      var u = url.parse(req.url)
+      const u = url.parse(req.url)
       var server = net.connect(u.host, u.port, function () {
         event('%s connect to %s', type, req.url)
         client.write('HTTP/1.1 200 Connection established\r\n\r\n')
@@ -114,8 +114,8 @@ function runTunnelTests () {
   setListeners(ss, 'https')
   setListeners(ss2, 'https')
 
-  var customCaCount = 0
-  var httpsRequestOld = https.request
+  let customCaCount = 0
+  const httpsRequestOld = https.request
   https.request = function (options) {
     if (customCaCount) {
       options.ca = ca

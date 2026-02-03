@@ -1,12 +1,42 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var request = helpers.request
-var tape = helpers.tape
-var Promise = require('bluebird')
+const http = helpers.http
+const request = helpers.request
+const tape = helpers.tape
+const Promise = global.Promise
 
-var s = http.createServer(function (req, res) {
+function promisify (fn, options) {
+  return function () {
+    const self = this
+    const args = Array.prototype.slice.call(arguments)
+    return new Promise(function (resolve, reject) {
+      args.push(function (err) {
+        if (err) {
+          reject(err)
+          return
+        }
+        const results = Array.prototype.slice.call(arguments, 1)
+        if (options && options.multiArgs) {
+          resolve(results)
+        } else {
+          resolve(results[0])
+        }
+      })
+      fn.apply(self, args)
+    })
+  }
+}
+
+function promisifyAll (obj, options) {
+  for (const key in obj) {
+    if (typeof obj[key] === 'function' && !obj[key + 'Async']) {
+      obj[key + 'Async'] = promisify(obj[key], options)
+    }
+  }
+}
+
+const s = http.createServer(function (req, res) {
   res.writeHead(200, {})
   res.end('ok')
 })
@@ -19,29 +49,31 @@ tape('setup', function (t) {
 })
 
 tape('promisify convenience method', function (t) {
-  var get = request.get
-  var p = Promise.promisify(get, {multiArgs: true})
+  const get = request.get
+  const p = promisify(get, { multiArgs: true })
   p(s.url)
     .then(function (results) {
-      var res = results[0]
+      const res = results[0]
       t.equal(res.statusCode, 200)
       t.end()
     })
 })
 
 tape('promisify request function', function (t) {
-  var p = Promise.promisify(request, {multiArgs: true})
+  const p = promisify(request, { multiArgs: true })
   p(s.url)
-    .spread(function (res, body) {
+    .then(function (results) {
+      const res = results[0]
       t.equal(res.statusCode, 200)
       t.end()
     })
 })
 
 tape('promisify all methods', function (t) {
-  Promise.promisifyAll(request, {multiArgs: true})
+  promisifyAll(request, { multiArgs: true })
   request.getAsync(s.url)
-    .spread(function (res, body) {
+    .then(function (results) {
+      const res = results[0]
       t.equal(res.statusCode, 200)
       t.end()
     })

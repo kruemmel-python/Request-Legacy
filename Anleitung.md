@@ -3,7 +3,7 @@
 Diese Anleitung beschreibt die Nutzung der stabilisierten Legacy-Version von `request` im Projektstand v1.1.
 
 ## Voraussetzungen
-- Node.js >= 6 (validiert mit Node.js v22.13.0)
+- Node.js >= 18 (validiert mit Node.js v22.13.0)
 - npm
 
 ## Installation
@@ -231,4 +231,4 @@ request.get({
   `fixit_neu_analyse/qa_report_v1.1.md`
 
 ## Hinweise zur Legacy-Nutzung
-`request` ist ein Legacy-Client. Diese Variante wurde fuer Node.js v22.13.0 stabilisiert, bleibt aber eine Legacy-API. Fuer neue Projekte sollten moderne Alternativen evaluiert werden.
+`request` ist ein Legacy-Client. Diese Variante wurde fuer Node.js >= 18 (validiert mit v22.13.0) stabilisiert, bleibt aber eine Legacy-API. Fuer neue Projekte sollten moderne Alternativen evaluiert werden.

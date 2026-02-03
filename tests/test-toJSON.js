@@ -1,11 +1,11 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var request = helpers.request
-var http = helpers.http
-var tape = helpers.tape
+const request = helpers.request
+const http = helpers.http
+const tape = helpers.tape
 
-var s = http.createServer(function (req, resp) {
+const s = http.createServer(function (req, resp) {
   resp.statusCode = 200
   resp.end('asdf')
 })
@@ -22,8 +22,8 @@ tape('request().toJSON()', function (t) {
     url: s.url,
     headers: { foo: 'bar' }
   }, function (err, res) {
-    var jsonR = JSON.parse(JSON.stringify(r))
-    var jsonRes = JSON.parse(JSON.stringify(res))
+    const jsonR = JSON.parse(JSON.stringify(r))
+    const jsonRes = JSON.parse(JSON.stringify(res))
 
     t.equal(err, null)
 

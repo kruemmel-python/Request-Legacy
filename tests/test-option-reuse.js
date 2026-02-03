@@ -1,16 +1,16 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var request = helpers.request
-var http = helpers.http
-var tape = helpers.tape
+const request = helpers.request
+const http = helpers.http
+const tape = helpers.tape
 
-var methodsSeen = {
+const methodsSeen = {
   head: 0,
   get: 0
 }
 
-var s = http.createServer(function (req, res) {
+const s = http.createServer(function (req, res) {
   res.statusCode = 200
   res.end('ok')
 
@@ -25,8 +25,8 @@ tape('setup', function (t) {
 })
 
 tape('options object is not mutated', function (t) {
-  var url = s.url
-  var options = { url: url }
+  const url = s.url
+  const options = { url }
 
   request.head(options, function (err, resp, body) {
     t.equal(err, null)

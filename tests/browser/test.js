@@ -5,11 +5,18 @@ if (!Function.prototype.bind) {
   // This is a bug in phantom.js.
   // More info: https://github.com/ariya/phantomjs/issues/10522
   /* eslint no-extend-native:0 */
-  Function.prototype.bind = require('function-bind')
+  Function.prototype.bind = function bind (context) {
+    const fn = this
+    const slice = Array.prototype.slice
+    const args = slice.call(arguments, 1)
+    return function () {
+      return fn.apply(context, args.concat(slice.call(arguments)))
+    }
+  }
 }
 
-var tape = require('tape')
-var request = require('../../index')
+const tape = require('tape')
+const request = require('../../index')
 
 tape('returns on error', function (t) {
   t.plan(1)
@@ -25,7 +32,7 @@ tape('returns on error', function (t) {
 tape('succeeds on valid URLs (with https and CORS)', function (t) {
   t.plan(1)
   request({
-    uri: __karma__.config.requestTestUrl, // eslint-disable-line no-undef
+    uri: __karma__.config.requestTestUrl,
     withCredentials: false
   }, function (_, response) {
     t.equal(response.statusCode, 200)

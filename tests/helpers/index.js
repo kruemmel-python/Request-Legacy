@@ -1,26 +1,26 @@
 'use strict'
 
-var http = require('http')
-var https = require('https')
-var assert = require('assert')
-var fs = require('fs')
-var path = require('path')
-var stream = require('stream')
-var util = require('util')
-var url = require('url')
-var os = require('os')
-var qs = require('qs')
-var zlib = require('zlib')
-var mimeTypes = require('mime-types')
-var tape = require('tape')
-var httpSignature = require('http-signature')
-var crypto = require('crypto')
+const http = require('http')
+const https = require('https')
+const assert = require('assert')
+const fs = require('fs')
+const path = require('path')
+const stream = require('stream')
+const util = require('util')
+const url = require('url')
+const os = require('os')
+const qs = require('qs')
+const zlib = require('zlib')
+const mimeTypes = require('mime-types')
+const tape = require('tape')
+const httpSignature = require('http-signature')
+const crypto = require('crypto')
 
-var serverModule = require('../server')
-var request = require('../../index')
-var hawk = require('../../lib/hawk')
+const serverModule = require('../server')
+const request = require('../../index')
+const hawk = require('../../lib/hawk')
 
-var trackedServers = new Set()
+const trackedServers = new Set()
 
 function registerServer (serverInstance) {
   if (!serverInstance || typeof serverInstance.close !== 'function') {
@@ -43,7 +43,7 @@ function wrapServerFactory (name) {
     return
   }
   server[name] = function () {
-    var created = serverModule[name].apply(serverModule, arguments)
+    const created = serverModule[name].apply(serverModule, arguments)
     return registerServer(created)
   }
 }
@@ -54,8 +54,8 @@ wrapServerFactory('createEchoServer')
 wrapServerFactory('createSSLServer')
 
 function cleanupServers (callback) {
-  var servers = Array.from(trackedServers)
-  var remaining = servers.length
+  const servers = Array.from(trackedServers)
+  let remaining = servers.length
 
   if (remaining === 0) {
     if (callback) {
@@ -64,7 +64,7 @@ function cleanupServers (callback) {
     return
   }
 
-  var finished = function () {
+  const finished = function () {
     remaining -= 1
     if (remaining === 0 && callback) {
       callback()
@@ -88,7 +88,7 @@ function destroyAgent (agent) {
   }
   try {
     agent.destroy()
-  } catch (err) {
+  } catch {
     // best-effort, swallow any destroy errors
   }
 }
@@ -98,9 +98,9 @@ function destroyAgentSockets (agent) {
     return
   }
 
-  var destroySocketList = function (list) {
+  const destroySocketList = function (list) {
     Object.keys(list).forEach(function (key) {
-      var entries = list[key]
+      const entries = list[key]
       if (!Array.isArray(entries)) {
         return
       }
@@ -108,7 +108,9 @@ function destroyAgentSockets (agent) {
         if (entry && typeof entry.destroy === 'function') {
           try {
             entry.destroy()
-          } catch (err) {}
+          } catch {
+            // ignore destroy errors
+          }
         }
       })
     })
@@ -133,25 +135,25 @@ function cleanup () {
 process.once('exit', cleanup)
 
 module.exports = {
-  http: http,
-  https: https,
-  assert: assert,
-  fs: fs,
-  path: path,
-  stream: stream,
-  util: util,
-  url: url,
-  os: os,
-  qs: qs,
-  zlib: zlib,
+  http,
+  https,
+  assert,
+  fs,
+  path,
+  stream,
+  util,
+  url,
+  os,
+  qs,
+  zlib,
   mime: mimeTypes,
-  mimeTypes: mimeTypes,
-  tape: tape,
-  httpSignature: httpSignature,
-  server: server,
-  request: request,
-  crypto: crypto,
-  hawk: hawk,
-  cleanup: cleanup,
-  cleanupServers: cleanupServers
+  mimeTypes,
+  tape,
+  httpSignature,
+  server,
+  request,
+  crypto,
+  hawk,
+  cleanup,
+  cleanupServers
 }

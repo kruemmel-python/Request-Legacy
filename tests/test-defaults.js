@@ -1,17 +1,17 @@
 'use strict'
 
-var helpers = require('./helpers')
-var server = helpers.server
-var request = helpers.request
-var qs = helpers.qs
-var tape = helpers.tape
+const helpers = require('./helpers')
+const server = helpers.server
+const request = helpers.request
+const qs = helpers.qs
+const tape = helpers.tape
 
-var s = server.createServer()
+const s = server.createServer()
 
 tape('setup', function (t) {
   s.listen(0, function () {
     s.on('/', function (req, res) {
-      res.writeHead(200, {'content-type': 'application/json'})
+      res.writeHead(200, { 'content-type': 'application/json' })
       res.end(JSON.stringify({
         method: req.method,
         headers: req.headers,
@@ -20,17 +20,17 @@ tape('setup', function (t) {
     })
 
     s.on('/head', function (req, res) {
-      res.writeHead(200, {'x-data': JSON.stringify({method: req.method, headers: req.headers})})
+      res.writeHead(200, { 'x-data': JSON.stringify({ method: req.method, headers: req.headers }) })
       res.end()
     })
 
     s.on('/set-undefined', function (req, res) {
-      var data = ''
+      let data = ''
       req.on('data', function (d) {
         data += d
       })
       req.on('end', function () {
-        res.writeHead(200, {'Content-Type': 'application/json'})
+        res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({
           method: req.method, headers: req.headers, data: JSON.parse(data)
         }))
@@ -131,7 +131,7 @@ tape('post(string, object, function) with body', function (t) {
 
 tape('del(string, function)', function (t) {
   request.defaults({
-    headers: {foo: 'bar'},
+    headers: { foo: 'bar' },
     json: true
   }).del(s.url + '/', function (e, r, b) {
     t.equal(b.method, 'DELETE')
@@ -142,7 +142,7 @@ tape('del(string, function)', function (t) {
 
 tape('delete(string, function)', function (t) {
   request.defaults({
-    headers: {foo: 'bar'},
+    headers: { foo: 'bar' },
     json: true
   }).delete(s.url + '/', function (e, r, b) {
     t.equal(b.method, 'DELETE')
@@ -165,34 +165,34 @@ tape('head(object, function)', function (t) {
 tape('recursive defaults', function (t) {
   t.plan(11)
 
-  var defaultsOne = request.defaults({ headers: { foo: 'bar1' } })
-  var defaultsTwo = defaultsOne.defaults({ headers: { baz: 'bar2' } })
-  var defaultsThree = defaultsTwo.defaults({}, function (options, callback) {
+  const defaultsOne = request.defaults({ headers: { foo: 'bar1' } })
+  const defaultsTwo = defaultsOne.defaults({ headers: { baz: 'bar2' } })
+  const defaultsThree = defaultsTwo.defaults({}, function (options, callback) {
     options.headers = {
       foo: 'bar3'
     }
     defaultsTwo(options, callback)
   })
 
-  defaultsOne(s.url + '/', {json: true}, function (e, r, b) {
+  defaultsOne(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar1')
   })
 
-  defaultsTwo(s.url + '/', {json: true}, function (e, r, b) {
+  defaultsTwo(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar1')
     t.equal(b.headers.baz, 'bar2')
   })
 
   // requester function on recursive defaults
-  defaultsThree(s.url + '/', {json: true}, function (e, r, b) {
+  defaultsThree(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar3')
     t.equal(b.headers.baz, 'bar2')
   })
 
-  defaultsTwo.get(s.url + '/', {json: true}, function (e, r, b) {
+  defaultsTwo.get(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar1')
     t.equal(b.headers.baz, 'bar2')
@@ -202,28 +202,28 @@ tape('recursive defaults', function (t) {
 tape('recursive defaults requester', function (t) {
   t.plan(5)
 
-  var defaultsOne = request.defaults({}, function (options, callback) {
-    var headers = options.headers || {}
+  const defaultsOne = request.defaults({}, function (options, callback) {
+    const headers = options.headers || {}
     headers.foo = 'bar1'
     options.headers = headers
 
     request(options, callback)
   })
 
-  var defaultsTwo = defaultsOne.defaults({}, function (options, callback) {
-    var headers = options.headers || {}
+  const defaultsTwo = defaultsOne.defaults({}, function (options, callback) {
+    const headers = options.headers || {}
     headers.baz = 'bar2'
     options.headers = headers
 
     defaultsOne(options, callback)
   })
 
-  defaultsOne.get(s.url + '/', {json: true}, function (e, r, b) {
+  defaultsOne.get(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar1')
   })
 
-  defaultsTwo.get(s.url + '/', {json: true}, function (e, r, b) {
+  defaultsTwo.get(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar1')
     t.equal(b.headers.baz, 'bar2')
@@ -233,11 +233,11 @@ tape('recursive defaults requester', function (t) {
 tape('test custom request handler function', function (t) {
   t.plan(3)
 
-  var requestWithCustomHandler = request.defaults({
+  const requestWithCustomHandler = request.defaults({
     headers: { foo: 'bar' },
     body: 'TESTING!'
   }, function (uri, options, callback) {
-    var params = request.initParams(uri, options, callback)
+    const params = request.initParams(uri, options, callback)
     params.headers.x = 'y'
     return request(params.uri, params, params.callback)
   })
@@ -258,9 +258,9 @@ tape('test custom request handler function', function (t) {
 tape('test custom request handler function without options', function (t) {
   t.plan(2)
 
-  var customHandlerWithoutOptions = request.defaults(function (uri, options, callback) {
-    var params = request.initParams(uri, options, callback)
-    var headers = params.headers || {}
+  const customHandlerWithoutOptions = request.defaults(function (uri, options, callback) {
+    const params = request.initParams(uri, options, callback)
+    const headers = params.headers || {}
     headers.x = 'y'
     headers.foo = 'bar'
     params.headers = headers
@@ -281,8 +281,8 @@ tape('test only setting undefined properties', function (t) {
     headers: { 'x-foo': 'bar' }
   })({
     uri: s.url + '/set-undefined',
-    json: {foo: 'bar'},
-    headers: {'x-foo': 'baz'}
+    json: { foo: 'bar' },
+    headers: { 'x-foo': 'baz' }
   }, function (e, r, b) {
     t.equal(b.method, 'POST')
     t.equal(b.headers['content-type'], 'application/json')
@@ -293,7 +293,7 @@ tape('test only setting undefined properties', function (t) {
 })
 
 tape('test only function', function (t) {
-  var post = request.post
+  const post = request.post
   t.doesNotThrow(function () {
     post(s.url + '/', function (e, r, b) {
       t.equal(r.statusCode, 200)
@@ -303,11 +303,11 @@ tape('test only function', function (t) {
 })
 
 tape('invoke defaults', function (t) {
-  var d = request.defaults({
+  const d = request.defaults({
     uri: s.url + '/',
     headers: { foo: 'bar' }
   })
-  d({json: true}, function (e, r, b) {
+  d({ json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar')
     t.end()
@@ -315,11 +315,11 @@ tape('invoke defaults', function (t) {
 })
 
 tape('invoke convenience method from defaults', function (t) {
-  var d = request.defaults({
+  const d = request.defaults({
     uri: s.url + '/',
     headers: { foo: 'bar' }
   })
-  d.get({json: true}, function (e, r, b) {
+  d.get({ json: true }, function (e, r, b) {
     t.equal(b.method, 'GET')
     t.equal(b.headers.foo, 'bar')
     t.end()
@@ -327,8 +327,8 @@ tape('invoke convenience method from defaults', function (t) {
 })
 
 tape('defaults without options', function (t) {
-  var d = request.defaults()
-  d.get(s.url + '/', {json: true}, function (e, r, b) {
+  const d = request.defaults()
+  d.get(s.url + '/', { json: true }, function (e, r, b) {
     t.equal(r.statusCode, 200)
     t.end()
   })

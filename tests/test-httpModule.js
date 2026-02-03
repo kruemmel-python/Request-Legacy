@@ -1,14 +1,14 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var https = helpers.https
-var destroyable = require('server-destroy')
-var server = helpers.server
-var request = helpers.request
-var tape = helpers.tape
+const http = helpers.http
+const https = helpers.https
+const destroyable = require('./helpers/destroyable')
+const server = helpers.server
+const request = helpers.request
+const tape = helpers.tape
 
-var fauxRequestsMade
+let fauxRequestsMade
 
 function clearFauxRequests () {
   fauxRequestsMade = { http: 0, https: 0 }
@@ -16,9 +16,9 @@ function clearFauxRequests () {
 
 function wrapRequest (name, module) {
   // Just like the http or https module, but note when a request is made.
-  var wrapped = {}
+  const wrapped = {}
   Object.keys(module).forEach(function (key) {
-    var value = module[key]
+    const value = module[key]
 
     if (key === 'request') {
       wrapped[key] = function (/* options, callback */) {
@@ -33,10 +33,10 @@ function wrapRequest (name, module) {
   return wrapped
 }
 
-var fauxHTTP = wrapRequest('http', http)
-var fauxHTTPS = wrapRequest('https', https)
-var plainServer = server.createServer()
-var httpsServer = server.createSSLServer()
+const fauxHTTP = wrapRequest('http', http)
+const fauxHTTPS = wrapRequest('https', https)
+const plainServer = server.createServer()
+const httpsServer = server.createSSLServer()
 
 destroyable(plainServer)
 destroyable(httpsServer)
@@ -48,7 +48,7 @@ tape('setup', function (t) {
       res.end('plain')
     })
     plainServer.on('/to_https', function (req, res) {
-      res.writeHead(301, { 'location': 'https://localhost:' + httpsServer.port + '/https' })
+      res.writeHead(301, { location: 'https://localhost:' + httpsServer.port + '/https' })
       res.end()
     })
 
@@ -58,7 +58,7 @@ tape('setup', function (t) {
         res.end('https')
       })
       httpsServer.on('/to_plain', function (req, res) {
-        res.writeHead(302, { 'location': 'http://localhost:' + plainServer.port + '/plain' })
+        res.writeHead(302, { location: 'http://localhost:' + plainServer.port + '/plain' })
         res.end()
       })
 
@@ -69,10 +69,10 @@ tape('setup', function (t) {
 
 function runTests (name, httpModules) {
   tape(name, function (t) {
-    var toHttps = 'http://localhost:' + plainServer.port + '/to_https'
-    var toPlain = 'https://localhost:' + httpsServer.port + '/to_plain'
-    var options = { httpModules: httpModules, strictSSL: false }
-    var modulesTest = httpModules || {}
+    const toHttps = 'http://localhost:' + plainServer.port + '/to_https'
+    const toPlain = 'https://localhost:' + httpsServer.port + '/to_plain'
+    const options = { httpModules, strictSSL: false }
+    const modulesTest = httpModules || {}
 
     clearFauxRequests()
 

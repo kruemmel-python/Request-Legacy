@@ -1,11 +1,11 @@
 'use strict'
 
-var helpers = require('./helpers')
-var request = helpers.request
-var server = helpers.server
-var tape = helpers.tape
+const helpers = require('./helpers')
+const request = helpers.request
+const server = helpers.server
+const tape = helpers.tape
 
-var s = server.createServer()
+const s = server.createServer()
 
 tape('setup', function (t) {
   s.listen(0, function () {

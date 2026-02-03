@@ -1,12 +1,12 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var request = helpers.request
-var tape = helpers.tape
+const http = helpers.http
+const request = helpers.request
+const tape = helpers.tape
 
 function runTest (t, options, index) {
-  var server = http.createServer(function (req, res) {
+  const server = http.createServer(function (req, res) {
     if (index === 0 || index === 3) {
       t.equal(req.headers['content-type'], 'application/x-www-form-urlencoded')
     } else {
@@ -15,7 +15,7 @@ function runTest (t, options, index) {
     t.equal(req.headers['content-length'], '21')
     t.equal(req.headers.accept, 'application/json')
 
-    var data = ''
+    let data = ''
     req.setEncoding('utf8')
 
     req.on('data', function (d) {
@@ -31,8 +31,8 @@ function runTest (t, options, index) {
   })
 
   server.listen(0, function () {
-    var url = 'http://localhost:' + this.address().port
-    var r = request.post(url, options, function (err, res, body) {
+    const url = 'http://localhost:' + this.address().port
+    const r = request.post(url, options, function (err, res, body) {
       t.equal(err, null)
       t.equal(res.statusCode, 200)
       t.equal(body, 'done')
@@ -41,23 +41,23 @@ function runTest (t, options, index) {
       })
     })
     if (!options.form && !options.body) {
-      r.form({some: 'url', encoded: 'data'})
+      r.form({ some: 'url', encoded: 'data' })
     }
   })
 }
 
-var cases = [
+const cases = [
   {
-    form: {some: 'url', encoded: 'data'},
+    form: { some: 'url', encoded: 'data' },
     json: true
   },
   {
-    headers: {'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-    form: {some: 'url', encoded: 'data'},
+    headers: { 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+    form: { some: 'url', encoded: 'data' },
     json: true
   },
   {
-    headers: {'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+    headers: { 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' },
     body: 'some=url&encoded=data',
     json: true
   },

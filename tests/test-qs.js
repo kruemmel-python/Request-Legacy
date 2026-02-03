@@ -1,8 +1,8 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var request = helpers.request
-var tape = helpers.tape
+const request = helpers.request
+const tape = helpers.tape
 
 // Run a querystring test.  `options` can have the following keys:
 //   - suffix              : a string to be added to the URL
@@ -13,9 +13,9 @@ var tape = helpers.tape
 //   - expected            : the expected path of the request
 //   - expectedQuerystring : expected path when using the querystring library
 function runTest (name, options) {
-  var uri = 'http://www.google.com' + (options.suffix || '')
-  var opts = {
-    uri: uri,
+  const uri = 'http://www.google.com' + (options.suffix || '')
+  const opts = {
+    uri,
     qsParseOptions: options.qsParseOptions,
     qsStringifyOptions: options.qsStringifyOptions
   }
@@ -25,7 +25,7 @@ function runTest (name, options) {
   }
 
   tape(name + ' - using qs', function (t) {
-    var r = request.get(opts)
+    const r = request.get(opts)
     if (typeof options.afterRequest === 'function') {
       options.afterRequest(r)
     }
@@ -38,7 +38,7 @@ function runTest (name, options) {
 
   tape(name + ' - using querystring', function (t) {
     opts.useQuerystring = true
-    var r = request.get(opts)
+    const r = request.get(opts)
     if (typeof options.afterRequest === 'function') {
       options.afterRequest(r)
     }
