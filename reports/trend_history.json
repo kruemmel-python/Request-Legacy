@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-02-03T00:55:29.500075",
+    "avg_score": 0.967,
+    "hotspot_count": 83,
+    "top_assets": [
+      "index.js",
+      "request.js",
+      "lib\\auth.js"
+    ]
+  },
+  {
+    "timestamp": "2026-02-03T01:04:26.250266",
+    "avg_score": 0.965,
+    "hotspot_count": 83,
+    "top_assets": [
+      "index.js",
+      "request.js",
+      "lib\\auth.js"
+    ]
+  },
+  {
+    "timestamp": "2026-02-03T04:46:09.166358",
+    "avg_score": 0.954,
+    "hotspot_count": 8,
+    "top_assets": [
+      "index.js",
+      "request.js",
+      "lib\\auth.js"
+    ]
+  }
+]

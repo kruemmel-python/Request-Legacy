@@ -1,0 +1,489 @@
+{
+  "run_id": "hotspot-4",
+  "hotspots": [
+    [
+      56,
+      0
+    ],
+    [
+      57,
+      0
+    ],
+    [
+      57,
+      1
+    ],
+    [
+      58,
+      0
+    ],
+    [
+      84,
+      0
+    ],
+    [
+      85,
+      0
+    ],
+    [
+      96,
+      8
+    ],
+    [
+      97,
+      8
+    ]
+  ],
+  "findings": [
+    {
+      "row": "index.js",
+      "source": "JavaScript",
+      "value": "// Copyright 2010-2012 Mikeal Rogers // //    Licensed under the Apache License, Version 2.0 (the \"License\"); //    you may not use this file except in compliance with the License. //    You may obtain a copy of the License at",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "36/45"
+    },
+    {
+      "row": "request.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var http = require('http') var https = require('https') var url = require('url')",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "10/28"
+    },
+    {
+      "row": "lib\\auth.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var caseless = deps.caseless var uuid = deps.uuid",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "lib\\har.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var fs = deps.fs var qs = deps.querystring",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "12/23"
+    },
+    {
+      "row": "lib\\redirect.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var url = deps.url var isUrl = /^https?:/",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "14/23"
+    },
+    {
+      "row": "tests\\test-form-data-error.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var request = helpers.request var server = helpers.server",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-headers.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-http-signature.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-node-debug.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var request = helpers.request var http = helpers.http",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-pipes.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var server = helpers.server var stream = helpers.stream",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\browser\\karma.conf.js",
+      "source": "JavaScript",
+      "value": "'use strict' var istanbul = require('browserify-istanbul')  module.exports = function (config) {   config.set({",
+      "severity": "high",
+      "risk": 1.0,
+      "note": "Near-Duplicate",
+      "tokens": "17/27"
+    },
+    {
+      "row": "scripts\\normalize-tunnel.py",
+      "source": "Python",
+      "value": "from pathlib import Path  path = Path('tests/test-tunnel.js') text = path.read_text()",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "16/22"
+    },
+    {
+      "row": "lib\\getProxyFromURI.js",
+      "source": "JavaScript",
+      "value": "'use strict'  function formatHostname (hostname) {   // canonicalize the hostname, so that 'oogle.com' won't match 'google.com'   return hostname.replace(/^\\.*/, '.').toLowerCase()",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "24/45"
+    },
+    {
+      "row": "lib\\hawk.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var crypto = require('crypto')  function randomString (size) {",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "12/18"
+    },
+    {
+      "row": "lib\\helpers.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var jsonSafeStringify = require('json-stringify-safe') var crypto = require('crypto') var Buffer = require('safe-buffer').Buffer",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "16/36"
+    },
+    {
+      "row": "lib\\multipart.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var uuid = deps.uuid var CombinedStream = deps.CombinedStream",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "lib\\oauth.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var url = deps.url var qs = deps.qs",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "lib\\querystring.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var qs = deps.qs var querystring = deps.querystring",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "lib\\tunnel.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var deps = require('./deps') var url = deps.url var tunnel = deps.tunnelAgent",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "12/23"
+    },
+    {
+      "row": "scripts\\generate-test-cert.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var crypto = require('crypto') var fs = require('fs') var path = require('path')",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "10/28"
+    },
+    {
+      "row": "scripts\\run-tests.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var fs = require('fs') var path = require('path')",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "9/20"
+    },
+    {
+      "row": "tests\\server.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var fs = require('fs') var http = require('http') var path = require('path')",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "10/28"
+    },
+    {
+      "row": "tests\\test-agent.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var request = helpers.request var version = require('../lib/helpers').version",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "12/31"
+    },
+    {
+      "row": "tests\\test-aws.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var request = helpers.request var server = helpers.server",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-baseUrl.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-basic-auth.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var assert = helpers.assert var http = helpers.http",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-bearer-auth.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var assert = helpers.assert var http = helpers.http",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-body.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-cookies.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-defaults.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-digest-auth.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-emptyBody.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var request = helpers.request var http = helpers.http",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-errors.js",
+      "source": "JavaScript",
+      "value": "'use strict'  var helpers = require('./helpers') var request = helpers.request var tape = helpers.tape",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-follow-all.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-form-data.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-form-urlencoded.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-form.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-gzip.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-har.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var path = helpers.path var request = require('..')",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/27"
+    },
+    {
+      "row": "tests\\test-hawk.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-httpModule.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var https = helpers.https",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-https.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  // a test where we validate the siguature of the keys // otherwise exactly the same as the ssl test",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "23/31"
+    },
+    {
+      "row": "tests\\test-isUrl.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-json-request.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-localAddress.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var request = helpers.request var tape = helpers.tape",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-multipart-encoding.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-multipart.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-oauth.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var oauth = require('oauth-sign') var qs = require('querystring')",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "14/31"
+    },
+    {
+      "row": "tests\\test-onelineproxy.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var http = helpers.http var assert = helpers.assert",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    },
+    {
+      "row": "tests\\test-option-reuse.js",
+      "source": "JavaScript",
+      "value": "'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http",
+      "severity": "medium",
+      "risk": 0.98,
+      "note": "Near-Duplicate",
+      "tokens": "11/23"
+    }
+  ]
+}

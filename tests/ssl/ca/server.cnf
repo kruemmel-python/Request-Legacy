@@ -1,0 +1,31 @@
+[ req ]
+default_bits           = 1024
+days                   = 3650
+distinguished_name     = req_distinguished_name
+attributes             = req_attributes
+prompt                 = no
+req_extensions         = server_ext
+
+[ req_distinguished_name ]
+C                      = US
+ST                     = CA
+L                      = Oakland
+O                      = request
+OU                     = testing
+CN                     = testing.request.mikealrogers.com
+emailAddress           = mikeal@mikealrogers.com
+
+[ req_attributes ]
+challengePassword              = password challenge
+
+[ server_ext ]
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature,keyEncipherment
+extendedKeyUsage = serverAuth,clientAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = testing.request.mikealrogers.com
+DNS.2 = localhost
+IP.1 = 127.0.0.1
+IP.2 = ::1

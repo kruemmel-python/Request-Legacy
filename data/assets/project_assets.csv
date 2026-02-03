@@ -1,0 +1,86 @@
+asset_id,asset_type,text,reference,severity,language,size,is_vendor
+scripts\cat-tunnel-tail.py,Python,"from pathlib import Path  path = Path('tests/test-tunnel.js') lines = path.read_text().splitlines() for i in range(len(lines) - 60, len(lines)):",Python file cat-tunnel-tail.py,medium,Python,199,False
+scripts\cat-tunnel.py,Python,"from pathlib import Path  path = Path('tests/test-tunnel.js') for i, line in enumerate(path.read_text().splitlines(), 1):     if i <= 160:",Python file cat-tunnel.py,medium,Python,172,False
+scripts\collapse-blank-lines.py,Python,from pathlib import Path import re  def collapse(file_path):     text = file_path.read_text(),Python file collapse-blank-lines.py,medium,Python,309,False
+scripts\normalize-tunnel.py,Python,from pathlib import Path  path = Path('tests/test-tunnel.js') text = path.read_text() ,Python file normalize-tunnel.py,medium,Python,1427,False
+scripts\print-last.py,Python,"from pathlib import Path  path = Path('request.js') lines = path.read_text().splitlines() for i in range(len(lines) - 40, len(lines)):",Python file print-last.py,medium,Python,189,False
+scripts\print-range.py,Python,"from pathlib import Path  def print_range(path, start, end):     for i, line in enumerate(Path(path).read_text().splitlines(), 1):         if start <= i <= end:",Python file print-range.py,medium,Python,248,False
+scripts\print-tunnel.py,Python,from pathlib import Path  print(Path('tests/test-tunnel.js').read_text()),Python file print-tunnel.py,medium,Python,74,False
+index.js,JavaScript,"// Copyright 2010-2012 Mikeal Rogers // //    Licensed under the Apache License, Version 2.0 (the ""License""); //    you may not use this file except in compliance with the License. //    You may obtain a copy of the License at",JavaScript file index.js,high,JavaScript,4052,False
+request.js,JavaScript,'use strict'  var http = require('http') var https = require('https') var url = require('url'),JavaScript file request.js,high,JavaScript,44802,False
+lib\auth.js,JavaScript,'use strict'  var deps = require('./deps') var caseless = deps.caseless var uuid = deps.uuid,JavaScript file auth.js,high,JavaScript,4792,False
+lib\cookies.js,JavaScript,'use strict'  var tough = require('tough-cookie')  var Cookie = tough.Cookie,JavaScript file cookies.js,medium,JavaScript,974,False
+lib\deps.js,JavaScript,'use strict'  var fs = require('fs') var url = require('url') var qs = require('qs'),JavaScript file deps.js,medium,JavaScript,690,False
+lib\getProxyFromURI.js,JavaScript,"'use strict'  function formatHostname (hostname) {   // canonicalize the hostname, so that 'oogle.com' won't match 'google.com'   return hostname.replace(/^\.*/, '.').toLowerCase()",JavaScript file getProxyFromURI.js,medium,JavaScript,2257,False
+lib\har.js,JavaScript,'use strict'  var deps = require('./deps') var fs = deps.fs var qs = deps.querystring,JavaScript file har.js,high,JavaScript,4793,False
+lib\hawk.js,JavaScript,'use strict'  var crypto = require('crypto')  function randomString (size) {,JavaScript file hawk.js,medium,JavaScript,2750,False
+lib\helpers.js,JavaScript,'use strict'  var jsonSafeStringify = require('json-stringify-safe') var crypto = require('crypto') var Buffer = require('safe-buffer').Buffer,JavaScript file helpers.js,medium,JavaScript,1411,False
+lib\multipart.js,JavaScript,'use strict'  var deps = require('./deps') var uuid = deps.uuid var CombinedStream = deps.CombinedStream,JavaScript file multipart.js,medium,JavaScript,2681,False
+lib\oauth.js,JavaScript,'use strict'  var deps = require('./deps') var url = deps.url var qs = deps.qs,JavaScript file oauth.js,medium,JavaScript,4125,False
+lib\querystring.js,JavaScript,'use strict'  var deps = require('./deps') var qs = deps.qs var querystring = deps.querystring,JavaScript file querystring.js,medium,JavaScript,1351,False
+lib\redirect.js,JavaScript,'use strict'  var deps = require('./deps') var url = deps.url var isUrl = /^https?:/,JavaScript file redirect.js,high,JavaScript,4766,False
+lib\tunnel.js,JavaScript,'use strict'  var deps = require('./deps') var url = deps.url var tunnel = deps.tunnelAgent,JavaScript file tunnel.js,medium,JavaScript,4432,False
+scripts\generate-test-cert.js,JavaScript,'use strict'  var crypto = require('crypto') var fs = require('fs') var path = require('path'),JavaScript file generate-test-cert.js,medium,JavaScript,7003,False
+scripts\run-tests.js,JavaScript,'use strict'  var fs = require('fs') var path = require('path') ,JavaScript file run-tests.js,medium,JavaScript,2111,False
+tests\server.js,JavaScript,'use strict'  var fs = require('fs') var http = require('http') var path = require('path'),JavaScript file server.js,medium,JavaScript,3857,False
+tests\test-agent.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var version = require('../lib/helpers').version,JavaScript file test-agent.js,medium,JavaScript,2685,False
+tests\test-agentOptions.js,JavaScript,'use strict' /* test-agentOptions.js disabled (see instructions) */,JavaScript file test-agentOptions.js,medium,JavaScript,69,False
+tests\test-api.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-api.js,medium,JavaScript,690,False
+tests\test-aws.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var server = helpers.server,JavaScript file test-aws.js,medium,JavaScript,2432,False
+tests\test-baseUrl.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,JavaScript file test-baseUrl.js,medium,JavaScript,3517,False
+tests\test-basic-auth.js,JavaScript,'use strict'  var helpers = require('./helpers') var assert = helpers.assert var http = helpers.http,JavaScript file test-basic-auth.js,medium,JavaScript,5515,False
+tests\test-bearer-auth.js,JavaScript,'use strict'  var helpers = require('./helpers') var assert = helpers.assert var http = helpers.http,JavaScript file test-bearer-auth.js,medium,JavaScript,4398,False
+tests\test-body.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request,JavaScript file test-body.js,medium,JavaScript,3972,False
+tests\test-cookies.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,JavaScript file test-cookies.js,medium,JavaScript,3070,False
+tests\test-defaults.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request,JavaScript file test-defaults.js,medium,JavaScript,8600,False
+tests\test-digest-auth.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,JavaScript file test-digest-auth.js,medium,JavaScript,6288,False
+tests\test-emptyBody.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var http = helpers.http,JavaScript file test-emptyBody.js,medium,JavaScript,1080,False
+tests\test-errors.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var tape = helpers.tape,JavaScript file test-errors.js,medium,JavaScript,2253,False
+tests\test-event-forwarding.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-event-forwarding.js,medium,JavaScript,828,False
+tests\test-follow-all-303.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-follow-all-303.js,medium,JavaScript,957,False
+tests\test-follow-all.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-follow-all.js,medium,JavaScript,1148,False
+tests\test-form-data-error.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var server = helpers.server,JavaScript file test-form-data-error.js,high,JavaScript,2085,False
+tests\test-form-data.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,JavaScript file test-form-data.js,medium,JavaScript,5856,False
+tests\test-form-urlencoded.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-form-urlencoded.js,medium,JavaScript,1864,False
+tests\test-form.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,JavaScript file test-form.js,medium,JavaScript,3172,False
+tests\test-gzip.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,JavaScript file test-gzip.js,medium,JavaScript,8500,False
+tests\test-har.js,JavaScript,'use strict' var helpers = require('./helpers')  var path = helpers.path var request = require('..'),JavaScript file test-har.js,medium,JavaScript,4008,False
+tests\test-hawk.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-hawk.js,medium,JavaScript,4392,False
+tests\test-headers.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request,JavaScript file test-headers.js,high,JavaScript,7835,False
+tests\test-http-signature.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,JavaScript file test-http-signature.js,high,JavaScript,4277,False
+tests\test-httpModule.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var https = helpers.https,JavaScript file test-httpModule.js,medium,JavaScript,3186,False
+tests\test-https.js,JavaScript,'use strict' var helpers = require('./helpers')  // a test where we validate the siguature of the keys // otherwise exactly the same as the ssl test,JavaScript file test-https.js,medium,JavaScript,3434,False
+tests\test-isUrl.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-isUrl.js,medium,JavaScript,2437,False
+tests\test-json-request.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-json-request.js,medium,JavaScript,3246,False
+tests\test-localAddress.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var tape = helpers.tape,JavaScript file test-localAddress.js,medium,JavaScript,2354,False
+tests\test-multipart-encoding.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,JavaScript file test-multipart-encoding.js,medium,JavaScript,4011,False
+tests\test-multipart.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,JavaScript file test-multipart.js,medium,JavaScript,3761,False
+tests\test-node-debug.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var http = helpers.http,JavaScript file test-node-debug.js,high,JavaScript,2601,False
+tests\test-oauth.js,JavaScript,'use strict' var helpers = require('./helpers')  var oauth = require('oauth-sign') var qs = require('querystring'),JavaScript file test-oauth.js,medium,JavaScript,24420,False
+tests\test-onelineproxy.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var assert = helpers.assert,JavaScript file test-onelineproxy.js,medium,JavaScript,1436,False
+tests\test-option-reuse.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,JavaScript file test-option-reuse.js,medium,JavaScript,1125,False
+tests\test-options-convenience-method.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-options-convenience-method.js,medium,JavaScript,1144,False
+tests\test-params.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-params.js,medium,JavaScript,2348,False
+tests\test-piped-redirect.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-piped-redirect.js,medium,JavaScript,1154,False
+tests\test-pipes.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var stream = helpers.stream,JavaScript file test-pipes.js,high,JavaScript,9125,False
+tests\test-pool.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,JavaScript file test-pool.js,medium,JavaScript,3471,False
+tests\test-promise.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-promise.js,medium,JavaScript,1202,False
+tests\test-proxy-connect.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var tape = helpers.tape,JavaScript file test-proxy-connect.js,medium,JavaScript,1998,False
+tests\test-proxy.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-proxy.js,medium,JavaScript,8133,False
+tests\test-qs.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var tape = helpers.tape,JavaScript file test-qs.js,medium,JavaScript,3858,False
+tests\test-redirect-auth.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-redirect-auth.js,medium,JavaScript,3580,False
+tests\test-redirect-complex.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-redirect-complex.js,medium,JavaScript,1903,False
+tests\test-redirect.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var assert = helpers.assert,JavaScript file test-redirect.js,medium,JavaScript,12873,False
+tests\test-rfc3986.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,JavaScript file test-rfc3986.js,medium,JavaScript,2276,False
+tests\test-stream.js,JavaScript,var helpers = require('./helpers')  var fs = helpers.fs var path = helpers.path var http = helpers.http,JavaScript file test-stream.js,medium,JavaScript,833,False
+tests\test-timeout.js,JavaScript,"'use strict' var helpers = require('./helpers')  function checkErrCode (t, err) {   t.notEqual(err, null)",JavaScript file test-timeout.js,medium,JavaScript,7026,False
+tests\test-timing.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,JavaScript file test-timing.js,medium,JavaScript,5166,False
+tests\test-toJSON.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,JavaScript file test-toJSON.js,medium,JavaScript,1012,False
+tests\test-tunnel.js,JavaScript,'use strict' var server = require('./server') var tape = require('tape') var request = require('../index') var https = require('https'),JavaScript file test-tunnel.js,medium,JavaScript,11362,False
+tests\test-unix.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,JavaScript file test-unix.js,medium,JavaScript,2297,False
+tests\browser\karma.conf.js,JavaScript,'use strict' var istanbul = require('browserify-istanbul')  module.exports = function (config) {   config.set({,JavaScript file karma.conf.js,high,JavaScript,1150,False
+tests\browser\start.js,JavaScript,'use strict' var spawn = require('child_process').spawn var https = require('https') var fs = require('fs') var path = require('path'),JavaScript file start.js,medium,JavaScript,1126,False
+tests\browser\test.js,JavaScript,'use strict'  if (!Function.prototype.bind) {   // This is because of the fact that phantom.js does not have Function.bind.   // This is a bug in phantom.js.,JavaScript file test.js,high,JavaScript,907,False
+tests\helpers\index.js,JavaScript,'use strict'  var http = require('http') var https = require('https') var assert = require('assert'),JavaScript file index.js,medium,JavaScript,3359,False
+tests\ssl\ca\localhost.js,JavaScript,"'use strict'  var fs = require('fs') var https = require('https') var options = { key: fs.readFileSync('./localhost.key'),",JavaScript file localhost.js,medium,JavaScript,746,False
+tests\ssl\ca\server.js,JavaScript,"'use strict'  var fs = require('fs') var https = require('https') var options = { key: fs.readFileSync('./server.key'),",JavaScript file server.js,medium,JavaScript,799,False

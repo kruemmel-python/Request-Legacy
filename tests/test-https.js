@@ -1,0 +1,121 @@
+'use strict'
+var helpers = require('./helpers')
+
+// a test where we validate the siguature of the keys
+// otherwise exactly the same as the ssl test
+
+var server = helpers.server
+var request = helpers.request
+var fs = helpers.fs
+var path = helpers.path
+var tape = helpers.tape
+
+var s = server.createSSLServer()
+var opts = {
+  ciphers: 'AES256-SHA',
+  key: path.resolve(__dirname, 'ssl/server.key'),
+  cert: path.resolve(__dirname, 'ssl/server.crt')
+}
+var serverCert = fs.readFileSync(path.resolve(__dirname, 'ssl/server.crt'))
+var sStrict = server.createSSLServer(opts)
+
+function runAllTests (strict, s) {
+  var strictMsg = (strict ? 'strict ' : 'relaxed ')
+
+  tape(strictMsg + 'setup', function (t) {
+    s.listen(0, function () {
+      t.end()
+    })
+  })
+
+  function runTest (name, test) {
+    tape(strictMsg + name, function (t) {
+      s.on('/' + name, test.resp)
+      test.uri = s.url + '/' + name
+      if (strict) {
+      test.strictSSL = true
+      test.headers = { host: 'testing.request.mikealrogers.com' }
+      test.ca = serverCert
+      test.rejectUnauthorized = true
+      test.agentOptions = test.agentOptions || {}
+      test.agentOptions.rejectUnauthorized = true
+      test.agentOptions.ca = serverCert
+        test.agentOptions.strictSSL = false
+      } else {
+        test.rejectUnauthorized = false
+      }
+      request(test, function (err, resp, body) {
+        t.equal(err, null)
+        if (test.expectBody) {
+          t.deepEqual(test.expectBody, body)
+        }
+        t.end()
+      })
+    })
+  }
+
+  runTest('testGet', {
+    resp: server.createGetResponse('TESTING!'), expectBody: 'TESTING!'
+  })
+
+  runTest('testGetChunkBreak', {
+    resp: server.createChunkResponse(
+      [ Buffer.from([239]),
+        Buffer.from([163]),
+        Buffer.from([191]),
+        Buffer.from([206]),
+        Buffer.from([169]),
+        Buffer.from([226]),
+        Buffer.from([152]),
+        Buffer.from([131])
+      ]),
+    expectBody: '\uf8ff\u03a9\u2603'
+  })
+
+  runTest('testGetJSON', {
+    resp: server.createGetResponse('{"test":true}', 'application/json'), json: true, expectBody: {'test': true}
+  })
+
+  runTest('testPutString', {
+    resp: server.createPostValidator('PUTTINGDATA'), method: 'PUT', body: 'PUTTINGDATA'
+  })
+
+  runTest('testPutBuffer', {
+    resp: server.createPostValidator('PUTTINGDATA'), method: 'PUT', body: Buffer.from('PUTTINGDATA')
+  })
+
+  runTest('testPutJSON', {
+    resp: server.createPostValidator(JSON.stringify({foo: 'bar'})), method: 'PUT', json: {foo: 'bar'}
+  })
+
+  runTest('testPutMultipart', {
+    resp: server.createPostValidator(
+      '--__BOUNDARY__\r\n' +
+      'content-type: text/html\r\n' +
+      '\r\n' +
+      '<html><body>Oh hi.</body></html>' +
+      '\r\n--__BOUNDARY__\r\n\r\n' +
+      'Oh hi.' +
+      '\r\n--__BOUNDARY__--'
+    ),
+    method: 'PUT',
+    multipart: [ {'content-type': 'text/html', 'body': '<html><body>Oh hi.</body></html>'},
+      {'body': 'Oh hi.'}
+    ]
+  })
+
+  tape(strictMsg + 'cleanup', function (t) {
+    s.close(function () {
+      t.end()
+    })
+  })
+}
+
+runAllTests(false, s)
+
+if (!process.env.running_under_istanbul) {
+  // somehow this test modifies the process state
+  // test coverage runs all tests in a single process via tape
+  // executing this test causes one of the tests in test-tunnel.js to throw
+  runAllTests(true, sStrict)
+}

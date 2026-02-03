@@ -1,0 +1,2003 @@
+PS D:\request-master> npm run test-ci | Tee-Object -FilePath tap-final.log
+
+> request@2.88.1 test-ci
+> node --openssl-config=scripts/openssl-legacy.conf scripts/run-tests.js
+
+(node:31328) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+TAP version 13
+# setup
+# options.agent
+ok 1 is http.Agent
+ok 2 is keepAlive
+ok 3 1 socket name
+ok 4 1 open socket
+ok 5 0 open sockets
+# options.agentClass + options.agentOptions
+ok 6 is http.Agent
+ok 7 is keepAlive
+ok 8 1 socket name
+ok 9 1 open socket
+ok 10 0 open sockets
+# options.forever = true
+ok 11 is http.Agent
+ok 12 is keepAlive
+ok 13 1 socket name
+ok 14 1 open socket
+ok 15 0 open sockets
+# forever() method
+ok 16 is http.Agent
+ok 17 is keepAlive
+ok 18 1 socket name
+ok 19 1 open socket
+ok 20 0 open sockets
+# cleanup
+# setup
+# callback option
+ok 21 null
+ok 22 should be equal
+# cleanup
+# setup
+# default behaviour: aws-sign2 without sign_version key
+ok 23 null
+ok 24 should be truthy
+ok 25 should be falsy
+# aws-sign4 options
+ok 26 null
+ok 27 should be truthy
+ok 28 should be truthy
+ok 29 should be falsy
+# aws-sign4 options with session token
+ok 30 null
+ok 31 should be truthy
+ok 32 should be truthy
+ok 33 should be truthy
+# aws-sign4 options with service
+ok 34 null
+ok 35 should be truthy
+# aws-sign4 with additional headers
+ok 36 null
+ok 37 should be truthy
+# cleanup
+# setup
+# baseUrl
+ok 38 should be equal
+ok 39 should be equal
+# baseUrl defaults
+ok 40 should be equal
+ok 41 should be equal
+# baseUrl and redirects
+ok 42 should be equal
+ok 43 should be equal
+ok 44 should be equal
+# error when baseUrl is not a String
+ok 45 should not be equal
+ok 46 should be equal
+# error when uri is not a String
+ok 47 should not be equal
+ok 48 should be equal
+# error on baseUrl and uri with scheme
+ok 49 should not be equal
+ok 50 should be equal
+# error on baseUrl and uri with scheme-relative url
+ok 51 should not be equal
+ok 52 should be equal
+# setup
+# sendImmediately - false
+ok 53 null
+ok 54 should be equal
+ok 55 should be equal
+ok 56 should be equal
+# sendImmediately - true
+ok 57 null
+ok 58 should be equal
+ok 59 should be equal
+ok 60 should be equal
+# credentials in url
+ok 61 null
+ok 62 should be equal
+ok 63 should be equal
+ok 64 should be equal
+# POST request
+ok 65 null
+ok 66 should be equal
+ok 67 should be equal
+ok 68 should be equal
+# user - empty string
+ok 69 should not throw
+ok 70 null
+ok 71 should be equal
+ok 72 should be equal
+ok 73 should be equal
+# pass - undefined
+ok 74 should not throw
+ok 75 null
+ok 76 should be equal
+ok 77 should be equal
+ok 78 should be equal
+# pass - utf8
+ok 79 should not throw
+ok 80 null
+ok 81 should be equal
+ok 82 should be equal
+ok 83 should be equal
+ok 84 should be equal
+# auth method
+ok 85 should be equal
+ok 86 should be equal
+ok 87 should be equal
+# get method
+ok 88 should be equal
+ok 89 should be equal
+ok 90 should be equal
+ok 91 should be equal
+# cleanup
+# setup
+# bearer auth
+ok 92 null
+ok 93 should be equal
+ok 94 should be equal
+# bearer auth with default sendImmediately
+ok 95 null
+ok 96 should be equal
+ok 97 should be equal
+# (anonymous)
+ok 98 null
+ok 99 should be equal
+ok 100 should be equal
+# using .auth, sendImmediately = false
+ok 101 should be equal
+ok 102 should be equal
+# using .auth, sendImmediately = true
+ok 103 should be equal
+ok 104 should be equal
+# bearer is a function
+ok 105 null
+ok 106 should be equal
+ok 107 should be equal
+# bearer is a function, path = test2
+ok 108 null
+ok 109 should be equal
+ok 110 should be equal
+# no auth method
+ok 111 should be equal
+# null bearer
+ok 112 null
+ok 113 should be equal
+ok 114 should be equal
+# cleanup
+# setup
+# test testGet
+ok 115 should be equal
+ok 116 should be equivalent
+# test testGetChunkBreak
+ok 117 should be equal
+ok 118 should be equivalent
+# test testGetBuffer
+ok 119 should be equal
+ok 120 should be equivalent
+# test testGetEncoding
+ok 121 should be equal
+ok 122 should be equivalent
+# test testGetUTF
+ok 123 should be equal
+ok 124 should be equivalent
+# test testGetJSON
+ok 125 should be equal
+ok 126 should be equivalent
+# test testPutString
+ok 127 should be equal
+# test testPutBuffer
+ok 128 should be equal
+# test testPutJSON
+ok 129 should be equal
+# test testPutMultipart
+ok 130 should be equal
+# test testPutMultipartPreambleCRLF
+ok 131 should be equal
+# test testPutMultipartPostambleCRLF
+ok 132 should be equal
+# typed array
+ok 133 null
+ok 134 should be equivalent
+# cleanup
+# setup
+# simple cookie creation
+ok 135 should be equal
+ok 136 should be equal
+# simple malformed cookie creation
+ok 137 should be equal
+ok 138 should be equal
+# after server sends a cookie
+ok 139 should be equal
+ok 140 should be equal
+ok 141 should be equal
+ok 142 should be equal
+ok 143 should be equal
+ok 144 should be equal
+# after server sends a malformed cookie
+ok 145 should be equal
+ok 146 should be equal
+ok 147 should be equal
+ok 148 should be equal
+ok 149 should be equal
+ok 150 should be equal
+# after server sends a cookie for a different domain
+ok 151 should be equal
+ok 152 should be equal
+ok 153 should be equivalent
+ok 154 should be equal
+# make sure setCookie works
+ok 155 should be equal
+ok 156 should be equal
+ok 157 should be equal
+ok 158 should be equal
+# custom store
+ok 159 should be equal
+# cleanup
+# setup
+# get(string, function)
+ok 160 should be equal
+ok 161 should be equal
+# merge headers
+ok 162 should be equal
+ok 163 should be equal
+# deep extend
+ok 164 should be equivalent
+ok 165 should be equivalent
+# default undefined header
+ok 166 should be equal
+ok 167 should be equal
+ok 168 should be equal
+# post(string, object, function)
+ok 169 should be equal
+ok 170 should be equal
+ok 171 should be equal
+# patch(string, object, function)
+ok 172 should be equal
+ok 173 should be equal
+ok 174 should be equal
+# post(string, object, function) with body
+ok 175 should be equal
+ok 176 should be equal
+ok 177 should be equal
+# del(string, function)
+ok 178 should be equal
+ok 179 should be equal
+# delete(string, function)
+ok 180 should be equal
+ok 181 should be equal
+# head(object, function)
+ok 182 should be equal
+ok 183 should be equal
+# recursive defaults
+ok 184 should be equal
+ok 185 should be equal
+ok 186 should be equal
+ok 187 should be equal
+ok 188 should be equal
+ok 189 should be equal
+ok 190 should be equal
+ok 191 should be equal
+ok 192 should be equal
+ok 193 should be equal
+ok 194 should be equal
+# recursive defaults requester
+ok 195 should be equal
+ok 196 should be equal
+ok 197 should be equal
+ok 198 should be equal
+ok 199 should be equal
+# test custom request handler function
+ok 200 should throw
+ok 201 should be equal
+ok 202 should be equal
+# test custom request handler function without options
+ok 203 should be equal
+ok 204 should be equal
+# test only setting undefined properties
+ok 205 should be equal
+ok 206 should be equal
+ok 207 should be equal
+ok 208 should be equivalent
+# test only function
+ok 209 should not throw
+ok 210 should be equal
+# invoke defaults
+ok 211 should be equal
+ok 212 should be equal
+# invoke convenience method from defaults
+ok 213 should be equal
+ok 214 should be equal
+# defaults without options
+ok 215 should be equal
+# cleanup
+# setup
+# with sendImmediately = false
+ok 216 should be equal
+ok 217 should be equal
+ok 218 should be equal
+ok 219 should be equal
+# with MD5-sess algorithm
+ok 220 should be equal
+ok 221 should be equal
+ok 222 should be equal
+ok 223 should be equal
+# without sendImmediately = false
+ok 224 should be equal
+ok 225 should be equal
+ok 226 should be equal
+# with different credentials
+ok 227 should be equal
+ok 228 should be equal
+ok 229 should be equal
+ok 230 should be equal
+# cleanup
+# setup
+# empty body with encoding
+ok 231 should be equal
+ok 232 should be equal
+ok 233 should be equal
+# empty body without encoding
+ok 234 should be equal
+ok 235 should be equal
+ok 236 should be equivalent
+# empty JSON body
+ok 237 should be equal
+ok 238 should be equal
+ok 239 should be equal
+# cleanup
+# without uri
+ok 240 should throw
+# invalid uri 1
+ok 241 should throw
+# invalid uri 2
+ok 242 should throw
+# invalid uri + NO_PROXY
+ok 243 should throw
+# deprecated unix URL
+ok 244 should throw
+# invalid body
+ok 245 should throw
+# invalid multipart
+ok 246 should throw
+# multipart without body 1
+ok 247 should throw
+# multipart without body 2
+ok 248 should throw
+# head method with a body
+ok 249 should throw
+# head method with a body 2
+ok 250 should throw
+# setup
+# should emit socket event
+ok 251 should be equal
+ok 252 should be equal
+ok 253 should be equal
+ok 254 should be equal
+# cleanup
+# setup
+# followAllRedirects with 303
+ok 255 should be equal
+ok 256 should be equal
+ok 257 should be equal
+# cleanup
+# setup
+# followAllRedirects
+ok 258 should be equal
+ok 259 should be equal
+ok 260 should be equal
+# cleanup
+# setup
+# form-data should throw on null value
+ok 261 should throw
+(node:31328) [DEP0044] DeprecationWarning: The `util.isArray` API is deprecated. Please use `Array.isArray()` instead.
+# cleanup
+# multipart formData
+ok 262 should be truthy
+ok 263 should be truthy
+ok 264 should be truthy
+ok 265 should be truthy
+ok 266 should be truthy
+ok 267 should be truthy
+ok 268 should be truthy
+ok 269 should be truthy
+ok 270 should be truthy
+ok 271 should be truthy
+ok 272 should be truthy
+ok 273 should be truthy
+ok 274 should be truthy
+ok 275 should be truthy
+ok 276 should be truthy
+ok 277 should be truthy
+ok 278 should be truthy
+ok 279 should be truthy
+ok 280 should be equal
+ok 281 should be equivalent
+# multipart formData + JSON
+ok 282 should be truthy
+ok 283 should be truthy
+ok 284 should be truthy
+ok 285 should be truthy
+ok 286 should be truthy
+ok 287 should be truthy
+ok 288 should be truthy
+ok 289 should be truthy
+ok 290 should be truthy
+ok 291 should be truthy
+ok 292 should be truthy
+ok 293 should be truthy
+ok 294 should be truthy
+ok 295 should be truthy
+ok 296 should be truthy
+ok 297 should be truthy
+ok 298 should be truthy
+ok 299 should be truthy
+ok 300 should be equal
+ok 301 should be equivalent
+# multipart formData + basic auth
+ok 302 should be truthy
+ok 303 should be truthy
+ok 304 should be truthy
+ok 305 should be truthy
+ok 306 should be truthy
+ok 307 should be truthy
+ok 308 should be truthy
+ok 309 should be truthy
+ok 310 should be truthy
+ok 311 should be truthy
+ok 312 should be truthy
+ok 313 should be truthy
+ok 314 should be truthy
+ok 315 should be truthy
+ok 316 should be truthy
+ok 317 should be truthy
+ok 318 should be truthy
+ok 319 should be truthy
+ok 320 should be truthy
+ok 321 should be equal
+ok 322 should be equivalent
+# application/x-www-form-urlencoded 0
+ok 323 should be equal
+ok 324 should be equal
+ok 325 should be equal
+ok 326 should be equal
+ok 327 should be equal
+ok 328 should be equal
+ok 329 should be equal
+# application/x-www-form-urlencoded 1
+ok 330 should be equal
+ok 331 should be equal
+ok 332 should be equal
+ok 333 should be equal
+ok 334 should be equal
+ok 335 should be equal
+ok 336 should be equal
+# application/x-www-form-urlencoded 2
+ok 337 should be equal
+ok 338 should be equal
+ok 339 should be equal
+ok 340 should be equal
+ok 341 should be equal
+ok 342 should be equal
+ok 343 should be equal
+# application/x-www-form-urlencoded 3
+ok 344 should be equal
+ok 345 should be equal
+ok 346 should be equal
+ok 347 should be equal
+ok 348 should be equal
+ok 349 should be equal
+ok 350 should be equal
+# multipart form append
+ok 351 should be equal
+ok 352 should be truthy
+ok 353 should be truthy
+ok 354 should be truthy
+ok 355 should be truthy
+ok 356 should be truthy
+ok 357 should be truthy
+ok 358 should be truthy
+ok 359 should be truthy
+ok 360 should be truthy
+ok 361 should be truthy
+ok 362 should be truthy
+ok 363 should be truthy
+ok 364 should be truthy
+ok 365 should be truthy
+ok 366 should be equal
+ok 367 should be equal
+ok 368 should be equal
+ok 369 should be equal
+# setup
+ok 370 should be equal
+ok 371 should be equal
+# transparently supports gzip decoding to callbacks
+ok 372 should be equal
+ok 373 should be equal
+ok 374 should be equal
+# supports slightly invalid gzip content
+ok 375 should be equal
+ok 376 should be equal
+ok 377 should be equal
+# transparently supports gzip decoding to pipes
+ok 378 should be equal
+# does not request gzip if user specifies Accepted-Encodings
+ok 379 should be equal
+ok 380 should be equal
+ok 381 should be equal
+# does not decode user-requested encoding by default
+ok 382 should be equal
+ok 383 should be equal
+ok 384 should be equal
+# supports character encoding with gzip encoding
+ok 385 should be equal
+ok 386 should be equal
+# transparently supports gzip error to callbacks
+ok 387 should be equal
+ok 388 should be equal
+ok 389 should be equal
+# transparently supports gzip error to pipes
+ok 390 should be equal
+# pause when streaming from a gzip request object
+ok 391 Only receive data when not paused
+ok 392 Only receive data when not paused
+ok 393 Received multiple chunks
+ok 394 Expected content
+# pause before streaming from a gzip request object
+ok 395 Only receive data when not paused
+ok 396 should be equal
+# transparently supports deflate decoding to callbacks
+ok 397 should be equal
+ok 398 should be equal
+ok 399 should be equal
+# do not try to pipe HEAD request responses
+ok 400 should be equal
+ok 401 should be equal
+# do not try to pipe responses with no body
+ok 402 should be equal
+ok 403 should be equal
+ok 404 should be equal
+ok 405 should be equal
+ok 406 should be equal
+ok 407 should be equal
+# cleanup
+# setup
+# application-form-encoded
+ok 408 should be equal
+ok 409 should be equal
+# application-json
+ok 410 should be equal
+ok 411 should be equal
+# cookies
+ok 412 should be equal
+ok 413 should be equal
+# custom-method
+ok 414 should be equal
+ok 415 should be equal
+# headers
+ok 416 should be equal
+ok 417 should be equal
+# multipart-data
+ok 418 should be equal
+ok 419 should be truthy
+ok 420 should be truthy
+# multipart-file
+ok 421 should be equal
+ok 422 should be truthy
+ok 423 should be truthy
+# multipart-form-data
+ok 424 should be equal
+ok 425 should be truthy
+ok 426 should be truthy
+# query
+ok 427 should be equal
+ok 428 should be equal
+# text/plain
+ok 429 should be equal
+ok 430 should be equal
+ok 431 should be equal
+# cleanup
+# setup
+# hawk-get
+ok 432 should be equal
+ok 433 should be equal
+ok 434 should be equal
+# hawk-post
+ok 435 should be equal
+ok 436 should be equal
+ok 437 should be equal
+# hawk-ext
+ok 438 should be equal
+ok 439 should be equal
+ok 440 should be equal
+# hawk-app
+ok 441 should be equal
+ok 442 should be equal
+ok 443 should be equal
+# hawk-app+dlg
+ok 444 should be equal
+ok 445 should be equal
+ok 446 should be equal
+# hawk-missing-creds
+ok 447 should be equal
+ok 448 should be equal
+ok 449 should be equal
+# hawk-missing-creds-id
+ok 450 should be equal
+ok 451 should be equal
+ok 452 should be equal
+# hawk-missing-creds-key
+ok 453 should be equal
+ok 454 should be equal
+ok 455 should be equal
+# hawk-missing-creds-algo
+ok 456 should be equal
+ok 457 should be equal
+ok 458 should be equal
+# hawk-invalid-creds-algo
+ok 459 should be equal
+ok 460 should be equal
+ok 461 should be equal
+# cleanup
+# setup
+# upper-case Host header and redirect
+ok 462 should be equal
+ok 463 Expected "Host: 127.0.0.1" in data "GET /redirect/from HTTP/1.1\nHost: 127.0.0.1\nConnection: keep-alive"
+ok 464 should be equal
+ok 465 should be equal
+ok 466 should be equal
+ok 467 should be equal
+ok 468 Expected "Host: localhost:64525" in data "GET /redirect/to HTTP/1.1\nreferer: http://localhost:64525/redirect/from\nHost: localhost:64525\nConnection: keep-alive"
+# undefined headers
+ok 469 should be equal
+ok 470 should be equal
+ok 471 should be equal
+# preserve port in host header if non-standard port
+ok 472 should be equal
+ok 473 should be equal
+# strip port in host header if explicit standard port (:80) & protocol (HTTP)
+ok 474 should be equal
+# strip port in host header if explicit standard port (:443) & protocol (HTTPS)
+ok 475 should be equal
+# strip port in host header if implicit standard port & protocol (HTTP)
+ok 476 should be equal
+# strip port in host header if implicit standard port & protocol (HTTPS)
+ok 477 should be equal
+# catch invalid characters error - GET
+ok 478 should be truthy
+ok 479 should be truthy
+# catch invalid characters error - POST
+ok 480 should be truthy
+ok 481 should be truthy
+# IPv6 Host header
+ok 482 should be equal
+ok 483 should be equal
+ok 484 Expected "Host: \[::1\]:64525" in data "GET /headers.json HTTP/1.1\nhost: [::1]:64525\nConnection: keep-alive"
+# setup
+# correct key
+ok 485 should be equal
+ok 486 should be equal
+# incorrect key
+ok 487 should be equal
+ok 488 should be equal
+# cleanup
+# setup
+# undefined
+ok 489 should be equal
+ok 490 should be equal
+ok 491 Received HTTPS server body
+ok 492 should be equal
+ok 493 should be equal
+ok 494 should be equal
+ok 495 should be equal
+ok 496 Received HTTPS server body
+ok 497 should be equal
+ok 498 should be equal
+# empty
+ok 499 should be equal
+ok 500 should be equal
+ok 501 Received HTTPS server body
+ok 502 should be equal
+ok 503 should be equal
+ok 504 should be equal
+ok 505 should be equal
+ok 506 Received HTTPS server body
+ok 507 should be equal
+ok 508 should be equal
+# http only
+ok 509 should be equal
+ok 510 should be equal
+ok 511 Received HTTPS server body
+ok 512 should be equal
+ok 513 should be equal
+ok 514 should be equal
+ok 515 should be equal
+ok 516 Received HTTPS server body
+ok 517 should be equal
+ok 518 should be equal
+# https only
+ok 519 should be equal
+ok 520 should be equal
+ok 521 Received HTTPS server body
+ok 522 should be equal
+ok 523 should be equal
+ok 524 should be equal
+ok 525 should be equal
+ok 526 Received HTTPS server body
+ok 527 should be equal
+ok 528 should be equal
+# http and https
+ok 529 should be equal
+ok 530 should be equal
+ok 531 Received HTTPS server body
+ok 532 should be equal
+ok 533 should be equal
+ok 534 should be equal
+ok 535 should be equal
+ok 536 Received HTTPS server body
+ok 537 should be equal
+ok 538 should be equal
+# cleanup
+# relaxed setup
+# relaxed testGet
+ok 539 should be equal
+ok 540 should be equivalent
+# relaxed testGetChunkBreak
+ok 541 should be equal
+ok 542 should be equivalent
+# relaxed testGetJSON
+ok 543 should be equal
+ok 544 should be equivalent
+# relaxed testPutString
+ok 545 should be equal
+# relaxed testPutBuffer
+ok 546 should be equal
+# relaxed testPutJSON
+ok 547 should be equal
+# relaxed testPutMultipart
+ok 548 should be equal
+# relaxed cleanup
+# strict setup
+# strict testGet
+ok 549 should be equal
+ok 550 should be equivalent
+# strict testGetChunkBreak
+ok 551 should be equal
+ok 552 should be equivalent
+# strict testGetJSON
+ok 553 should be equal
+ok 554 should be equivalent
+# strict testPutString
+ok 555 should be equal
+# strict testPutBuffer
+ok 556 should be equal
+# strict testPutJSON
+ok 557 should be equal
+# strict testPutMultipart
+ok 558 should be equal
+# strict cleanup
+# setup
+# lowercase
+ok 559 should be equal
+ok 560 should be equal
+# uppercase
+ok 561 should be equal
+ok 562 should be equal
+# mixedcase
+ok 563 should be equal
+ok 564 should be equal
+# hostname and port
+ok 565 should be equal
+ok 566 should be equal
+# hostname and port 1
+ok 567 should be equal
+ok 568 should be equal
+# hostname and port 2
+ok 569 should be equal
+ok 570 should be equal
+# hostname and port 3
+ok 571 should not be equal
+ok 572 should be equal
+ok 573 should be equal
+# hostname and query string
+ok 574 should be equal
+ok 575 should be equal
+# cleanup
+# setup
+# test jsonNull
+ok 576 should be equal
+ok 577 should be equal
+ok 578 should be equivalent
+# test jsonTrue
+ok 579 should be equal
+ok 580 should be equal
+ok 581 should be equivalent
+# test jsonFalse
+ok 582 should be equal
+ok 583 should be equal
+ok 584 should be equivalent
+# test jsonNumber
+ok 585 should be equal
+ok 586 should be equal
+ok 587 should be equivalent
+# test jsonString
+ok 588 should be equal
+ok 589 should be equal
+ok 590 should be equivalent
+# test jsonArray
+ok 591 should be equal
+ok 592 should be equal
+ok 593 should be equivalent
+# test jsonObject
+ok 594 should be equal
+ok 595 should be equal
+ok 596 should be equivalent
+# test jsonReviver
+ok 597 should be equal
+ok 598 should be equal
+ok 599 should be equivalent
+# test jsonReviverInvalid
+ok 600 should be equal
+ok 601 should be equal
+ok 602 should be equivalent
+# test jsonReplacer
+ok 603 should be equal
+ok 604 should be equal
+ok 605 should be equivalent
+# test jsonReplacerInvalid
+ok 606 should be equal
+ok 607 should be equal
+ok 608 should be equivalent
+# test jsonReplacerObject
+ok 609 should be equal
+ok 610 should be equal
+ok 611 should be equivalent
+# missing body
+ok 612 should be equal
+# cleanup
+# bind to invalid address
+ok 613 should not be equal
+ok 614 bind error expected on Windows (bind EINVAL 1.2.3.4)
+ok 615 should be equal
+# bind to local address
+ok 616 localAddress 192.168.178.62 unavailable (bind EINVAL 192.168.178.62) # SKIP
+# bind to local address on redirect
+ok 617 localAddress redirect 192.168.178.62 unavailable (bind EINVAL 192.168.178.62) # SKIP
+# multipart-encoding +array -stream
+ok 618 should be truthy
+ok 619 should be truthy
+ok 620 should be falsy
+ok 621 should be truthy
+ok 622 should be truthy
+ok 623 should be equal
+ok 624 should be equal
+# multipart-encoding +array +stream
+ok 625 should be truthy
+ok 626 should be truthy
+ok 627 should be falsy
+ok 628 should be truthy
+ok 629 should be truthy
+ok 630 should be equal
+ok 631 should be equal
+# multipart-encoding +array +encoding
+ok 632 should be truthy
+ok 633 should be truthy
+ok 634 should be falsy
+ok 635 should be truthy
+ok 636 should be truthy
+ok 637 should be equal
+ok 638 should be equal
+# multipart-encoding +object -stream
+ok 639 should be truthy
+ok 640 should be truthy
+ok 641 should be falsy
+ok 642 should be truthy
+ok 643 should be truthy
+ok 644 should be equal
+ok 645 should be equal
+# multipart-encoding +object +stream
+ok 646 should be truthy
+ok 647 should be truthy
+ok 648 should be falsy
+ok 649 should be truthy
+ok 650 should be truthy
+ok 651 should be equal
+ok 652 should be equal
+# multipart-encoding +object +encoding
+ok 653 should be truthy
+ok 654 should be truthy
+ok 655 should be falsy
+ok 656 should be truthy
+ok 657 should be truthy
+ok 658 should be equal
+ok 659 should be equal
+# multipart-encoding +object -chunked -stream
+ok 660 should be truthy
+ok 661 should be truthy
+ok 662 should be falsy
+ok 663 should be truthy
+ok 664 should be truthy
+ok 665 should be equal
+ok 666 should be equal
+# multipart-encoding +object -chunked +stream
+ok 667 should be truthy
+ok 668 should be truthy
+ok 669 should be falsy
+ok 670 should be truthy
+ok 671 should be truthy
+ok 672 should be equal
+ok 673 should be equal
+# multipart-encoding +object +chunked -stream
+ok 674 should be truthy
+ok 675 should be truthy
+ok 676 should be falsy
+ok 677 should be truthy
+ok 678 should be truthy
+ok 679 should be equal
+ok 680 should be equal
+# multipart-encoding +object +encoding -chunked
+ok 681 should be truthy
+ok 682 should be truthy
+ok 683 should be falsy
+ok 684 should be truthy
+ok 685 should be truthy
+ok 686 should be equal
+ok 687 should be equal
+# multipart-related POST default +json
+ok 688 should be truthy
+ok 689 should be truthy
+ok 690 should be truthy
+ok 691 should be truthy
+ok 692 should be truthy
+ok 693 should be truthy
+ok 694 should be truthy
+ok 695 should be truthy
+ok 696 should be truthy
+ok 697 should be truthy
+ok 698 should be truthy
+ok 699 should be equal
+ok 700 should be equal
+ok 701 should be equivalent
+# multipart-related POST default -json
+ok 702 should be truthy
+ok 703 should be truthy
+ok 704 should be truthy
+ok 705 should be truthy
+ok 706 should be truthy
+ok 707 should be truthy
+ok 708 should be truthy
+ok 709 should be truthy
+ok 710 should be truthy
+ok 711 should be truthy
+ok 712 should be truthy
+ok 713 should be equal
+ok 714 should be equal
+ok 715 should be equivalent
+# multipart-related POST multipart/mixed +json
+ok 716 should be truthy
+ok 717 should be truthy
+ok 718 should be truthy
+ok 719 should be truthy
+ok 720 should be truthy
+ok 721 should be truthy
+ok 722 should be truthy
+ok 723 should be truthy
+ok 724 should be truthy
+ok 725 should be truthy
+ok 726 should be truthy
+ok 727 should be equal
+ok 728 should be equal
+ok 729 should be equivalent
+# multipart-related POST multipart/mixed -json
+ok 730 should be truthy
+ok 731 should be truthy
+ok 732 should be truthy
+ok 733 should be truthy
+ok 734 should be truthy
+ok 735 should be truthy
+ok 736 should be truthy
+ok 737 should be truthy
+ok 738 should be truthy
+ok 739 should be truthy
+ok 740 should be truthy
+ok 741 should be equal
+ok 742 should be equal
+ok 743 should be equivalent
+# multipart-related POST multipart/related; boundary=XXX; type=text/xml; start="<root>" +json
+ok 744 should be truthy
+ok 745 should be truthy
+ok 746 should be truthy
+ok 747 should be truthy
+ok 748 should be truthy
+ok 749 should be truthy
+ok 750 should be truthy
+ok 751 should be truthy
+ok 752 should be truthy
+ok 753 should be truthy
+ok 754 should be truthy
+ok 755 should be truthy
+ok 756 should be equal
+ok 757 should be equal
+ok 758 should be equivalent
+# multipart-related POST multipart/related; boundary=XXX; type=text/xml; start="<root>" -json
+ok 759 should be truthy
+ok 760 should be truthy
+ok 761 should be truthy
+ok 762 should be truthy
+ok 763 should be truthy
+ok 764 should be truthy
+ok 765 should be truthy
+ok 766 should be truthy
+ok 767 should be truthy
+ok 768 should be truthy
+ok 769 should be truthy
+ok 770 should be truthy
+ok 771 should be equal
+ok 772 should be equal
+ok 773 should be equivalent
+# multipart-related GET default +json
+ok 774 should be truthy
+ok 775 should be truthy
+ok 776 should be truthy
+ok 777 should be truthy
+ok 778 should be truthy
+ok 779 should be truthy
+ok 780 should be truthy
+ok 781 should be truthy
+ok 782 should be truthy
+ok 783 should be truthy
+ok 784 should be truthy
+ok 785 should be equal
+ok 786 should be equal
+ok 787 should be equivalent
+# multipart-related GET default -json
+ok 788 should be truthy
+ok 789 should be truthy
+ok 790 should be truthy
+ok 791 should be truthy
+ok 792 should be truthy
+ok 793 should be truthy
+ok 794 should be truthy
+ok 795 should be truthy
+ok 796 should be truthy
+ok 797 should be truthy
+ok 798 should be truthy
+ok 799 should be equal
+ok 800 should be equal
+ok 801 should be equivalent
+# multipart-related GET multipart/mixed +json
+ok 802 should be truthy
+ok 803 should be truthy
+ok 804 should be truthy
+ok 805 should be truthy
+ok 806 should be truthy
+ok 807 should be truthy
+ok 808 should be truthy
+ok 809 should be truthy
+ok 810 should be truthy
+ok 811 should be truthy
+ok 812 should be truthy
+ok 813 should be equal
+ok 814 should be equal
+ok 815 should be equivalent
+# multipart-related GET multipart/mixed -json
+ok 816 should be truthy
+ok 817 should be truthy
+ok 818 should be truthy
+ok 819 should be truthy
+ok 820 should be truthy
+ok 821 should be truthy
+ok 822 should be truthy
+ok 823 should be truthy
+ok 824 should be truthy
+ok 825 should be truthy
+ok 826 should be truthy
+ok 827 should be equal
+ok 828 should be equal
+ok 829 should be equivalent
+# multipart-related GET multipart/related; boundary=XXX; type=text/xml; start="<root>" +json
+ok 830 should be truthy
+ok 831 should be truthy
+ok 832 should be truthy
+ok 833 should be truthy
+ok 834 should be truthy
+ok 835 should be truthy
+ok 836 should be truthy
+ok 837 should be truthy
+ok 838 should be truthy
+ok 839 should be truthy
+ok 840 should be truthy
+ok 841 should be truthy
+ok 842 should be equal
+ok 843 should be equal
+ok 844 should be equivalent
+# multipart-related GET multipart/related; boundary=XXX; type=text/xml; start="<root>" -json
+ok 845 should be truthy
+ok 846 should be truthy
+ok 847 should be truthy
+ok 848 should be truthy
+ok 849 should be truthy
+ok 850 should be truthy
+ok 851 should be truthy
+ok 852 should be truthy
+ok 853 should be truthy
+ok 854 should be truthy
+ok 855 should be truthy
+ok 856 should be truthy
+ok 857 should be equal
+ok 858 should be equal
+ok 859 should be equivalent
+# setup
+# a simple request should not fail with debugging enabled
+ok 860 request.debug sets request.Request.debug
+ok 861 request.debug gets request.Request.debug
+ok 862 the request did not fail
+ok 863 the request did not fail
+ok 864 stderr has some messages
+ok 865 a log message matches /^REQUEST { uri: /
+ok 866 a log message matches /^REQUEST make request http:\/\/localhost:64627\/\n$/
+ok 867 a log message matches /^REQUEST onRequestResponse /
+ok 868 a log message matches /^REQUEST finish init /
+ok 869 a log message matches /^REQUEST response end /
+ok 870 a log message matches /^REQUEST end event /
+ok 871 a log message matches /^REQUEST emitting complete /
+# there should be no further lookups on process.env
+ok 872 the request did not fail
+ok 873 the request did not fail
+ok 874 env.NODE_DEBUG is not retested
+# it should be possible to disable debugging at runtime
+ok 875 request.debug sets request.Request.debug
+ok 876 request.debug gets request.Request.debug
+ok 877 the request did not fail
+ok 878 the request did not fail
+ok 879 debugging can be disabled
+# cleanup
+# reqsign
+ok 880 should be equal
+# reqsign256
+ok 881 should be equal
+# reqsignRSA
+ok 882 RSA signature generated
+# accsign
+ok 883 should be equal
+# accsign256
+ok 884 should be equal
+# accsignRSA
+ok 885 RSA signature generated
+# upsign
+ok 886 should be equal
+# upsign256
+ok 887 should be equal
+# upsignRSA
+ok 888 RSA signature generated
+# rsign
+ok 889 should be equal
+# rsign_rsa
+ok 890 should be equal
+# raccsign
+ok 891 should be equal
+# raccsignRSA
+ok 892 should be equal
+# rupsign
+ok 893 should be equal
+# rupsignRSA
+ok 894 should be equal
+# rfc5849 example
+ok 895 should be equal
+# rfc5849 RSA example
+ok 896 RSA signature generated
+# plaintext signature method
+ok 897 should be equal
+# invalid transport_method
+ok 898 should throw
+# invalid method while using transport_method 'body'
+ok 899 should throw
+# invalid content-type while using transport_method 'body'
+ok 900 should throw
+# query transport_method
+ok 901 oauth Authorization header should not be present with transport_method 'query'
+ok 902 r.uri.path should equal r.path
+ok 903 path should contain path + query
+ok 904 should be equivalent
+# query transport_method + form option + url params
+ok 905 oauth Authorization header should not be present with transport_method 'query'
+ok 906 r.uri.path should equal r.path
+ok 907 path should contain path + query
+ok 908 should be equivalent
+# query transport_method + qs option + url params
+ok 909 oauth Authorization header should not be present with transport_method 'query'
+ok 910 r.uri.path should equal r.path
+ok 911 path should contain path + query
+ok 912 should be equivalent
+# body transport_method
+ok 913 oauth Authorization header should not be present with transport_method 'body'
+ok 914 should be equivalent
+# body transport_method + form option + url params
+ok 915 oauth Authorization header should not be present with transport_method 'body'
+ok 916 should be equivalent
+# body_hash manually set
+ok 917 should be equal
+# body_hash automatically built for string
+ok 918 should be equal
+# body_hash automatically built for JSON
+ok 919 should be equal
+# body_hash PLAINTEXT signature_method
+ok 920 should throw
+# refresh oauth_nonce on redirect
+ok 921 should be equal
+ok 922 should not be equal
+# no credentials on external redirect
+ok 923 should be equal
+ok 924 should be equal
+# setup
+# chained one-line proxying
+ok 925 should be equal
+ok 926 should be equal
+ok 927 should be equal
+# cleanup
+# setup
+# options object is not mutated
+ok 928 should be equal
+ok 929 should be equal
+ok 930 should be equal
+ok 931 should be equal
+ok 932 should be equal
+ok 933 should be equal
+ok 934 should be equal
+ok 935 should be equal
+ok 936 should be equal
+ok 937 should be equal
+# cleanup
+# setup
+# options(string, function)
+ok 938 should be equal
+ok 939 should be equal
+ok 940 should be equal
+# options(object, function)
+ok 941 should be equal
+ok 942 should be equal
+ok 943 should be equal
+# cleanup
+# setup
+# testGet
+ok 944 should be equal
+ok 945 should be equivalent
+# testGetChunkBreak
+ok 946 should be equal
+ok 947 should be equivalent
+# testGetBuffer
+ok 948 should be equal
+ok 949 should be equal
+# testGetJSON
+ok 950 should be equal
+ok 951 should be equivalent
+# testPutString
+ok 952 should be equal
+# testPutBuffer
+ok 953 should be equal
+# testPutJSON
+ok 954 should be equal
+# testPutMultipart
+ok 955 should be equal
+# cleanup
+# setup
+# piped redirect
+ok 956 should be equal
+ok 957 should be equal
+# cleanup
+# setup
+# piping to a request object
+ok 958 should be equal
+ok 959 should be equal
+ok 960 should be equal
+# piping to a request object with invalid uri
+ok 961 should be truthy
+ok 962 should be equal
+# piping to a request object with a json body
+ok 963 should be equal
+ok 964 should be equal
+ok 965 should be equivalent
+# piping from a request object
+ok 966 should be equal
+# pause when piping from a request object
+ok 967 Only receive data when not paused
+ok 968 should be equal
+ok 969 Only receive data when not paused
+ok 970 should be equal
+# pause before piping from a request object
+ok 971 Only receive data when not paused
+ok 972 should be equal
+# piping from a file
+ok 973 should be equal
+ok 974 should be equal
+ok 975 should be equal
+# piping from a file with content-length
+ok 976 should be equal
+ok 977 should be equal
+ok 978 should be equal
+# piping to and from same URL
+ok 979 should be equal
+ok 980 should be equal
+ok 981 should be equal
+# piping between urls
+ok 982 should be equal
+ok 983 should be equal
+ok 984 should be equal
+# writing to file
+ok 985 should be equivalent
+# one-line proxy
+ok 986 should be equal
+ok 987 should be equal
+ok 988 should be equal
+# piping after response
+ok 989 should be equal
+# piping through a redirect
+ok 990 should be equal
+# pipe options
+# request.pipefilter is called correctly
+ok 991 should be equal
+ok 992 should be equal
+ok 993 should be equal
+# cleanup
+# setup
+# pool
+ok 994 should be equal
+ok 995 should be equal
+ok 996 should be equal
+ok 997 should be equal
+# forever
+ok 998 should be equal
+ok 999 should be equal
+ok 1000 should be equal
+ok 1001 should be equal
+# forever, should use same agent in sequential requests
+ok 1002 should be equal
+# forever, should use same agent in sequential requests(with pool.maxSockets)
+ok 1003 should be equal
+ok 1004 should be equal
+# forever, should use same agent in request() and request.verb
+ok 1005 should be equal
+ok 1006 should be equal
+# should use different agent if pool option specified
+ok 1007 should be equal
+ok 1008 should be equal
+ok 1009 should not be equal
+# cleanup
+# setup
+# promisify convenience method
+ok 1010 should be equal
+# promisify request function
+ok 1011 should be equal
+# promisify all methods
+ok 1012 should be equal
+# cleanup
+# setup
+# proxy
+ok 1013 should be equal
+ok 1014 should be equal
+ok 1015 should be equal
+ok 1016 should be equal
+ok 1017 the request must be made to the proxy server
+# cleanup
+# setup
+# adding a querystring - using qs
+ok 1018 should be equal
+# adding a querystring - using querystring
+ok 1019 should be equal
+# replacing a querystring value - using qs
+ok 1020 should be equal
+# replacing a querystring value - using querystring
+ok 1021 should be equal
+# appending a querystring value to the ones present in the uri - using qs
+ok 1022 should be equal
+# appending a querystring value to the ones present in the uri - using querystring
+ok 1023 should be equal
+# leaving a querystring alone - using qs
+ok 1024 should be equal
+# leaving a querystring alone - using querystring
+ok 1025 should be equal
+# giving empty qs property - using qs
+ok 1026 should be equal
+# giving empty qs property - using querystring
+ok 1027 should be equal
+# modifying the qs after creating the request - using qs
+ok 1028 should be equal
+# modifying the qs after creating the request - using querystring
+ok 1029 should be equal
+# a query with an object for a value - using qs
+ok 1030 should be equal
+# a query with an object for a value - using querystring
+ok 1031 should be equal
+# a query with an array for a value - using qs
+ok 1032 should be equal
+# a query with an array for a value - using querystring
+ok 1033 should be equal
+# pass options to the qs module via the qsParseOptions key - using qs
+ok 1034 should be equal
+# pass options to the qs module via the qsParseOptions key - using querystring
+ok 1035 should be equal
+# pass options to the qs module via the qsStringifyOptions key - using qs
+ok 1036 should be equal
+# pass options to the qs module via the qsStringifyOptions key - using querystring
+ok 1037 should be equal
+# pass options to the querystring module via the qsParseOptions key - using qs
+ok 1038 should be equal
+# pass options to the querystring module via the qsParseOptions key - using querystring
+ok 1039 should be equal
+# pass options to the querystring module via the qsStringifyOptions key - using qs
+ok 1040 should be equal
+# pass options to the querystring module via the qsStringifyOptions key - using querystring
+ok 1041 should be equal
+# setup
+# redirect URL helper
+ok 1042 should be equivalent
+ok 1043 should be equivalent
+# setup
+# lots of redirects
+ok 1044 should be equal
+ok 1045 should be equal
+ok 1046 should be equal
+ok 1047 should be equal
+ok 1048 should be equal
+ok 1049 should be equal
+ok 1050 should be equal
+ok 1051 should be equal
+ok 1052 should be equal
+ok 1053 should be equal
+ok 1054 should be equal
+ok 1055 should be equal
+ok 1056 should be equal
+ok 1057 should be equal
+ok 1058 should be equal
+ok 1059 should be equal
+ok 1060 should be equal
+ok 1061 should be equal
+ok 1062 should be equal
+ok 1063 should be equal
+ok 1064 should be equal
+ok 1065 should be equal
+ok 1066 should be equal
+ok 1067 should be equal
+ok 1068 should be equal
+ok 1069 should be equal
+ok 1070 should be equal
+ok 1071 should be equal
+ok 1072 should be equal
+ok 1073 should be equal
+ok 1074 should be equal
+ok 1075 should be equal
+ok 1076 should be equal
+ok 1077 should be equal
+ok 1078 should be equal
+ok 1079 should be equal
+ok 1080 should be equal
+ok 1081 should be equal
+ok 1082 should be equal
+ok 1083 should be equal
+# cleanup
+# setup
+# permanent bounce
+ok 1084 should be equal
+ok 1085 should be equal
+ok 1086 Original request is to /perm
+ok 1087 Forward to permanent landing URL
+ok 1088 Got permanent landing content
+# preserve HEAD method when using followAllRedirects
+ok 1089 should be equal
+ok 1090 should be equal
+ok 1091 Original request is to /perm
+ok 1092 Forward to permanent landing URL
+ok 1093 Got permanent landing content
+# temporary bounce
+ok 1094 should be equal
+ok 1095 should be equal
+ok 1096 Original request is to /temp
+ok 1097 Forward to temporary landing URL
+ok 1098 Got temporary landing content
+# prevent bouncing
+ok 1099 should be equal
+ok 1100 should be equal
+ok 1101 Original request to /nope
+ok 1102 No chasing the redirect
+ok 1103 Response is the bounce itself
+# should not follow post redirects by default
+ok 1104 should be equal
+ok 1105 should be equal
+ok 1106 Original request is to /temp
+ok 1107 No chasing the redirect when post
+ok 1108 Response is the bounce itself
+# should follow post redirects when followallredirects true
+ok 1109 should be equal
+ok 1110 should be equal
+ok 1111 Original request is to /temp
+ok 1112 Forward to temporary landing URL
+ok 1113 Got temporary landing content
+# should follow post redirects when followallredirects true and followOriginalHttpMethod is enabled
+ok 1114 should be equal
+ok 1115 should be equal
+ok 1116 Original request is to /temp
+ok 1117 Forward to temporary landing URL
+ok 1118 Got temporary landing content
+# should not follow post redirects when followallredirects false
+ok 1119 should be equal
+ok 1120 should be equal
+ok 1121 Original request is to /temp
+ok 1122 No chasing the redirect
+ok 1123 Response is the bounce itself
+# should not follow delete redirects by default
+ok 1124 should be equal
+ok 1125 Status is a redirect
+ok 1126 Original request is to /temp
+ok 1127 No chasing the redirect when delete
+ok 1128 Response is the bounce itself
+# should not follow delete redirects even if followredirect is set to true
+ok 1129 should be equal
+ok 1130 should be equal
+ok 1131 Original request is to /temp
+ok 1132 No chasing the redirect when delete
+ok 1133 Response is the bounce itself
+# should follow delete redirects when followallredirects true
+ok 1134 should be equal
+ok 1135 should be equal
+ok 1136 Original request is to /temp
+ok 1137 Forward to temporary landing URL
+ok 1138 Got temporary landing content
+# should follow 307 delete redirects when followallredirects true
+ok 1139 should be equal
+ok 1140 should be equal
+ok 1141 Original request is to /fwd
+ok 1142 Forward to temporary landing URL
+ok 1143 Got temporary landing content
+# double bounce
+ok 1144 should be equal
+ok 1145 should be equal
+ok 1146 Original request is to /double
+ok 1147 Forward to temporary landing URL
+ok 1148 Forward to landing URL
+ok 1149 Got temporary landing content
+# double bounce terminated after first redirect
+ok 1150 should be equal
+ok 1151 should be equal
+ok 1152 Original request is to /double
+ok 1153 Current location should be http://localhost:64716/double_2
+# triple bounce terminated after second redirect
+ok 1154 should be equal
+ok 1155 should be equal
+ok 1156 Original request is to /treble
+ok 1157 Current location should be http://localhost:64716/treble_3
+# http to https redirect
+ok 1158 should be equal
+ok 1159 should be equal
+ok 1160 Got SSL redirect
+# should have referer header by default when following redirect
+ok 1161 should be equal
+ok 1162 should be equal
+ok 1163 should be equal
+# should not have referer header when removeRefererHeader is true
+ok 1164 should be equal
+ok 1165 should be equal
+ok 1166 should be equal
+# should preserve referer header set in the initial request when removeRefererHeader is true
+ok 1167 should be equal
+ok 1168 should be equal
+ok 1169 should be equal
+# should use same agent class on redirect
+ok 1170 should be equal
+ok 1171 should be equal
+ok 1172 Got temporary landing content
+ok 1173 should be equal
+ok 1174 Reinstantiated the user-specified agent
+ok 1175 Reused agent options
+# cleanup
+# qs rfc3986 qs
+ok 1176 should be equal
+ok 1177 should be equal
+ok 1178 should be equal
+# qs rfc3986 qs + json
+ok 1179 should be equal
+ok 1180 should be equal
+ok 1181 should be equal
+# qs rfc3986 form
+ok 1182 should be equal
+ok 1183 should be equal
+# qs rfc3986 form + json
+ok 1184 should be equal
+ok 1185 should be equal
+# qs rfc3986 qs + form
+ok 1186 should be equal
+ok 1187 should be equal
+ok 1188 should be equal
+# qs rfc3986 qs + form + json
+ok 1189 should be equal
+ok 1190 should be equal
+ok 1191 should be equal
+# qs rfc3986 body + header + json
+ok 1192 should be equal
+ok 1193 should be equal
+# qs rfc3986 body + json
+ok 1194 should be equal
+ok 1195 should be equal
+# qs rfc3986 json object
+ok 1196 should be equal
+ok 1197 should be equal
+# querystring rfc3986 qs
+ok 1198 should be equal
+ok 1199 should be equal
+ok 1200 should be equal
+# querystring rfc3986 qs + json
+ok 1201 should be equal
+ok 1202 should be equal
+ok 1203 should be equal
+# querystring rfc3986 form
+ok 1204 should be equal
+ok 1205 should be equal
+# querystring rfc3986 form + json
+ok 1206 should be equal
+ok 1207 should be equal
+# querystring rfc3986 qs + form
+ok 1208 should be equal
+ok 1209 should be equal
+ok 1210 should be equal
+# querystring rfc3986 qs + form + json
+ok 1211 should be equal
+ok 1212 should be equal
+ok 1213 should be equal
+# querystring rfc3986 body + header + json
+ok 1214 should be equal
+ok 1215 should be equal
+# querystring rfc3986 body + json
+ok 1216 should be equal
+ok 1217 should be equal
+# querystring rfc3986 json object
+ok 1218 should be equal
+ok 1219 should be equal
+# before
+# request body stream
+ok 1220 null
+ok 1221 should be equal
+# after
+# setup
+# should timeout
+ok 1222 should not be equal
+ok 1223 Error ETIMEDOUT or ESOCKETTIMEDOUT
+# should set connect to false
+ok 1224 should not be equal
+ok 1225 Error ETIMEDOUT or ESOCKETTIMEDOUT
+ok 1226 Read Timeout Error should set 'connect' property to false
+# should timeout with events
+ok 1227 should be equal
+ok 1228 should not be equal
+ok 1229 Error ETIMEDOUT or ESOCKETTIMEDOUT
+# should not timeout
+ok 1230 should be equal
+ok 1231 should be equal
+ok 1232 Connect listener should not exist
+# no timeout
+ok 1233 should be equal
+ok 1234 should be equal
+# negative timeout
+# float timeout
+ok 1235 should not be equal
+ok 1236 Error ETIMEDOUT or ESOCKETTIMEDOUT
+# connect timeout
+ok 1237 should not be equal
+ok 1238 should not be equal
+ok 1239 Error ETIMEDOUT or ESOCKETTIMEDOUT
+ok 1240 Connect Timeout Error should set 'connect' property to true
+ok 1241 Connect listener should not exist
+# connect timeout with non-timeout error
+ok 1242 should not be equal
+ok 1243 Connect listener should not exist
+# request timeout with keep-alive connection
+ok 1244 Socket should be new
+ok 1245 should be equal
+ok 1246 Socket should already be connected
+ok 1247 should not be equal
+ok 1248 Error ETIMEDOUT or ESOCKETTIMEDOUT
+ok 1249 Error should have been a request timeout error
+# calling abort clears the timeout
+ok 1250 should be equal
+# cleanup
+# setup
+# non-redirected request is timed
+ok 1251 should be equal
+ok 1252 should be equal
+ok 1253 should be equal
+ok 1254 should be equal
+ok 1255 should be equal
+ok 1256 should be equal
+ok 1257 should be equal
+ok 1258 should be equal
+ok 1259 should be equal
+ok 1260 should be equal
+ok 1261 should be equal
+ok 1262 should be equal
+ok 1263 should be equal
+ok 1264 should be equal
+ok 1265 should be equal
+ok 1266 should be equal
+ok 1267 should be equal
+ok 1268 should be equal
+ok 1269 should be equal
+ok 1270 should be equal
+ok 1271 should be equal
+ok 1272 should be equal
+ok 1273 should be equivalent
+ok 1274 should be equivalent
+# redirected request is timed with rollup
+ok 1275 should be equal
+ok 1276 should be equal
+ok 1277 should be equal
+ok 1278 should be equal
+ok 1279 should be equal
+ok 1280 should be equal
+ok 1281 should be equal
+# keepAlive is timed
+ok 1282 should be equal
+ok 1283 should be equal
+ok 1284 should be equal
+ok 1285 should be equal
+ok 1286 should be equal
+ok 1287 should be equal
+ok 1288 should be equal
+ok 1289 should be equal
+ok 1290 should be equal
+ok 1291 should be equal
+ok 1292 should be equal
+ok 1293 should be equal
+# cleanup
+# setup
+# request().toJSON()
+ok 1294 should be equal
+ok 1295 should be equal
+ok 1296 should be equal
+ok 1297 should be equal
+ok 1298 should be equal
+ok 1299 should be equal
+ok 1300 should be equal
+# cleanup
+# skip test-tunnel on Windows
+ok 1301 test-tunnel relies on Unix-style TLS semantics that are flaky on Windows # SKIP
+# skip unix socket tests on windows
+ok 1302 Unix sockets are not reliably supported in this Windows environment # SKIP
+# test baseurl="http://localhost:64468" uri=""
+ok 1303 should be equal
+ok 1304 should be equal
+ok 1305 should be equal
+# test baseurl="http://localhost:64468/" uri=""
+ok 1306 should be equal
+ok 1307 should be equal
+ok 1308 should be equal
+# test baseurl="http://localhost:64468" uri="/"
+ok 1309 should be equal
+ok 1310 should be equal
+ok 1311 should be equal
+# test baseurl="http://localhost:64468/" uri="/"
+ok 1312 should be equal
+ok 1313 should be equal
+ok 1314 should be equal
+# test baseurl="http://localhost:64468/api" uri=""
+ok 1315 should be equal
+ok 1316 should be equal
+ok 1317 should be equal
+# test baseurl="http://localhost:64468/api/" uri=""
+ok 1318 should be equal
+ok 1319 should be equal
+ok 1320 should be equal
+# test baseurl="http://localhost:64468/api" uri="/"
+ok 1321 should be equal
+ok 1322 should be equal
+ok 1323 should be equal
+# test baseurl="http://localhost:64468/api/" uri="/"
+ok 1324 should be equal
+ok 1325 should be equal
+ok 1326 should be equal
+# test baseurl="http://localhost:64468/api" uri="resource"
+ok 1327 should be equal
+ok 1328 should be equal
+ok 1329 should be equal
+# test baseurl="http://localhost:64468/api/" uri="resource"
+ok 1330 should be equal
+ok 1331 should be equal
+ok 1332 should be equal
+# test baseurl="http://localhost:64468/api" uri="/resource"
+ok 1333 should be equal
+ok 1334 should be equal
+ok 1335 should be equal
+# test baseurl="http://localhost:64468/api/" uri="/resource"
+ok 1336 should be equal
+ok 1337 should be equal
+ok 1338 should be equal
+# test baseurl="http://localhost:64468/api" uri="resource/"
+ok 1339 should be equal
+ok 1340 should be equal
+ok 1341 should be equal
+# test baseurl="http://localhost:64468/api/" uri="resource/"
+ok 1342 should be equal
+ok 1343 should be equal
+ok 1344 should be equal
+# test baseurl="http://localhost:64468/api" uri="/resource/"
+ok 1345 should be equal
+ok 1346 should be equal
+ok 1347 should be equal
+# test baseurl="http://localhost:64468/api/" uri="/resource/"
+ok 1348 should be equal
+ok 1349 should be equal
+ok 1350 should be equal
+# cleanup
+# #125: headers.cookie with no cookie jar
+ok 1351 should be equal
+ok 1352 should be equal
+ok 1353 should be equal
+# #125: headers.cookie + cookie jar
+ok 1354 should be equal
+ok 1355 should be equal
+ok 1356 should be equal
+# #794: ignore cookie parsing and domain errors
+ok 1357 should be equal
+ok 1358 should be equal
+ok 1359 should be equal
+# #784: override content-type when json is used
+ok 1360 should be equal
+ok 1361 should be equal
+ok 1362 should be equal
+# neither headers.cookie nor a cookie jar is specified
+ok 1363 should be equal
+ok 1364 should be equal
+ok 1365 should be equal
+# cleanup
+# basic proxy
+ok 1366 should be equal
+ok 1367 should be equal
+ok 1368 should be equal
+ok 1369 should be equal
+ok 1370 should be equal
+# proxy auth without uri auth
+ok 1371 should be equal
+ok 1372 should be equal
+ok 1373 should be equal
+ok 1374 should be equal
+ok 1375 should be equal
+# HTTP_PROXY environment variable and http: url
+ok 1376 should be equal
+ok 1377 should be equal
+ok 1378 should be equal
+ok 1379 should be equal
+# http_proxy environment variable and http: url
+ok 1380 should be equal
+ok 1381 should be equal
+ok 1382 should be equal
+ok 1383 should be equal
+# HTTPS_PROXY environment variable and http: url
+ok 1384 should be equal
+ok 1385 should be equal
+ok 1386 should be equal
+# https_proxy environment variable and http: url
+ok 1387 should be equal
+ok 1388 should be equal
+ok 1389 should be equal
+# HTTP_PROXY environment variable and https: url
+ok 1390 should be equal
+ok 1391 should be equal
+ok 1392 should be equal
+ok 1393 should be equal
+# http_proxy environment variable and https: url
+ok 1394 should be equal
+ok 1395 should be equal
+ok 1396 should be equal
+ok 1397 should be equal
+# HTTPS_PROXY environment variable and https: url
+ok 1398 should be equal
+ok 1399 should be equal
+ok 1400 should be equal
+ok 1401 should be equal
+# https_proxy environment variable and https: url
+ok 1402 should be equal
+ok 1403 should be equal
+ok 1404 should be equal
+ok 1405 should be equal
+# multiple environment variables and https: url
+ok 1406 should be equal
+ok 1407 should be equal
+ok 1408 should be equal
+ok 1409 should be equal
+# NO_PROXY hostnames are case insensitive
+ok 1410 should be equal
+ok 1411 should be equal
+ok 1412 should be equal
+# NO_PROXY hostnames are case insensitive 2
+ok 1413 should be equal
+ok 1414 should be equal
+ok 1415 should be equal
+# NO_PROXY hostnames are case insensitive 3
+ok 1416 should be equal
+ok 1417 should be equal
+ok 1418 should be equal
+# NO_PROXY ignored with explicit proxy passed
+ok 1419 should be equal
+ok 1420 should be equal
+ok 1421 should be equal
+ok 1422 should be equal
+# NO_PROXY overrides HTTP_PROXY for specific hostname
+ok 1423 should be equal
+ok 1424 should be equal
+ok 1425 should be equal
+# no_proxy overrides HTTP_PROXY for specific hostname
+ok 1426 should be equal
+ok 1427 should be equal
+ok 1428 should be equal
+# NO_PROXY does not override HTTP_PROXY if no hostnames match
+ok 1429 should be equal
+ok 1430 should be equal
+ok 1431 should be equal
+ok 1432 should be equal
+# NO_PROXY overrides HTTP_PROXY if a hostname matches
+ok 1433 should be equal
+ok 1434 should be equal
+ok 1435 should be equal
+# NO_PROXY allows an explicit port
+ok 1436 should be equal
+ok 1437 should be equal
+ok 1438 should be equal
+# NO_PROXY only overrides HTTP_PROXY if the port matches
+ok 1439 should be equal
+ok 1440 should be equal
+ok 1441 should be equal
+ok 1442 should be equal
+# NO_PROXY=* should override HTTP_PROXY for all hosts
+ok 1443 should be equal
+ok 1444 should be equal
+ok 1445 should be equal
+# NO_PROXY should override HTTP_PROXY for all subdomains
+ok 1446 should be equal
+ok 1447 should be equal
+ok 1448 should be equal
+# NO_PROXY should not override HTTP_PROXY for partial domain matches
+ok 1449 should be equal
+ok 1450 should be equal
+ok 1451 should be equal
+ok 1452 should be equal
+# NO_PROXY with port should not override HTTP_PROXY for partial domain matches
+ok 1453 should be equal
+ok 1454 should be equal
+ok 1455 should be equal
+ok 1456 should be equal
+# http_proxy with length of one more than the URL
+ok 1457 should be equal
+ok 1458 should be equal
+ok 1459 should be equal
+ok 1460 should be equal
+# proxy: null should override HTTP_PROXY
+ok 1461 should be equal
+ok 1462 should be equal
+ok 1463 should be equal
+# uri auth without proxy auth
+ok 1464 should be equal
+ok 1465 should be equal
+ok 1466 should be equal
+ok 1467 should be equal
+ok 1468 should be equal
+ok 1469 should be equal
+# cleanup
+# redirect to same host and protocol
+ok 1470 should be equal
+ok 1471 should be equal
+ok 1472 should be equal
+ok 1473 should be equal
+# redirect to same host different protocol
+ok 1474 should be equal
+ok 1475 should be equal
+ok 1476 should be equal
+ok 1477 should be equal
+# redirect to different host same protocol
+ok 1478 should be equal
+ok 1479 should be equal
+ok 1480 should be equal
+ok 1481 should be equal
+# redirect to different host and protocol
+ok 1482 should be equal
+ok 1483 should be equal
+ok 1484 should be equal
+ok 1485 should be equal
+# cleanup

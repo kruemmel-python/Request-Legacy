@@ -1,0 +1,1022 @@
+[
+  {
+    "asset_id": "scripts\\cat-tunnel-tail.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "path",
+      "Path"
+    ]
+  },
+  {
+    "asset_id": "scripts\\cat-tunnel.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "path",
+      "Path"
+    ]
+  },
+  {
+    "asset_id": "scripts\\collapse-blank-lines.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "import",
+      "re"
+    ]
+  },
+  {
+    "asset_id": "scripts\\normalize-tunnel.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "path",
+      "Path"
+    ]
+  },
+  {
+    "asset_id": "scripts\\print-last.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "path",
+      "Path"
+    ]
+  },
+  {
+    "asset_id": "scripts\\print-range.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "def",
+      "print_range"
+    ]
+  },
+  {
+    "asset_id": "scripts\\print-tunnel.py",
+    "field": "content",
+    "meta_tokens": [
+      "from",
+      "pathlib",
+      "import",
+      "Path",
+      "print",
+      "("
+    ]
+  },
+  {
+    "asset_id": "index.js",
+    "field": "content",
+    "meta_tokens": [
+      "Copyright",
+      "2010",
+      "-",
+      "2012",
+      "Mikeal",
+      "Rogers"
+    ]
+  },
+  {
+    "asset_id": "request.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "http"
+    ]
+  },
+  {
+    "asset_id": "lib\\auth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "lib\\cookies.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "tough"
+    ]
+  },
+  {
+    "asset_id": "lib\\deps.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "fs"
+    ]
+  },
+  {
+    "asset_id": "lib\\getProxyFromURI.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "function",
+      "formatHostname"
+    ]
+  },
+  {
+    "asset_id": "lib\\har.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "lib\\hawk.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "crypto"
+    ]
+  },
+  {
+    "asset_id": "lib\\helpers.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "jsonSafeStringify"
+    ]
+  },
+  {
+    "asset_id": "lib\\multipart.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "lib\\oauth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "lib\\querystring.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "lib\\redirect.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "lib\\tunnel.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "deps"
+    ]
+  },
+  {
+    "asset_id": "scripts\\generate-test-cert.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "crypto"
+    ]
+  },
+  {
+    "asset_id": "scripts\\run-tests.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "fs"
+    ]
+  },
+  {
+    "asset_id": "tests\\server.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "fs"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-agent.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-agentOptions.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "test",
+      "-"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-api.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-aws.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-baseUrl.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-basic-auth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-bearer-auth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-body.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-cookies.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-defaults.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-digest-auth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-emptyBody.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-errors.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-event-forwarding.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-follow-all-303.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-follow-all.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-form-data-error.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-form-data.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-form-urlencoded.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-form.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-gzip.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-har.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-hawk.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-headers.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-http-signature.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-httpModule.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-https.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-isUrl.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-json-request.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-localAddress.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-multipart-encoding.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-multipart.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-node-debug.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-oauth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-onelineproxy.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-option-reuse.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-options-convenience-method.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-params.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-piped-redirect.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-pipes.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-pool.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-promise.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-proxy-connect.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-proxy.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-qs.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-redirect-auth.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-redirect-complex.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-redirect.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-rfc3986.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-stream.js",
+    "field": "content",
+    "meta_tokens": [
+      "var",
+      "helpers",
+      "require",
+      "(",
+      "'",
+      "."
+    ]
+  },
+  {
+    "asset_id": "tests\\test-timeout.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-timing.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-toJSON.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-tunnel.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "server"
+    ]
+  },
+  {
+    "asset_id": "tests\\test-unix.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "helpers"
+    ]
+  },
+  {
+    "asset_id": "tests\\browser\\karma.conf.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "istanbul"
+    ]
+  },
+  {
+    "asset_id": "tests\\browser\\start.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "spawn"
+    ]
+  },
+  {
+    "asset_id": "tests\\browser\\test.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "if",
+      "("
+    ]
+  },
+  {
+    "asset_id": "tests\\helpers\\index.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "http"
+    ]
+  },
+  {
+    "asset_id": "tests\\ssl\\ca\\localhost.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "fs"
+    ]
+  },
+  {
+    "asset_id": "tests\\ssl\\ca\\server.js",
+    "field": "content",
+    "meta_tokens": [
+      "'",
+      "use",
+      "strict",
+      "'",
+      "var",
+      "fs"
+    ]
+  }
+]

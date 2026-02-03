@@ -1,0 +1,302 @@
+[
+  {
+    "row": "index.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "36/45"
+  },
+  {
+    "row": "request.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "10/28"
+  },
+  {
+    "row": "lib\\auth.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "lib\\har.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "12/23"
+  },
+  {
+    "row": "lib\\redirect.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "14/23"
+  },
+  {
+    "row": "tests\\test-form-data-error.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-headers.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-http-signature.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-node-debug.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-pipes.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\browser\\karma.conf.js",
+    "severity": "high",
+    "suggested_action": "Zusammenführen",
+    "tokens": "17/27"
+  },
+  {
+    "row": "scripts\\normalize-tunnel.py",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "16/22"
+  },
+  {
+    "row": "lib\\getProxyFromURI.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "24/45"
+  },
+  {
+    "row": "lib\\hawk.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "12/18"
+  },
+  {
+    "row": "lib\\helpers.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "16/36"
+  },
+  {
+    "row": "lib\\multipart.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "lib\\oauth.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "lib\\querystring.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "lib\\tunnel.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "12/23"
+  },
+  {
+    "row": "scripts\\generate-test-cert.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "10/28"
+  },
+  {
+    "row": "scripts\\run-tests.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "9/20"
+  },
+  {
+    "row": "tests\\server.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "10/28"
+  },
+  {
+    "row": "tests\\test-agent.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "12/31"
+  },
+  {
+    "row": "tests\\test-aws.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-baseUrl.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-basic-auth.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-bearer-auth.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-body.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-cookies.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-defaults.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-digest-auth.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-emptyBody.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-errors.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-follow-all.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-form-data.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-form-urlencoded.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-form.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-gzip.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-har.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/27"
+  },
+  {
+    "row": "tests\\test-hawk.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-httpModule.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-https.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "23/31"
+  },
+  {
+    "row": "tests\\test-isUrl.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-json-request.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-localAddress.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-multipart-encoding.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-multipart.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-oauth.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "14/31"
+  },
+  {
+    "row": "tests\\test-onelineproxy.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  },
+  {
+    "row": "tests\\test-option-reuse.js",
+    "severity": "medium",
+    "suggested_action": "Zusammenführen",
+    "tokens": "11/23"
+  }
+]

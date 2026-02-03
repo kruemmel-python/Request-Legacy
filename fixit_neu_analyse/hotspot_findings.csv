@@ -1,0 +1,51 @@
+row,source,value,severity,risk,note,tokens
+index.js,JavaScript,"// Copyright 2010-2012 Mikeal Rogers // //    Licensed under the Apache License, Version 2.0 (the ""License""); //    you may not use this file except in compliance with the License. //    You may obtain a copy of the License at",high,1.0,Near-Duplicate,36/45
+request.js,JavaScript,'use strict'  var http = require('http') var https = require('https') var url = require('url'),high,1.0,Near-Duplicate,10/28
+lib\auth.js,JavaScript,'use strict'  var deps = require('./deps') var caseless = deps.caseless var uuid = deps.uuid,high,1.0,Near-Duplicate,11/23
+lib\har.js,JavaScript,'use strict'  var deps = require('./deps') var fs = deps.fs var qs = deps.querystring,high,1.0,Near-Duplicate,12/23
+lib\redirect.js,JavaScript,'use strict'  var deps = require('./deps') var url = deps.url var isUrl = /^https?:/,high,1.0,Near-Duplicate,14/23
+tests\test-form-data-error.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var server = helpers.server,high,1.0,Near-Duplicate,11/23
+tests\test-headers.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request,high,1.0,Near-Duplicate,11/23
+tests\test-http-signature.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,high,1.0,Near-Duplicate,11/23
+tests\test-node-debug.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var http = helpers.http,high,1.0,Near-Duplicate,11/23
+tests\test-pipes.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var stream = helpers.stream,high,1.0,Near-Duplicate,11/23
+tests\browser\karma.conf.js,JavaScript,'use strict' var istanbul = require('browserify-istanbul')  module.exports = function (config) {   config.set({,high,1.0,Near-Duplicate,17/27
+scripts\normalize-tunnel.py,Python,from pathlib import Path  path = Path('tests/test-tunnel.js') text = path.read_text(),medium,0.98,Near-Duplicate,16/22
+lib\getProxyFromURI.js,JavaScript,"'use strict'  function formatHostname (hostname) {   // canonicalize the hostname, so that 'oogle.com' won't match 'google.com'   return hostname.replace(/^\.*/, '.').toLowerCase()",medium,0.98,Near-Duplicate,24/45
+lib\hawk.js,JavaScript,'use strict'  var crypto = require('crypto')  function randomString (size) {,medium,0.98,Near-Duplicate,12/18
+lib\helpers.js,JavaScript,'use strict'  var jsonSafeStringify = require('json-stringify-safe') var crypto = require('crypto') var Buffer = require('safe-buffer').Buffer,medium,0.98,Near-Duplicate,16/36
+lib\multipart.js,JavaScript,'use strict'  var deps = require('./deps') var uuid = deps.uuid var CombinedStream = deps.CombinedStream,medium,0.98,Near-Duplicate,11/23
+lib\oauth.js,JavaScript,'use strict'  var deps = require('./deps') var url = deps.url var qs = deps.qs,medium,0.98,Near-Duplicate,11/23
+lib\querystring.js,JavaScript,'use strict'  var deps = require('./deps') var qs = deps.qs var querystring = deps.querystring,medium,0.98,Near-Duplicate,11/23
+lib\tunnel.js,JavaScript,'use strict'  var deps = require('./deps') var url = deps.url var tunnel = deps.tunnelAgent,medium,0.98,Near-Duplicate,12/23
+scripts\generate-test-cert.js,JavaScript,'use strict'  var crypto = require('crypto') var fs = require('fs') var path = require('path'),medium,0.98,Near-Duplicate,10/28
+scripts\run-tests.js,JavaScript,'use strict'  var fs = require('fs') var path = require('path'),medium,0.98,Near-Duplicate,9/20
+tests\server.js,JavaScript,'use strict'  var fs = require('fs') var http = require('http') var path = require('path'),medium,0.98,Near-Duplicate,10/28
+tests\test-agent.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var version = require('../lib/helpers').version,medium,0.98,Near-Duplicate,12/31
+tests\test-aws.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var server = helpers.server,medium,0.98,Near-Duplicate,11/23
+tests\test-baseUrl.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-basic-auth.js,JavaScript,'use strict'  var helpers = require('./helpers') var assert = helpers.assert var http = helpers.http,medium,0.98,Near-Duplicate,11/23
+tests\test-bearer-auth.js,JavaScript,'use strict'  var helpers = require('./helpers') var assert = helpers.assert var http = helpers.http,medium,0.98,Near-Duplicate,11/23
+tests\test-body.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-cookies.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-defaults.js,JavaScript,'use strict'  var helpers = require('./helpers') var server = helpers.server var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-digest-auth.js,JavaScript,'use strict'  var helpers = require('./helpers') var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-emptyBody.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var http = helpers.http,medium,0.98,Near-Duplicate,11/23
+tests\test-errors.js,JavaScript,'use strict'  var helpers = require('./helpers') var request = helpers.request var tape = helpers.tape,medium,0.98,Near-Duplicate,11/23
+tests\test-follow-all.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-form-data.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,medium,0.98,Near-Duplicate,11/23
+tests\test-form-urlencoded.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-form.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,medium,0.98,Near-Duplicate,11/23
+tests\test-gzip.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,medium,0.98,Near-Duplicate,11/23
+tests\test-har.js,JavaScript,'use strict' var helpers = require('./helpers')  var path = helpers.path var request = require('..'),medium,0.98,Near-Duplicate,11/27
+tests\test-hawk.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-httpModule.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var https = helpers.https,medium,0.98,Near-Duplicate,11/23
+tests\test-https.js,JavaScript,'use strict' var helpers = require('./helpers')  // a test where we validate the siguature of the keys // otherwise exactly the same as the ssl test,medium,0.98,Near-Duplicate,23/31
+tests\test-isUrl.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-json-request.js,JavaScript,'use strict' var helpers = require('./helpers')  var server = helpers.server var request = helpers.request,medium,0.98,Near-Duplicate,11/23
+tests\test-localAddress.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var tape = helpers.tape,medium,0.98,Near-Duplicate,11/23
+tests\test-multipart-encoding.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,medium,0.98,Near-Duplicate,11/23
+tests\test-multipart.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var path = helpers.path,medium,0.98,Near-Duplicate,11/23
+tests\test-oauth.js,JavaScript,'use strict' var helpers = require('./helpers')  var oauth = require('oauth-sign') var qs = require('querystring'),medium,0.98,Near-Duplicate,14/31
+tests\test-onelineproxy.js,JavaScript,'use strict' var helpers = require('./helpers')  var http = helpers.http var assert = helpers.assert,medium,0.98,Near-Duplicate,11/23
+tests\test-option-reuse.js,JavaScript,'use strict' var helpers = require('./helpers')  var request = helpers.request var http = helpers.http,medium,0.98,Near-Duplicate,11/23
