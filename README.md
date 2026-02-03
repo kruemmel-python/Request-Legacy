@@ -67,7 +67,7 @@ lots of [usage examples](#examples) and several
 - Node-only fork (browser build/test tooling like PhantomJS/Karma is not part of this fork).
 - Legacy protocols (OAuth 1.0, Hawk, HTTP Signature) are supported for compatibility.
 - Community wrappers are legacy and not maintained by this fork.
-- Examples use placeholder endpoints and `http://` for brevity; use `https://` and your own endpoints in production.
+- Examples use placeholder endpoints; use your own endpoints in production. Some proxy/unix socket examples intentionally use `http://`.
 
 [back to top](#table-of-contents)
 
@@ -627,81 +627,66 @@ Note: The `SOCKET` path is assumed to be absolute to the root of the host file s
 
 ## TLS/SSL Protocol
 
-TLS/SSL Protocol options, such as `cert`, `key` and `passphrase`, can be
-set directly in `options` object, in the `agentOptions` property of the `options` object, or even in `https.globalAgent.options`. Keep in mind that, although `agentOptions` allows for a slightly wider range of configurations, the recommended way is via `options` object directly, as using `agentOptions` or `https.globalAgent.options` would not be applied in the same way in proxied environments (as data travels through a TLS connection instead of an http/https agent).
+TLS options such as `ca`, `cert`, `key`, `pfx`, `passphrase`, `ciphers`, `secureProtocol`, `secureOptions`, and `rejectUnauthorized`
+can be set directly on the request `options`. These values are also forwarded to the tunneling agent when proxies are used.
+
+By default, certificate validation is enabled. Set `strictSSL: false` (or `rejectUnauthorized: false`) only if you know what you are doing.
 
 ```js
 const fs = require('fs')
-    , path = require('path')
-    , certFile = path.resolve(__dirname, 'ssl/client.crt')
-    , keyFile = path.resolve(__dirname, 'ssl/client.key')
-    , caFile = path.resolve(__dirname, 'ssl/ca.cert.pem')
-    , request = require('request');
+const path = require('path')
+const request = require('request')
+
+const certFile = path.resolve(__dirname, 'ssl/client.crt')
+const keyFile = path.resolve(__dirname, 'ssl/client.key')
+const caFile = path.resolve(__dirname, 'ssl/ca.cert.pem')
 
 const options = {
-    url: 'https://api.some-server.com/',
-    cert: fs.readFileSync(certFile),
-    key: fs.readFileSync(keyFile),
-    passphrase: 'password',
-    ca: fs.readFileSync(caFile)
-};
+  url: 'https://api.example.com/',
+  cert: fs.readFileSync(certFile),
+  key: fs.readFileSync(keyFile),
+  passphrase: 'password',
+  ca: fs.readFileSync(caFile),
+  strictSSL: true
+}
 
-request.get(options);
+request.get(options)
 ```
 
 ### Using `options.agentOptions`
 
-In the example below, we call an API that requires client side SSL certificate
-(in PEM format) with passphrase protected private key (in PEM format) and disable the SSLv3 protocol:
+Use `agentOptions` for advanced TLS options:
 
 ```js
 const fs = require('fs')
-    , path = require('path')
-    , certFile = path.resolve(__dirname, 'ssl/client.crt')
-    , keyFile = path.resolve(__dirname, 'ssl/client.key')
-    , request = require('request');
+const request = require('request')
 
 const options = {
-    url: 'https://api.some-server.com/',
-    agentOptions: {
-        cert: fs.readFileSync(certFile),
-        key: fs.readFileSync(keyFile),
-        // Or use `pfx` property replacing `cert` and `key` when using private key, certificate and CA certs in PFX or PKCS12 format:
-        // pfx: fs.readFileSync(pfxFilePath),
-        passphrase: 'password',
-        securityOptions: 'SSL_OP_NO_SSLv3'
-    }
+  url: 'https://api.example.com/',
+  agentOptions: {
+    // PFX/PKCS12 bundle:
+    pfx: fs.readFileSync('ssl/client.pfx'),
+    passphrase: 'password',
+    minVersion: 'TLSv1.2'
+  }
 };
 
-request.get(options);
-```
-
-It is able to force using SSLv3 only by specifying `secureProtocol`:
-
-```js
-request.get({
-    url: 'https://api.some-server.com/',
-    agentOptions: {
-        secureProtocol: 'SSLv3_method'
-    }
-});
+request.get(options)
 ```
 
 It is possible to accept other certificates than those signed by generally allowed Certificate Authorities (CAs).
 This can be useful, for example,  when using self-signed certificates.
-To require a different root certificate, you can specify the signing CA by adding the contents of the CA's certificate file to the `agentOptions`.
+To require a different root certificate, you can specify the signing CA by adding the contents of the CA's certificate file.
 The certificate the domain presents must be signed by the root certificate specified:
 
 ```js
 request.get({
-    url: 'https://api.some-server.com/',
-    agentOptions: {
-        ca: fs.readFileSync('ca.cert.pem')
-    }
-});
+  url: 'https://api.example.com/',
+  ca: fs.readFileSync('ca.cert.pem')
+})
 ```
 
-The `ca` value can be an array of certificates, in the event you have a private or internal corporate public-key infrastructure hierarchy. For example, if you want to connect to https://api.some-server.com which presents a key chain consisting of:
+The `ca` value can be an array of certificates, in the event you have a private or internal corporate public-key infrastructure hierarchy. For example, if you want to connect to https://api.example.com which presents a key chain consisting of:
 1. its own public key, which is signed by:
 2. an intermediate "Corp Issuing Server", that is in turn signed by: 
 3. a root CA "Corp Root CA";
@@ -710,14 +695,12 @@ you can configure your request as follows:
 
 ```js
 request.get({
-    url: 'https://api.some-server.com/',
-    agentOptions: {
-        ca: [
-          fs.readFileSync('Corp Issuing Server.pem'),
-          fs.readFileSync('Corp Root CA.pem')
-        ]
-    }
-});
+  url: 'https://api.example.com/',
+  ca: [
+    fs.readFileSync('Corp Issuing Server.pem'),
+    fs.readFileSync('Corp Root CA.pem')
+  ]
+})
 ```
 
 [back to top](#table-of-contents)
