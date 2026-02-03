@@ -39,6 +39,7 @@ request('http://www.google.com', function (error, response, body) {
 
 ## Table of contents
 
+- [Legacy & Compatibility Notes](#legacy--compatibility-notes)
 - [Streaming](#streaming)
 - [Promises & Async/Await](#promises--asyncawait)
 - [Forms](#forms)
@@ -56,6 +57,17 @@ Request also offers [convenience methods](#convenience-methods) like
 lots of [usage examples](#examples) and several
 [debugging techniques](#debugging).
 
+
+---
+
+## Legacy & Compatibility Notes
+
+- Node-only fork (browser build/test tooling like PhantomJS/Karma is not part of this fork).
+- Legacy protocols (OAuth 1.0, Hawk, HTTP Signature) are supported for compatibility.
+- Community wrappers such as `request-promise*` and `request-debug` are legacy and may be unmaintained.
+- Examples use placeholder endpoints and `http://` for brevity; use `https://` and your own endpoints in production.
+
+[back to top](#table-of-contents)
 
 ---
 
@@ -166,7 +178,7 @@ Legacy community wrappers include:
 
 Also, [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original) can be used to convert a regular function that takes a callback to return a promise instead.
 
-Note: The request-promise family is legacy and may be unmaintained. Prefer `util.promisify` for existing code or the built-in `fetch` API for new code (Node >= 18).
+Note: The request-promise family is legacy and may be unmaintained; this fork does not maintain those packages. Prefer `util.promisify` for existing code or the built-in `fetch` API for new code (Node >= 18).
 
 
 [back to top](#table-of-contents)
@@ -326,8 +338,9 @@ authentication header to be sent. If `sendImmediately` is `false`, then
 indicating the required authentication method).
 
 Note that you can also specify basic authentication using the URL itself, as
-detailed in [RFC 1738](http://www.ietf.org/rfc/rfc1738.txt). Simply pass the
-`user:password` before the host with an `@` sign:
+detailed in [RFC 1738](https://www.rfc-editor.org/rfc/rfc1738). This is a legacy
+pattern; avoid embedding credentials in URLs in production (they can leak via logs).
+Simply pass the `user:password` before the host with an `@` sign:
 
 ```js
 const username = 'username',
@@ -390,6 +403,8 @@ request(options, callback);
 
 
 ## OAuth Signing
+
+Note: OAuth 1.0 is legacy and provided for compatibility. Prefer OAuth 2.0 for new integrations.
 
 [OAuth version 1.0](https://tools.ietf.org/html/rfc5849) is supported. The
 default signing algorithm is
@@ -456,14 +471,14 @@ For [RSA-SHA1 signing](https://tools.ietf.org/html/rfc5849#section-3.4.3), make
 the following changes to the OAuth options object:
 * Pass `signature_method : 'RSA-SHA1'`
 * Instead of `consumer_secret`, specify a `private_key` string in
-  [PEM format](http://how2ssl.com/articles/working_with_pem_files/)
+  [PEM format](https://how2ssl.com/articles/working_with_pem_files/)
 
-For [PLAINTEXT signing](http://oauth.net/core/1.0/#anchor22), make
+For [PLAINTEXT signing](https://oauth.net/core/1.0/#anchor22), make
 the following changes to the OAuth options object:
 * Pass `signature_method : 'PLAINTEXT'`
 
 To send OAuth parameters via query params or in a post body as described in The
-[Consumer Request Parameters](http://oauth.net/core/1.0/#consumer_req_param)
+[Consumer Request Parameters](https://oauth.net/core/1.0/#consumer_req_param)
 section of the oauth1 spec:
 * Pass `transport_method : 'query'` or `transport_method : 'body'` in the OAuth
   options object.
@@ -717,6 +732,8 @@ request.get({
 
 ## Support for HAR 1.2
 
+Note: HAR 1.2 is a legacy spec; support is provided for compatibility.
+
 The `options.har` property will override the values: `url`, `method`, `qs`, `headers`, `form`, `formData`, `body`, `json`, as well as construct multipart data and read files from disk when `request.postData.params[].fileName` is present without a matching `value`.
 
 A validation step will check if the HAR Request format matches the latest spec (v1.2) and will skip parsing if not matching.
@@ -824,7 +841,7 @@ Redirect security behavior:
 
 ---
 
-- `encoding` - encoding to be used on `setEncoding` of response data. If `null`, the `body` is returned as a `Buffer`. Anything else **(including the default value of `undefined`)** will be passed as the [encoding](http://nodejs.org/api/buffer.html#buffer_buffer) parameter to `toString()` (meaning this is effectively `utf8` by default). (**Note:** if you expect binary data, you should set `encoding: null`.)
+- `encoding` - encoding to be used on `setEncoding` of response data. If `null`, the `body` is returned as a `Buffer`. Anything else **(including the default value of `undefined`)** will be passed as the [encoding](https://nodejs.org/api/buffer.html#buffer_buffer) parameter to `toString()` (meaning this is effectively `utf8` by default). (**Note:** if you expect binary data, you should set `encoding: null`.)
 - `gzip` - if `true`, add an `Accept-Encoding` header to request compressed content encodings from the server (if not already present) and decode supported content encodings in the response. **Note:** Automatic decoding of the response content is performed on the body data returned through `request` (both through the `request` stream and passed to the callback function) but is not performed on the `response` stream (available from the `response` event) which is the unmodified `http.IncomingMessage` object which may contain compressed data. See example below.
 - `jar` - if `true`, remember cookies for future use (or define your custom cookie jar; see examples section)
 
@@ -884,12 +901,12 @@ Redirect security behavior:
     - `download`: Duration of HTTP download (`timings.end` - `timings.response`)
     - `total`: Duration entire HTTP round-trip (`timings.end`)
 
-- `har` - a [HAR 1.2 Request Object](http://www.softwareishard.com/blog/har-12-spec/#request), will be processed from HAR format into options overwriting matching values *(see the [HAR 1.2 section](#support-for-har-12) for details)*
+- `har` - a [HAR 1.2 Request Object](https://www.softwareishard.com/blog/har-12-spec/#request), will be processed from HAR format into options overwriting matching values *(see the [HAR 1.2 section](#support-for-har-12) for details)*
 - `callback` - alternatively pass the request's callback in the options object
 
 The callback argument gets 3 arguments:
 
-1. An `error` when applicable (usually from [`http.ClientRequest`](http://nodejs.org/api/http.html#http_class_http_clientrequest) object)
+1. An `error` when applicable (usually from [`http.ClientRequest`](https://nodejs.org/api/http.html#http_class_http_clientrequest) object)
 2. An [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage) object (Response object)
 3. The third is the `response` body (`String` or `Buffer`, or JSON object if the `json` option is supplied)
 
@@ -1018,9 +1035,11 @@ request.get('http://10.255.255.1', {timeout: 1500}, function(err) {
 });
 ```
 
-[connect]: http://linux.die.net/man/2/connect
+[connect]: https://man7.org/linux/man-pages/man2/connect.2.html
 
 ## Examples:
+
+Note: Example endpoints are historical/illustrative; replace with your own endpoints.
 
 ```js
   const request = require('request')
