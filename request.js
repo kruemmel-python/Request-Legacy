@@ -1,3 +1,4 @@
+process.env.NODE_NO_WARNINGS = '1';
 'use strict'
 
 var http = require('http')
@@ -803,14 +804,23 @@ Request.prototype.start = function () {
         })
       }
 
-      if (self.httpModule === https) {
-        socket.once('secureConnect', function () {
-          if (!self.timingPhases) {
-            self.timingPhases = {}
-          }
-          self.timingPhases.secureConnect = true
-        })
-      }
+	if (self.httpModule === https) {
+			var onSecureConnect = function () {
+			  if (!self.timingPhases) {
+				self.timingPhases = {}
+			  }
+			  // Wir erfassen den Zeitpunkt relativ zum Start des aktuellen Requests
+			  self.timings.secureConnect = now() - self.startTimeNow
+			  self.timingPhases.secureConnect = true
+			}
+
+			// HEILUNG: Falls der Socket bereits verschlüsselt ist (Reuse oder Fast-Handshake)
+			if (socket.authorized || socket.encrypted) {
+			  onSecureConnect()
+			} else {
+			  socket.once('secureConnect', onSecureConnect)
+			}
+		  }
     }
 
     var setReqTimeout = function () {

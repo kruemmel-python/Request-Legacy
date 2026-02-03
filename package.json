@@ -50,7 +50,7 @@
   },
   "scripts": {
     "test": "npm run lint && npm run test-ci && npm run test-browser",
-    "test-ci": "node --openssl-config=scripts/openssl-legacy.conf scripts/run-tests.js",
+	"test-ci": "node --no-deprecation --openssl-config=scripts/openssl-legacy.conf scripts/run-tests.js",
     "test-cov": "nyc --reporter=lcov tape tests/test-*.js",
     "test-browser": "node tests/browser/start.js",
     "lint": "standard"
