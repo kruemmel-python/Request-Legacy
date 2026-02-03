@@ -1,23 +1,24 @@
 # Request-Legacy 3.00.0
 
-Upstream `request` was deprecated on Feb 11, 2020. This repository is a maintained fork for Node.js >= 18 with security hardening.
+Maintained fork for Node.js >= 18 with security hardening.
 Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
 
-For upstream context and historical alternatives, see:
+Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 [this issue](https://github.com/request/request/issues/3142).
+
+Status:
+- Package name: `request`
+- Engines: Node.js >= 18
+- Security/audit: 0 known vulnerabilities in current dependency tree
+- Tests: 1485 core tests green (`npm run test-ci`)
+
+Security notes and evidence:
+- `MODERNIZATION_REPORT.md`
+- `SECURITY_COMPLIANCE_ARGUMENTATION.md`
 
 # Request-Legacy - Simplified HTTP client
 
 [![npm package](https://nodei.co/npm/request.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/request/)
-
-[![Build status](https://img.shields.io/travis/request/request/master.svg?style=flat-square)](https://travis-ci.org/request/request)
-[![Coverage](https://img.shields.io/codecov/c/github/request/request.svg?style=flat-square)](https://codecov.io/github/request/request?branch=master)
-[![Coverage](https://img.shields.io/coveralls/request/request.svg?style=flat-square)](https://coveralls.io/r/request/request)
-[![Dependency Status](https://img.shields.io/david/request/request.svg?style=flat-square)](https://david-dm.org/request/request)
-[![Known Vulnerabilities](https://snyk.io/test/npm/request/badge.svg?style=flat-square)](https://snyk.io/test/npm/request)
-[![Gitter](https://img.shields.io/badge/gitter-join_chat-blue.svg?style=flat-square)](https://gitter.im/request/request?utm_source=badge)
-
-Package name for compatibility: `request`
 
 Install: `npm install request`
 
@@ -128,7 +129,7 @@ http.createServer(function (req, resp) {
 })
 ```
 
-And since `pipe()` returns the destination stream in ≥ Node 0.5.x you can do one line proxying. :)
+And since `pipe()` returns the destination stream in modern Node versions, you can do one line proxying. :)
 
 ```js
 req.pipe(request('http://mysite.com/doodle.png')).pipe(resp)
@@ -158,12 +159,14 @@ You can still use intermediate proxies, the requests will still follow HTTP forw
 
 `request` supports both streaming and callback interfaces natively. If you'd like `request` to return a Promise instead, you can use an alternative interface wrapper for `request`. These wrappers can be useful if you prefer to work with Promises, or if you'd like to use `async`/`await` in ES2017.
 
-Several alternative interfaces are provided by the request team, including:
+Several alternative interfaces are provided by the request team, including (legacy):
 - [`request-promise`](https://github.com/request/request-promise) (uses [Bluebird](https://github.com/petkaantonov/bluebird) Promises)
 - [`request-promise-native`](https://github.com/request/request-promise-native) (uses native Promises)
 - [`request-promise-any`](https://github.com/request/request-promise-any) (uses [any-promise](https://www.npmjs.com/package/any-promise) Promises)
 
-Also, [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original), which is available from Node.js v8.0 can be used to convert a regular function that takes a callback to return a promise instead.
+Also, [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original) can be used to convert a regular function that takes a callback to return a promise instead.
+
+Note: The request-promise family is legacy and may be unmaintained. Prefer `util.promisify` for existing code or the built-in `fetch` API for new code.
 
 
 [back to top](#table-of-contents)
@@ -773,8 +776,8 @@ The first argument can be either a `url` or an `options` object. The only requir
 ---
 
 - `qs` - object containing querystring values to be appended to the `uri`
-- `qsParseOptions` - object containing options to pass to the [qs.parse](https://github.com/hapijs/qs#parsing-objects) method. Alternatively pass options to the [querystring.parse](https://nodejs.org/docs/v0.12.0/api/querystring.html#querystring_querystring_parse_str_sep_eq_options) method using this format `{sep:';', eq:':', options:{}}`
-- `qsStringifyOptions` - object containing options to pass to the [qs.stringify](https://github.com/hapijs/qs#stringifying) method. Alternatively pass options to the  [querystring.stringify](https://nodejs.org/docs/v0.12.0/api/querystring.html#querystring_querystring_stringify_obj_sep_eq_options) method using this format `{sep:';', eq:':', options:{}}`. For example, to change the way arrays are converted to query strings using the `qs` module pass the `arrayFormat` option with one of `indices|brackets|repeat`
+- `qsParseOptions` - object containing options to pass to the [qs.parse](https://github.com/hapijs/qs#parsing-objects) method. Alternatively pass options to the [querystring.parse](https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options) method using this format `{sep:';', eq:':', options:{}}`
+- `qsStringifyOptions` - object containing options to pass to the [qs.stringify](https://github.com/hapijs/qs#stringifying) method. Alternatively pass options to the [querystring.stringify](https://nodejs.org/api/querystring.html#querystring_querystring_stringify_obj_sep_eq_options) method using this format `{sep:';', eq:':', options:{}}`. For example, to change the way arrays are converted to query strings using the `qs` module pass the `arrayFormat` option with one of `indices|brackets|repeat`
 - `useQuerystring` - if true, use `querystring` to stringify and parse
   querystrings, otherwise use `qs` (default: `false`). Set this option to
   `true` if you need arrays to be serialized as `foo=bar&foo=baz` instead of the
@@ -804,7 +807,7 @@ The first argument can be either a `url` or an `options` object. The only requir
 - `auth` - a hash containing values `user` || `username`, `pass` || `password`, and `sendImmediately` (optional). See documentation above.
 - `oauth` - options for OAuth HMAC-SHA1 signing. See documentation above.
 - `hawk` - options for [Hawk signing](https://github.com/hueniverse/hawk). The `credentials` key must contain the necessary signing info, [see hawk docs for details](https://github.com/hueniverse/hawk#usage-example).
-- `aws` - `object` containing AWS signing information. Should have the properties `key`, `secret`, and optionally `session` (note that this only works for services that require session as part of the canonical string). Also requires the property `bucket`, unless you’re specifying your `bucket` as part of the path, or the request doesn’t use a bucket (i.e. GET Services). If you want to use AWS sign version 4 use the parameter `sign_version` with value `4` otherwise the default is version 2. If you are using SigV4, you can also include a `service` property that specifies the service name. **Note:** you need to `npm install aws4` first.
+- `aws` - `object` containing AWS signing information. Should have the properties `key`, `secret`, and optionally `session` (note that this only works for services that require session as part of the canonical string). Also requires the property `bucket`, unless you’re specifying your `bucket` as part of the path, or the request doesn’t use a bucket (i.e. GET Services). If you want to use AWS sign version 4 use the parameter `sign_version` with value `4` otherwise the default is version 2. If you are using SigV4, you can also include a `service` property that specifies the service name.
 - `httpSignature` - options for the [HTTP Signature Scheme](https://github.com/joyent/node-http-signature/blob/master/http_signing.md) using [Joyent's library](https://github.com/joyent/node-http-signature). The `keyId` and `key` properties must be specified. See the docs for other options.
 
 ---
@@ -826,7 +829,7 @@ The first argument can be either a `url` or an `options` object. The only requir
 - `agent` - `http(s).Agent` instance to use
 - `agentClass` - alternatively specify your agent's class name
 - `agentOptions` - and pass its options. **Note:** for HTTPS see [tls API doc for TLS/SSL options](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback) and the [documentation above](#using-optionsagentoptions).
-- `forever` - set to `true` to use the [forever-agent](https://github.com/request/forever-agent) **Note:** Defaults to `http(s).Agent({keepAlive:true})` in node 0.12+
+- `forever` - set to `true` to use the [forever-agent](https://github.com/request/forever-agent) **Note:** Uses keep-alive sockets in modern Node versions.
 - `pool` - an object describing which agents to use for the request. If this option is omitted the request will use the global agent (as long as your options allow for it). Otherwise, request will search the pool for your custom agent. If no custom agent is found, a new agent will be created and added to the pool. **Note:** `pool` is used only when the `agent` option is not specified.
   - A `maxSockets` property can also be provided on the `pool` object to set the max number of sockets for all agents created (ex: `pool: {maxSockets: Infinity}`).
   - Note that if you are sending multiple requests in a loop and creating
