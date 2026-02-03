@@ -1,6 +1,7 @@
 # Request-Legacy 3.00.0
 <img width="2752" height="1536" alt="unnamed (1)" src="https://github.com/user-attachments/assets/b1ed2ae0-ab53-4c95-ba03-571d35a24941" />
 
+
 Maintained fork for Node.js >= 18 with security hardening.
 Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
 
@@ -26,14 +27,14 @@ Install: `npm install request`
 
 ## Super simple to use
 
-Request is designed to be the simplest way possible to make http calls. It supports HTTPS and follows redirects by default.
+Request is designed to be the simplest way possible to make HTTP(S) calls. It supports HTTPS and follows redirects by default.
 
 ```js
 const request = require('request');
-request('http://www.google.com', function (error, response, body) {
+request('https://example.com', function (error, response, body) {
   console.error('error:', error); // Print the error if one occurred
   console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
+  console.log('body:', body); // Print the response body.
 });
 ```
 
@@ -65,7 +66,7 @@ lots of [usage examples](#examples) and several
 
 - Node-only fork (browser build/test tooling like PhantomJS/Karma is not part of this fork).
 - Legacy protocols (OAuth 1.0, Hawk, HTTP Signature) are supported for compatibility.
-- Community wrappers such as `request-promise*` and `request-debug` are legacy and may be unmaintained.
+- Community wrappers are legacy and not maintained by this fork.
 - Examples use placeholder endpoints and `http://` for brevity; use `https://` and your own endpoints in production.
 
 [back to top](#table-of-contents)
@@ -78,38 +79,38 @@ lots of [usage examples](#examples) and several
 You can stream any response to a file stream.
 
 ```js
-request('http://google.com/doodle.png').pipe(fs.createWriteStream('doodle.png'))
+request('https://example.com/doodle.png').pipe(fs.createWriteStream('doodle.png'))
 ```
 
 You can also stream a file to a PUT or POST request. This method will also check the file extension against a mapping of file extensions to content-types (in this case `application/json`) and use the proper `content-type` in the PUT request (if the headers don’t already provide one).
 
 ```js
-fs.createReadStream('file.json').pipe(request.put('http://mysite.com/obj.json'))
+fs.createReadStream('file.json').pipe(request.put('https://api.example.com/obj.json'))
 ```
 
 Request can also `pipe` to itself. When doing so, `content-type` and `content-length` are preserved in the PUT headers.
 
 ```js
-request.get('http://google.com/img.png').pipe(request.put('http://mysite.com/img.png'))
+request.get('https://example.com/img.png').pipe(request.put('https://api.example.com/img.png'))
 ```
 
 Request emits a "response" event when a response is received. The `response` argument will be an instance of [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage).
 
 ```js
 request
-  .get('http://google.com/img.png')
+  .get('https://example.com/img.png')
   .on('response', function(response) {
     console.log(response.statusCode) // 200
     console.log(response.headers['content-type']) // 'image/png'
   })
-  .pipe(request.put('http://mysite.com/img.png'))
+  .pipe(request.put('https://api.example.com/img.png'))
 ```
 
 To easily handle errors when streaming requests, listen to the `error` event before piping:
 
 ```js
 request
-  .get('http://mysite.com/doodle.png')
+  .get('https://api.example.com/doodle.png')
   .on('error', function(err) {
     console.error(err)
   })
@@ -122,9 +123,9 @@ Now let’s get fancy.
 http.createServer(function (req, resp) {
   if (req.url === '/doodle.png') {
     if (req.method === 'PUT') {
-      req.pipe(request.put('http://mysite.com/doodle.png'))
+      req.pipe(request.put('https://api.example.com/doodle.png'))
     } else if (req.method === 'GET' || req.method === 'HEAD') {
-      request.get('http://mysite.com/doodle.png').pipe(resp)
+      request.get('https://api.example.com/doodle.png').pipe(resp)
     }
   }
 })
@@ -135,7 +136,7 @@ You can also `pipe()` from `http.ServerRequest` instances, as well as to `http.S
 ```js
 http.createServer(function (req, resp) {
   if (req.url === '/doodle.png') {
-    const x = request('http://mysite.com/doodle.png')
+    const x = request('https://api.example.com/doodle.png')
     req.pipe(x)
     x.pipe(resp)
   }
@@ -145,17 +146,17 @@ http.createServer(function (req, resp) {
 And since `pipe()` returns the destination stream in modern Node versions, you can do one line proxying. :)
 
 ```js
-req.pipe(request('http://mysite.com/doodle.png')).pipe(resp)
+req.pipe(request('https://api.example.com/doodle.png')).pipe(resp)
 ```
 
 Also, none of this new functionality conflicts with requests previous features, it just expands them.
 
 ```js
-const r = request.defaults({'proxy':'http://localproxy.com'})
+const r = request.defaults({'proxy':'http://proxy.example.com'})
 
 http.createServer(function (req, resp) {
   if (req.url === '/doodle.png') {
-    r.get('http://google.com/doodle.png').pipe(resp)
+    r.get('https://example.com/doodle.png').pipe(resp)
   }
 })
 ```
@@ -170,16 +171,9 @@ You can still use intermediate proxies, the requests will still follow HTTP forw
 
 ## Promises & Async/Await
 
-`request` supports both streaming and callback interfaces natively. If you'd like `request` to return a Promise instead, you can use an alternative interface wrapper for `request`. These wrappers can be useful if you prefer to work with Promises, or if you'd like to use `async`/`await` in ES2017.
+`request` supports both streaming and callback interfaces natively.
 
-Legacy community wrappers include:
-- [`request-promise`](https://github.com/request/request-promise) (uses [Bluebird](https://github.com/petkaantonov/bluebird) Promises)
-- [`request-promise-native`](https://github.com/request/request-promise-native) (uses native Promises)
-- [`request-promise-any`](https://github.com/request/request-promise-any) (uses [any-promise](https://www.npmjs.com/package/any-promise) Promises)
-
-Also, [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original) can be used to convert a regular function that takes a callback to return a promise instead.
-
-Note: The request-promise family is legacy and may be unmaintained; this fork does not maintain those packages. Prefer `util.promisify` for existing code or the built-in `fetch` API for new code (Node >= 18).
+For Promises in Node.js >= 18, prefer `util.promisify` for existing code or the built-in `fetch` API for new code.
 
 
 [back to top](#table-of-contents)
@@ -198,11 +192,11 @@ Note: The request-promise family is legacy and may be unmaintained; this fork do
 URL-encoded forms are simple.
 
 ```js
-request.post('http://service.com/upload', {form:{key:'value'}})
+request.post('https://api.example.com/upload', {form:{key:'value'}})
 // or
-request.post('http://service.com/upload').form({key:'value'})
+request.post('https://api.example.com/upload').form({key:'value'})
 // or
-request.post({url:'http://service.com/upload', form: {key:'value'}}, function(err,httpResponse,body){ /* ... */ })
+request.post({url:'https://api.example.com/upload', form: {key:'value'}}, function(err,httpResponse,body){ /* ... */ })
 ```
 
 
@@ -235,7 +229,7 @@ const formData = {
     }
   }
 };
-request.post({url:'http://service.com/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+request.post({url:'https://api.example.com/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
   if (err) {
     return console.error('upload failed:', err);
   }
@@ -247,7 +241,7 @@ For advanced cases, you can access the form-data object itself via `r.form()`. T
 
 ```js
 // NOTE: Advanced use-case, for normal use see 'formData' usage above
-const r = request.post('http://service.com/upload', function optionalCallback(err, httpResponse, body) {...})
+const r = request.post('https://api.example.com/upload', function optionalCallback(err, httpResponse, body) {...})
 const form = r.form();
 form.append('my_field', 'my_value');
 form.append('my_buffer', Buffer.from([1, 2, 3]));
@@ -265,7 +259,7 @@ Some variations in different HTTP implementations require a newline/CRLF before,
     method: 'PUT',
     preambleCRLF: true,
     postambleCRLF: true,
-    uri: 'http://service.com/upload',
+    uri: 'https://api.example.com/upload',
     multipart: [
       {
         'content-type': 'application/json',
@@ -303,9 +297,9 @@ Some variations in different HTTP implementations require a newline/CRLF before,
 ## HTTP Authentication
 
 ```js
-request.get('http://some.server.com/').auth('username', 'password', false);
+request.get('https://api.example.com/').auth('username', 'password', false);
 // or
-request.get('http://some.server.com/', {
+request.get('https://api.example.com/', {
   'auth': {
     'user': 'username',
     'pass': 'password',
@@ -313,9 +307,9 @@ request.get('http://some.server.com/', {
   }
 });
 // or
-request.get('http://some.server.com/').auth(null, null, true, 'bearerToken');
+request.get('https://api.example.com/').auth(null, null, true, 'bearerToken');
 // or
-request.get('http://some.server.com/', {
+request.get('https://api.example.com/', {
   'auth': {
     'bearer': 'bearerToken'
   }
@@ -346,7 +340,7 @@ Simply pass the `user:password` before the host with an `@` sign:
 ```js
 const username = 'username',
     password = 'password',
-    url = 'http://' + username + ':' + password + '@some.server.com';
+    url = 'https://' + username + ':' + password + '@api.example.com';
 
 request({url}, function (error, response, body) {
    // Do more stuff with 'body' here
@@ -416,7 +410,7 @@ default signing algorithm is
 // step 1
 const qs = require('querystring')
   , oauth =
-    { callback: 'http://mysite.com/callback/'
+    { callback: 'https://api.example.com/callback/'
     , consumer_key: CONSUMER_KEY
     , consumer_secret: CONSUMER_SECRET
     }
@@ -485,7 +479,7 @@ section of the oauth1 spec:
   options object.
 * `transport_method` defaults to `'header'`
 
-To use [Request Body Hash](https://oauth.googlecode.com/svn/spec/ext/body_hash/1.0/oauth-bodyhash.html) you can either
+To use Request Body Hash (legacy extension) you can either
 * Manually generate the body hash and pass it as a string `body_hash: '...'`
 * Automatically generate the body hash by passing `body_hash: true`
 
@@ -507,12 +501,12 @@ then use the supplied connection to connect to the endpoint.
 That is, first it will make a request like:
 
 ```
-HTTP/1.1 CONNECT endpoint-server.com:80
-Host: proxy-server.com
+HTTP/1.1 CONNECT origin.example.com:80
+Host: proxy.example.com
 User-Agent: whatever user agent you specify
 ```
 
-and then the proxy server make a TCP connection to `endpoint-server`
+and then the proxy server make a TCP connection to `origin.example.com`
 on port `80`, and return a response that looks like:
 
 ```
@@ -520,7 +514,7 @@ HTTP/1.1 200 OK
 ```
 
 At this point, the connection is left open, and the client is
-communicating directly with the `endpoint-server.com` machine.
+communicating directly with the `origin.example.com` machine.
 
 See [the wikipedia page on HTTP Tunneling](https://en.wikipedia.org/wiki/HTTP_tunnel)
 for more information.
@@ -533,8 +527,8 @@ the endpoint.
 For example, it will make a single request that looks like:
 
 ```
-HTTP/1.1 GET http://endpoint-server.com/some-url
-Host: proxy-server.com
+HTTP/1.1 GET http://origin.example.com/some-url
+Host: proxy.example.com
 Other-Headers: all go here
 
 request body or whatever
@@ -603,9 +597,9 @@ When `HTTP_PROXY` / `http_proxy` are set, they will be used to proxy non-SSL req
 
 Here's some examples of valid `no_proxy` values:
 
- * `google.com` - don't proxy HTTP/HTTPS requests to Google.
- * `google.com:443` - don't proxy HTTPS requests to Google, but *do* proxy HTTP requests to Google.
- * `google.com:443, yahoo.com:80` - don't proxy HTTPS requests to Google, and don't proxy HTTP requests to Yahoo!
+* `example.com` - don't proxy HTTP/HTTPS requests to example.com.
+* `example.com:443` - don't proxy HTTPS requests to example.com, but *do* proxy HTTP requests to example.com.
+* `example.com:443, example.org:80` - don't proxy HTTPS requests to example.com, and don't proxy HTTP requests to example.org.
  * `*` - ignore `https_proxy`/`http_proxy` environment variables altogether.
 
 [back to top](#table-of-contents)
@@ -744,11 +738,11 @@ A validation step will check if the HAR Request format matches the latest spec (
   request({
     // will be ignored
     method: 'GET',
-    uri: 'http://www.google.com',
+    uri: 'https://example.com',
 
     // HTTP Archive Request Object
     har: {
-      url: 'http://www.mockbin.com/har',
+      url: 'https://example.com/har',
       method: 'POST',
       headers: [
         {
@@ -772,7 +766,7 @@ A validation step will check if the HAR Request format matches the latest spec (
     }
   })
 
-  // a POST request will be sent to http://www.mockbin.com
+  // a POST request will be sent to https://example.com
   // with body an application/x-www-form-urlencoded body:
   // foo=bar&hello=world
 ```
@@ -863,7 +857,7 @@ Redirect security behavior:
   - **Read timeout**: Time to wait for a server to send response headers (and start the response body) before aborting the request.
   - **Connection timeout**: Sets the socket to timeout after `timeout` milliseconds of inactivity. Note that increasing the timeout beyond the OS-wide TCP connection timeout will not have any effect ([the default in Linux can be anywhere from 20-120 seconds][linux-timeout])
 
-[linux-timeout]: http://www.sekuda.com/overriding_the_default_linux_kernel_20_second_tcp_socket_connect_timeout
+[linux-timeout]: https://www.sekuda.com/overriding_the_default_linux_kernel_20_second_tcp_socket_connect_timeout
 
 ---
 
@@ -978,7 +972,7 @@ request.jar()
 Function that returns the specified response header field using a [case-insensitive match](https://tools.ietf.org/html/rfc7230#section-3.2)
 
 ```js
-request('http://www.google.com', function (error, response, body) {
+request('https://example.com', function (error, response, body) {
   // print the Content-Type header even if the server returned it as 'content-type' (lowercase)
   console.log('Content-Type is:', response.caseless.get('Content-Type')); 
 });
@@ -992,16 +986,13 @@ request('http://www.google.com', function (error, response, body) {
 
 ## Debugging
 
-There are at least three ways to debug the operation of `request`:
+There are two ways to debug the operation of `request`:
 
 1. Launch the node process like `NODE_DEBUG=request node script.js`
    (`lib,request,otherlib` works too).
 
 2. Set `require('request').debug = true` at any time (this does the same thing
    as #1).
-
-3. Use the [request-debug module](https://github.com/request/request-debug) (legacy; verify maintenance status) to
-   view request and response headers and bodies.
 
 [back to top](#table-of-contents)
 
@@ -1048,7 +1039,7 @@ Note: Example endpoints are historical/illustrative; replace with your own endpo
     ;
   request(
     { method: 'PUT'
-    , uri: 'http://mikeal.iriscouch.com/testjs/' + rand
+    , uri: 'https://example.com/testjs/' + rand
     , multipart:
       [ { 'content-type': 'application/json'
         ,  body: JSON.stringify({foo: 'bar', _attachments: {'message.txt': {follows: true, length: 18, 'content_type': 'text/plain' }}})
@@ -1058,7 +1049,7 @@ Note: Example endpoints are historical/illustrative; replace with your own endpo
     }
   , function (error, response, body) {
       if(response.statusCode == 201){
-        console.log('document saved as: http://mikeal.iriscouch.com/testjs/'+ rand)
+        console.log('document saved as: https://example.com/testjs/'+ rand)
       } else {
         console.log('error: '+ response.statusCode)
         console.log(body)
@@ -1077,7 +1068,7 @@ the server sent a compressed response.
   const request = require('request')
   request(
     { method: 'GET'
-    , uri: 'http://www.google.com'
+    , uri: 'https://example.com'
     , gzip: true
     }
   , function (error, response, body) {
@@ -1103,8 +1094,8 @@ Cookies are disabled by default (else, they would be used in subsequent requests
 
 ```js
 const request = request.defaults({jar: true})
-request('http://www.google.com', function () {
-  request('http://images.google.com')
+request('https://example.com', function () {
+  request('https://static.example.com')
 })
 ```
 
@@ -1113,8 +1104,8 @@ To use a custom cookie jar (instead of `request`’s global cookie jar), set `ja
 ```js
 const j = request.jar()
 const request = request.defaults({jar:j})
-request('http://www.google.com', function () {
-  request('http://images.google.com')
+request('https://example.com', function () {
+  request('https://static.example.com')
 })
 ```
 
@@ -1123,10 +1114,10 @@ OR
 ```js
 const j = request.jar();
 const cookie = request.cookie('key1=value1');
-const url = 'http://www.google.com';
+const url = 'https://example.com';
 j.setCookie(cookie, url);
 request({url: url, jar: j}, function () {
-  request('http://images.google.com')
+  request('https://static.example.com')
 })
 ```
 
@@ -1140,8 +1131,8 @@ const FileCookieStore = require('tough-cookie-filestore');
 // NOTE - currently the 'cookies.json' file must already exist!
 const j = request.jar(new FileCookieStore('cookies.json'));
 request = request.defaults({ jar : j })
-request('http://www.google.com', function() {
-  request('http://images.google.com')
+request('https://example.com', function() {
+  request('https://static.example.com')
 })
 ```
 
@@ -1155,10 +1146,10 @@ To inspect your cookie jar after a request:
 
 ```js
 const j = request.jar()
-request({url: 'http://www.google.com', jar: j}, function () {
+request({url: 'https://example.com', jar: j}, function () {
   const cookie_string = j.getCookieString(url); // "key1=value1; key2=value2; ..."
   const cookies = j.getCookies(url);
-  // [{key: 'key1', value: 'value1', domain: "www.google.com", ...}, ...]
+  // [{key: 'key1', value: 'value1', domain: "example.com", ...}, ...]
 })
 ```
 
