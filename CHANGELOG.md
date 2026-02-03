@@ -1,5 +1,11 @@
 ## Change Log
 
+### v3.0.0 (2026/02/03)
+- breaking: require Node.js >= 18
+- security: update core dependencies (form-data 4.x, tough-cookie 4.1.3, qs 6.11, mime-types 2.1.35)
+- security: redirect hardening (308 preserves method/body, E_TOO_MANY_REDIRECTS metadata, cross-host header stripping)
+- maintenance: dev tooling cleanup and ESLint 9 flat config
+
 ### v2.88.0 (2018/08/10)
 - [#2996](https://github.com/request/request/pull/2996) fix(uuid): import versioned uuid (@kwonoj)
 - [#2994](https://github.com/request/request/pull/2994) Update to oauth-sign 0.9.0 (@dlecocq)

@@ -1,11 +1,11 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var request = helpers.request
-var tape = helpers.tape
+const http = helpers.http
+const request = helpers.request
+const tape = helpers.tape
 
-var server = http.createServer(function (req, res) {
+const server = http.createServer(function (req, res) {
   if (req.method === 'POST') {
     res.setHeader('location', req.url)
     res.statusCode = 303
@@ -23,7 +23,7 @@ tape('setup', function (t) {
 })
 
 tape('followAllRedirects with 303', function (t) {
-  var redirects = 0
+  let redirects = 0
 
   request.post({
     url: server.url + '/foo',

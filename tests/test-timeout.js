@@ -1,5 +1,5 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
 function checkErrCode (t, err) {
   t.notEqual(err, null)
@@ -8,10 +8,10 @@ function checkErrCode (t, err) {
 }
 
 function checkEventHandlers (t, socket) {
-  var connectListeners = socket.listeners('connect')
-  var found = false
-  for (var i = 0; i < connectListeners.length; ++i) {
-    var fn = connectListeners[i]
+  const connectListeners = socket.listeners('connect')
+  let found = false
+  for (let i = 0; i < connectListeners.length; ++i) {
+    const fn = connectListeners[i]
     if (typeof fn === 'function' && fn.name === 'onReqSockConnect') {
       found = true
       break
@@ -20,16 +20,16 @@ function checkEventHandlers (t, socket) {
   t.ok(!found, 'Connect listener should not exist')
 }
 
-var server = helpers.server
-var request = helpers.request
-var tape = helpers.tape
+const server = helpers.server
+const request = helpers.request
+const tape = helpers.tape
 
-var s = server.createServer()
+const s = server.createServer()
 
 // Request that waits for 200ms
 s.on('/timeout', function (req, res) {
   setTimeout(function () {
-    res.writeHead(200, {'content-type': 'text/plain'})
+    res.writeHead(200, { 'content-type': 'text/plain' })
     res.write('waited')
     res.end()
   }, 200)
@@ -42,7 +42,7 @@ tape('setup', function (t) {
 })
 
 tape('should timeout', function (t) {
-  var shouldTimeout = {
+  const shouldTimeout = {
     url: s.url + '/timeout',
     timeout: 100
   }
@@ -54,7 +54,7 @@ tape('should timeout', function (t) {
 })
 
 tape('should set connect to false', function (t) {
-  var shouldTimeout = {
+  const shouldTimeout = {
     url: s.url + '/timeout',
     timeout: 100
   }
@@ -69,12 +69,12 @@ tape('should set connect to false', function (t) {
 tape('should timeout with events', function (t) {
   t.plan(3)
 
-  var shouldTimeoutWithEvents = {
+  const shouldTimeoutWithEvents = {
     url: s.url + '/timeout',
     timeout: 100
   }
 
-  var eventsEmitted = 0
+  let eventsEmitted = 0
   request(shouldTimeoutWithEvents)
     .on('error', function (err) {
       eventsEmitted++
@@ -84,12 +84,12 @@ tape('should timeout with events', function (t) {
 })
 
 tape('should not timeout', function (t) {
-  var shouldntTimeout = {
+  const shouldntTimeout = {
     url: s.url + '/timeout',
     timeout: 1200
   }
 
-  var socket
+  let socket
   request(shouldntTimeout, function (err, res, body) {
     t.equal(err, null)
     t.equal(body, 'waited')
@@ -101,7 +101,7 @@ tape('should not timeout', function (t) {
 })
 
 tape('no timeout', function (t) {
-  var noTimeout = {
+  const noTimeout = {
     url: s.url + '/timeout'
   }
 
@@ -113,7 +113,7 @@ tape('no timeout', function (t) {
 })
 
 tape('negative timeout', function (t) { // should be treated a zero or the minimum delay
-  var negativeTimeout = {
+  const negativeTimeout = {
     url: s.url + '/timeout',
     timeout: -1000
   }
@@ -129,7 +129,7 @@ tape('negative timeout', function (t) { // should be treated a zero or the minim
 })
 
 tape('float timeout', function (t) { // should be rounded by setTimeout anyway
-  var floatTimeout = {
+  const floatTimeout = {
     url: s.url + '/timeout',
     timeout: 100.76
   }
@@ -143,7 +143,7 @@ tape('float timeout', function (t) { // should be rounded by setTimeout anyway
 // We need a destination that will not immediately return a TCP Reset
 // packet. StackOverflow suggests these hosts:
 // (https://stackoverflow.com/a/904609/329700)
-var nonRoutable = [
+const nonRoutable = [
   '10.255.255.1',
   '10.0.0.0',
   '192.168.0.0',
@@ -151,9 +151,9 @@ var nonRoutable = [
   '172.16.0.0',
   '172.31.255.255'
 ]
-var nrIndex = 0
+let nrIndex = 0
 function getNonRoutable () {
-  var ip = nonRoutable[nrIndex]
+  const ip = nonRoutable[nrIndex]
   if (!ip) {
     throw new Error('No more non-routable addresses')
   }
@@ -161,12 +161,12 @@ function getNonRoutable () {
   return ip
 }
 tape('connect timeout', function tryConnect (t) {
-  var tarpitHost = 'http://' + getNonRoutable()
-  var shouldConnectTimeout = {
+  const tarpitHost = 'http://' + getNonRoutable()
+  const shouldConnectTimeout = {
     url: tarpitHost + '/timeout',
     timeout: 100
   }
-  var socket
+  let socket
   request(shouldConnectTimeout, function (err) {
     t.notEqual(err, null)
     if (err.code === 'ENETUNREACH' && nrIndex < nonRoutable.length) {
@@ -186,12 +186,12 @@ tape('connect timeout', function tryConnect (t) {
 })
 
 tape('connect timeout with non-timeout error', function tryConnect (t) {
-  var tarpitHost = 'http://' + getNonRoutable()
-  var shouldConnectTimeout = {
+  const tarpitHost = 'http://' + getNonRoutable()
+  const shouldConnectTimeout = {
     url: tarpitHost + '/timeout',
     timeout: 1000
   }
-  var socket
+  let socket
   request(shouldConnectTimeout, function (err) {
     t.notEqual(err, null)
     if (err.code === 'ENETUNREACH' && nrIndex < nonRoutable.length) {
@@ -216,31 +216,31 @@ tape('connect timeout with non-timeout error', function tryConnect (t) {
 })
 
 tape('request timeout with keep-alive connection', function (t) {
-  var Agent = helpers.http.Agent
-  var agent = new Agent({ keepAlive: true })
-  var firstReq = {
+  const Agent = helpers.http.Agent
+  const agent = new Agent({ keepAlive: true })
+  const firstReq = {
     url: s.url + '/timeout',
-    agent: agent
+    agent
   }
   request(firstReq, function (err) {
     // We should now still have a socket open. For the second request we should
     // see a request timeout on the active socket ...
     t.equal(err, null)
-    var shouldReqTimeout = {
+    const shouldReqTimeout = {
       url: s.url + '/timeout',
       timeout: 100,
-      agent: agent
+      agent
     }
     request(shouldReqTimeout, function (err) {
       checkErrCode(t, err)
       t.ok(err.connect === false, 'Error should have been a request timeout error')
       t.end()
     }).on('socket', function (socket) {
-      var isConnecting = socket._connecting || socket.connecting
+      const isConnecting = socket._connecting || socket.connecting
       t.ok(isConnecting !== true, 'Socket should already be connected')
     })
   }).on('socket', function (socket) {
-    var isConnecting = socket._connecting || socket.connecting
+    const isConnecting = socket._connecting || socket.connecting
     t.ok(isConnecting === true, 'Socket should be new')
   })
 })

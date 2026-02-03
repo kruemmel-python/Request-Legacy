@@ -1,22 +1,22 @@
 'use strict'
 
-var helpers = require('./helpers')
-var server = helpers.server
-var request = helpers.request
-var util = helpers.util
-var tape = helpers.tape
-var url = helpers.url
-var os = helpers.os
+const helpers = require('./helpers')
+const server = helpers.server
+const request = helpers.request
+const util = helpers.util
+const tape = helpers.tape
+const url = helpers.url
+const os = helpers.os
 
-var interfaces = os.networkInterfaces()
-var loopbackKeyTest = os.platform() === 'win32' ? /Loopback Pseudo-Interface/ : /lo/
-var hasIPv6interface = Object.keys(interfaces).some(function (name) {
+const interfaces = os.networkInterfaces()
+const loopbackKeyTest = os.platform() === 'win32' ? /Loopback Pseudo-Interface/ : /lo/
+const hasIPv6interface = Object.keys(interfaces).some(function (name) {
   return loopbackKeyTest.test(name) && interfaces[name].some(function (info) {
     return info.family === 'IPv6'
   })
 })
 
-var s = server.createServer()
+const s = server.createServer()
 
 s.on('/redirect/from', function (req, res) {
   res.writeHead(301, {
@@ -57,27 +57,27 @@ function addTests () {
   runTest(
     '#125: headers.cookie with no cookie jar',
     'no-jar',
-    {headers: {cookie: 'foo=bar'}},
+    { headers: { cookie: 'foo=bar' } },
     function (t, req, res) {
       t.equal(req.headers.cookie, 'foo=bar')
     })
 
-  var jar = request.jar()
+  const jar = request.jar()
   jar.setCookie('quux=baz', s.url)
   runTest(
     '#125: headers.cookie + cookie jar',
     'header-and-jar',
-    {jar: jar, headers: {cookie: 'foo=bar'}},
+    { jar, headers: { cookie: 'foo=bar' } },
     function (t, req, res) {
       t.equal(req.headers.cookie, 'foo=bar; quux=baz')
     })
 
-  var jar2 = request.jar()
-  jar2.setCookie('quux=baz; Domain=foo.bar.com', s.url, {ignoreError: true})
+  const jar2 = request.jar()
+  jar2.setCookie('quux=baz; Domain=foo.bar.com', s.url, { ignoreError: true })
   runTest(
     '#794: ignore cookie parsing and domain errors',
     'ignore-errors',
-    {jar: jar2, headers: {cookie: 'foo=bar'}},
+    { jar: jar2, headers: { cookie: 'foo=bar' } },
     function (t, req, res) {
       t.equal(req.headers.cookie, 'foo=bar')
     })
@@ -89,7 +89,8 @@ function addTests () {
       json: true,
       method: 'POST',
       headers: { 'content-type': 'application/json; charset=UTF-8' },
-      body: { hello: 'my friend' }},
+      body: { hello: 'my friend' }
+    },
     function (t, req, res) {
       t.equal(req.headers['content-type'], 'application/json; charset=UTF-8')
     }
@@ -119,7 +120,7 @@ tape('setup', function (t) {
 tape('upper-case Host header and redirect', function (t) {
   // Horrible hack to observe the raw data coming to the server (before Node
   // core lower-cases the headers)
-  var rawData = ''
+  let rawData = ''
 
   s.on('connection', function (socket) {
     if (socket.ondata) {
@@ -146,7 +147,7 @@ tape('upper-case Host header and redirect', function (t) {
     rawData = ''
   }
 
-  var redirects = 0
+  let redirects = 0
   request({
     url: s.url + '/redirect/from',
     headers: { Host: '127.0.0.1' }
@@ -227,7 +228,7 @@ tape('strip port in host header if implicit standard port & protocol (HTTPS)', f
   })
 })
 
-var isExpectedHeaderCharacterError = function (headerName, err) {
+const isExpectedHeaderCharacterError = function (headerName, err) {
   return err.message === 'The header content contains invalid characters' ||
     err.message === ('Invalid character in header content ["' + headerName + '"]')
 }
@@ -236,15 +237,15 @@ tape('catch invalid characters error - GET', function (t) {
   request({
     url: s.url + '/headers.json',
     headers: {
-      'test': 'אבגד'
+      test: 'אבגד'
     }
   }, function (err, res, body) {
     t.true(isExpectedHeaderCharacterError('test', err))
   })
-  .on('error', function (err) {
-    t.true(isExpectedHeaderCharacterError('test', err))
-    t.end()
-  })
+    .on('error', function (err) {
+      t.true(isExpectedHeaderCharacterError('test', err))
+      t.end()
+    })
 })
 
 tape('catch invalid characters error - POST', function (t) {
@@ -252,22 +253,22 @@ tape('catch invalid characters error - POST', function (t) {
     method: 'POST',
     url: s.url + '/headers.json',
     headers: {
-      'test': 'אבגד'
+      test: 'אבגד'
     },
     body: 'beep'
   }, function (err, res, body) {
     t.true(isExpectedHeaderCharacterError('test', err))
   })
-  .on('error', function (err) {
-    t.true(isExpectedHeaderCharacterError('test', err))
-    t.end()
-  })
+    .on('error', function (err) {
+      t.true(isExpectedHeaderCharacterError('test', err))
+      t.end()
+    })
 })
 
 if (hasIPv6interface) {
   tape('IPv6 Host header', function (t) {
     // Horrible hack to observe the raw data coming to the server
-    var rawData = ''
+    let rawData = ''
 
     s.on('connection', function (socket) {
       if (socket.ondata) {

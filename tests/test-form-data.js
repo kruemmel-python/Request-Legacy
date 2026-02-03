@@ -1,12 +1,12 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var path = helpers.path
-var mime = helpers.mime
-var request = helpers.request
-var fs = helpers.fs
-var tape = helpers.tape
+const http = helpers.http
+const path = helpers.path
+const mime = helpers.mime
+const request = helpers.request
+const fs = helpers.fs
+const tape = helpers.tape
 
 function destroyStreamOrRequest (value) {
   if (!value || typeof value !== 'object') {
@@ -18,7 +18,9 @@ function destroyStreamOrRequest (value) {
   if (typeof value.destroy === 'function') {
     try {
       value.destroy()
-    } catch (err) {}
+    } catch {
+      // ignore destroy errors
+    }
   }
 }
 
@@ -42,13 +44,13 @@ function drainRequestBody (req) {
 }
 
 function runTest (t, options) {
-  var remoteFile = path.join(__dirname, 'googledoodle.jpg')
-  var localFile = path.join(__dirname, 'unicycle.jpg')
-  var multipartFormData = {}
+  const remoteFile = path.join(__dirname, 'googledoodle.jpg')
+  const localFile = path.join(__dirname, 'unicycle.jpg')
+  const multipartFormData = {}
 
-  var server = http.createServer(function (req, res) {
+  const server = http.createServer(function (req, res) {
     if (req.url === '/file') {
-      res.writeHead(200, {'content-type': 'image/jpg', 'content-length': 7187})
+      res.writeHead(200, { 'content-type': 'image/jpg', 'content-length': 7187 })
       res.end(fs.readFileSync(remoteFile), 'binary')
       return
     }
@@ -57,7 +59,7 @@ function runTest (t, options) {
       .test(req.headers['content-type']))
 
     // temp workaround
-    var data = ''
+    let data = ''
     req.setEncoding('utf8')
     req.on('data', function (d) {
       data += d
@@ -66,12 +68,12 @@ function runTest (t, options) {
     req.on('end', function () {
       if (options.auth && !req.headers.authorization) {
         drainRequestBody(req)
-        res.writeHead(401, {'www-authenticate': 'Basic realm="Private"'})
+        res.writeHead(401, { 'www-authenticate': 'Basic realm="Private"' })
         res.end()
         return
       }
       if (options.auth) {
-        var expectedAuth = 'Basic ' + Buffer.from(options.auth.user + ':' + options.auth.pass).toString('base64')
+        const expectedAuth = 'Basic ' + Buffer.from(options.auth.user + ':' + options.auth.pass).toString('base64')
         t.ok(req.headers.authorization === expectedAuth)
       }
 
@@ -111,17 +113,17 @@ function runTest (t, options) {
 
       drainRequestBody(req)
       res.writeHead(200)
-      res.end(options.json ? JSON.stringify({status: 'done'}) : 'done')
+      res.end(options.json ? JSON.stringify({ status: 'done' }) : 'done')
     })
   })
 
   server.listen(0, function () {
-    var url = 'http://localhost:' + this.address().port
+    const url = 'http://localhost:' + this.address().port
     // @NOTE: multipartFormData properties must be set here so that my_file read stream does not leak in node v0.8
     multipartFormData.my_field = 'my_value'
     multipartFormData.my_buffer = Buffer.from([1, 2, 3])
     multipartFormData.my_file = fs.createReadStream(localFile)
-    var remoteFileOptions = { url: url + '/file' }
+    const remoteFileOptions = { url: url + '/file' }
     if (options.auth && typeof options.auth === 'object') {
       remoteFileOptions.auth = options.auth
     }
@@ -138,7 +140,7 @@ function runTest (t, options) {
       fs.createReadStream(localFile)
     ]
 
-    var reqOptions = {
+    const reqOptions = {
       url: url + '/upload',
       formData: multipartFormData
     }
@@ -146,9 +148,9 @@ function runTest (t, options) {
       reqOptions.json = true
     }
     if (options.auth) {
-      var authOptions = typeof options.auth === 'object'
+      const authOptions = typeof options.auth === 'object'
         ? options.auth
-        : {user: 'test', pass: 'test', sendImmediately: true}
+        : { user: 'test', pass: 'test', sendImmediately: true }
       if (typeof authOptions.sendImmediately === 'undefined') {
         authOptions.sendImmediately = true
       }
@@ -165,7 +167,7 @@ function runTest (t, options) {
         return
       }
       t.equal(res.statusCode, 200)
-      t.deepEqual(body, options.json ? {status: 'done'} : 'done')
+      t.deepEqual(body, options.json ? { status: 'done' } : 'done')
       server.close(function () {
         t.end()
       })
@@ -174,13 +176,13 @@ function runTest (t, options) {
 }
 
 tape('multipart formData', function (t) {
-  runTest(t, {json: false})
+  runTest(t, { json: false })
 })
 
 tape('multipart formData + JSON', function (t) {
-  runTest(t, {json: true})
+  runTest(t, { json: true })
 })
 
 tape('multipart formData + basic auth', function (t) {
-  runTest(t, {json: false, auth: true})
+  runTest(t, { json: false, auth: true })
 })

@@ -1,17 +1,17 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var request = helpers.request
-var tape = helpers.tape
+const http = helpers.http
+const request = helpers.request
+const tape = helpers.tape
 
-var port1
-var port2
+let port1
+let port2
 
-var s1 = http.createServer(function (req, resp) {
+const s1 = http.createServer(function (req, resp) {
   if (req.url === '/original') {
     resp.writeHeader(302, {
-      'location': '/redirected'
+      location: '/redirected'
     })
     resp.end()
   } else if (req.url === '/redirected') {
@@ -23,8 +23,8 @@ var s1 = http.createServer(function (req, resp) {
   }
 })
 
-var s2 = http.createServer(function (req, resp) {
-  var x = request('http://localhost:' + port1 + '/original')
+const s2 = http.createServer(function (req, resp) {
+  const x = request('http://localhost:' + port1 + '/original')
   req.pipe(x)
   x.pipe(resp)
 })

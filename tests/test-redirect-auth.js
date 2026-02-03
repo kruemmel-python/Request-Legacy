@@ -1,14 +1,14 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var server = helpers.server
-var request = helpers.request
-var util = helpers.util
-var tape = helpers.tape
-var destroyable = require('server-destroy')
+const server = helpers.server
+let request = helpers.request
+const util = helpers.util
+const tape = helpers.tape
+const destroyable = require('./helpers/destroyable')
 
-var s = server.createServer()
-var ss = server.createSSLServer()
+const s = server.createServer()
+const ss = server.createSSLServer()
 
 destroyable(s)
 destroyable(ss)
@@ -25,12 +25,12 @@ request = request.defaults({
 // redirect.from(proto, host).to(proto, host) returns an object with keys:
 //   src : source URL
 //   dst : destination URL
-var redirect = {
+const redirect = {
   from: function (fromProto, fromHost) {
     return {
       to: function (toProto, toHost) {
-        var fromPort = (fromProto === 'http' ? s.port : ss.port)
-        var toPort = (toProto === 'http' ? s.port : ss.port)
+        const fromPort = (fromProto === 'http' ? s.port : ss.port)
+        const toPort = (toProto === 'http' ? s.port : ss.port)
         return {
           src: util.format(
             '%s://%s:%d/to/%s/%s',
@@ -48,7 +48,7 @@ function handleRequests (srv) {
   ['http', 'https'].forEach(function (proto) {
     ['localhost', '127.0.0.1'].forEach(function (host) {
       srv.on(util.format('/to/%s/%s', proto, host), function (req, res) {
-        var r = redirect
+        const r = redirect
           .from(srv.protocol, req.headers.host.split(':')[0])
           .to(proto, host)
         res.writeHead(301, {

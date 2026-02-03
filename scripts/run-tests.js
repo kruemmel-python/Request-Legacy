@@ -1,20 +1,20 @@
 'use strict'
 
-var fs = require('fs')
-var path = require('path')
+const fs = require('fs')
+const path = require('path')
 
-var opensslConfig = path.join(__dirname, 'openssl-legacy.conf')
+const opensslConfig = path.join(__dirname, 'openssl-legacy.conf')
 process.env.OPENSSL_CONF = opensslConfig
 
-var timeoutMs = 300 * 1000
+const timeoutMs = 300 * 1000
 setTimeout(function () {
   console.error('Global timeout reached, exiting test runner.')
   process.exit(1)
 }, timeoutMs)
 
-var testsDir = path.join(__dirname, '..', 'tests')
-var cliTests = process.argv.slice(2)
-var testFiles
+const testsDir = path.join(__dirname, '..', 'tests')
+const cliTests = process.argv.slice(2)
+let testFiles
 
 if (cliTests.length === 0) {
   testFiles = fs.readdirSync(testsDir)
@@ -24,7 +24,7 @@ if (cliTests.length === 0) {
     .sort()
 } else {
   testFiles = cliTests.map(function (arg) {
-    var target = path.isAbsolute(arg) ? arg : path.join(__dirname, '..', arg)
+    const target = path.isAbsolute(arg) ? arg : path.join(__dirname, '..', arg)
     if (!fs.existsSync(target)) {
       throw new Error('Test file not found: ' + arg)
     }

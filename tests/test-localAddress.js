@@ -1,9 +1,9 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var request = helpers.request
-var tape = helpers.tape
-var os = helpers.os
+const request = helpers.request
+const tape = helpers.tape
+const os = helpers.os
 
 tape('bind to invalid address', function (t) {
   request.get({
@@ -22,16 +22,16 @@ tape('bind to invalid address', function (t) {
 })
 
 tape('bind to local address', function (t) {
-  var localIPs = getLocalIPv4Addresses()
+  const localIPs = getLocalIPv4Addresses()
   if (localIPs.length === 0) {
     t.pass('no external IPv4 interface; skipping localAddress test')
     t.end()
     return
   }
-  var localAddress = localIPs[0]
+  const localAddress = localIPs[0]
   request.get({
     uri: 'http://www.google.com',
-    localAddress: localAddress
+    localAddress
   }, function (err, res) {
     if (err) {
       if (err.code === 'EINVAL') {
@@ -49,8 +49,8 @@ tape('bind to local address', function (t) {
 })
 
 function getLocalIPv4Addresses () {
-  var localInterfaces = os.networkInterfaces()
-  var localIPs = []
+  const localInterfaces = os.networkInterfaces()
+  const localIPs = []
   Object.keys(localInterfaces).forEach(function (ifname) {
     localInterfaces[ifname].forEach(function (iface) {
       if (iface.family !== 'IPv4' || iface.internal !== false) {
@@ -63,7 +63,7 @@ function getLocalIPv4Addresses () {
 }
 
 tape('bind to local address on redirect', function (t) {
-  var localIPs = getLocalIPv4Addresses()
+  const localIPs = getLocalIPv4Addresses()
   if (localIPs.length === 0) {
     t.pass('no non-internal IPv4 interface; skipping localAddress redirect test')
     t.end()

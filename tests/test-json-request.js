@@ -1,11 +1,11 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var server = helpers.server
-var request = helpers.request
-var tape = helpers.tape
+const server = helpers.server
+const request = helpers.request
+const tape = helpers.tape
 
-var s = server.createServer()
+const s = server.createServer()
 
 tape('setup', function (t) {
   s.listen(0, function () {
@@ -15,9 +15,9 @@ tape('setup', function (t) {
 
 function testJSONValue (testId, value) {
   tape('test ' + testId, function (t) {
-    var testUrl = '/' + testId
+    const testUrl = '/' + testId
     s.on(testUrl, server.createPostJSONValidator(value, 'application/json'))
-    var opts = {
+    const opts = {
       method: 'PUT',
       uri: s.url + testUrl,
       json: true,
@@ -34,9 +34,9 @@ function testJSONValue (testId, value) {
 
 function testJSONValueReviver (testId, value, reviver, revivedValue) {
   tape('test ' + testId, function (t) {
-    var testUrl = '/' + testId
+    const testUrl = '/' + testId
     s.on(testUrl, server.createPostJSONValidator(value, 'application/json'))
-    var opts = {
+    const opts = {
       method: 'PUT',
       uri: s.url + testUrl,
       json: true,
@@ -54,9 +54,9 @@ function testJSONValueReviver (testId, value, reviver, revivedValue) {
 
 function testJSONValueReplacer (testId, value, replacer, replacedValue) {
   tape('test ' + testId, function (t) {
-    var testUrl = '/' + testId
+    const testUrl = '/' + testId
     s.on(testUrl, server.createPostJSONValidator(replacedValue, 'application/json'))
-    var opts = {
+    const opts = {
       method: 'PUT',
       uri: s.url + testUrl,
       json: true,
@@ -97,16 +97,16 @@ testJSONValueReplacer('jsonReplacer', -48269.592, function (k, v) {
   return v * -1
 }, 48269.592)
 testJSONValueReplacer('jsonReplacerInvalid', -48269.592, 'invalid replacer', -48269.592)
-testJSONValueReplacer('jsonReplacerObject', {foo: 'bar'}, function (k, v) {
+testJSONValueReplacer('jsonReplacerObject', { foo: 'bar' }, function (k, v) {
   return v.toUpperCase ? v.toUpperCase() : v
-}, {foo: 'BAR'})
+}, { foo: 'BAR' })
 
 tape('missing body', function (t) {
   s.on('/missing-body', function (req, res) {
     t.equal(req.headers['content-type'], undefined)
     res.end()
   })
-  request({url: s.url + '/missing-body', json: true}, function () {
+  request({ url: s.url + '/missing-body', json: true }, function () {
     t.end()
   })
 })

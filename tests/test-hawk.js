@@ -1,13 +1,13 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var request = helpers.request
-var hawk = helpers.hawk
-var tape = helpers.tape
-var assert = helpers.assert
+const http = helpers.http
+const request = helpers.request
+const hawk = helpers.hawk
+const tape = helpers.tape
+const assert = helpers.assert
 
-var server = http.createServer(function (req, res) {
+const server = http.createServer(function (req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/plain'
   })
@@ -21,7 +21,7 @@ tape('setup', function (t) {
   })
 })
 
-var creds = {
+const creds = {
   key: 'werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn',
   algorithm: 'sha256',
   id: 'dh37fgj492je'
@@ -154,11 +154,11 @@ function authenticate (req) {
     return 'FAIL'
   }
 
-  var headerParts = req.headers.authorization.match(/^(\w+)(?:\s+(.*))?$/)
+  const headerParts = req.headers.authorization.match(/^(\w+)(?:\s+(.*))?$/)
   assert.equal(headerParts[1], 'Hawk')
-  var attributes = {}
+  const attributes = {}
   headerParts[2].replace(/(\w+)="([^"\\]*)"\s*(?:,\s*|$)/g, function ($0, $1, $2) { attributes[$1] = $2 })
-  var hostParts = req.headers.host.split(':')
+  const hostParts = req.headers.host.split(':')
 
   const artifacts = {
     method: req.method,
@@ -176,7 +176,7 @@ function authenticate (req) {
   }
 
   assert.equal(attributes.id, 'dh37fgj492je')
-  var credentials = {
+  const credentials = {
     key: 'werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn',
     algorithm: 'sha256',
     user: 'Steve'

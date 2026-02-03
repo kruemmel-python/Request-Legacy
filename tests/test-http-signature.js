@@ -1,12 +1,12 @@
 'use strict'
 
-var helpers = require('./helpers')
-var http = helpers.http
-var request = helpers.request
-var httpSignature = helpers.httpSignature
-var tape = helpers.tape
+const helpers = require('./helpers')
+const http = helpers.http
+const request = helpers.request
+const httpSignature = helpers.httpSignature
+const tape = helpers.tape
 
-var privateKeyPEMs = {}
+const privateKeyPEMs = {}
 
 privateKeyPEMs['key-1'] =
   '-----BEGIN RSA PRIVATE KEY-----\n' +
@@ -37,7 +37,7 @@ privateKeyPEMs['key-1'] =
   '9FV1axotRN2XWlwrhixZLEaagkREXhgQc540FS5O8IaI2Vpa80Atzg==\n' +
   '-----END RSA PRIVATE KEY-----'
 
-var publicKeyPEMs = {}
+const publicKeyPEMs = {}
 
 publicKeyPEMs['key-1'] =
   '-----BEGIN PUBLIC KEY-----\n' +
@@ -61,10 +61,10 @@ publicKeyPEMs['key-2'] =
   'dQIDAQAB\n' +
   '-----END PUBLIC KEY-----'
 
-var server = http.createServer(function (req, res) {
-  var parsed = httpSignature.parseRequest(req)
-  var publicKeyPEM = publicKeyPEMs[parsed.keyId]
-  var verified = httpSignature.verifySignature(parsed, publicKeyPEM)
+const server = http.createServer(function (req, res) {
+  const parsed = httpSignature.parseRequest(req)
+  const publicKeyPEM = publicKeyPEMs[parsed.keyId]
+  const verified = httpSignature.verifySignature(parsed, publicKeyPEM)
   res.writeHead(verified ? 200 : 400)
   res.end()
 })
@@ -77,7 +77,7 @@ tape('setup', function (t) {
 })
 
 tape('correct key', function (t) {
-  var options = {
+  const options = {
     httpSignature: {
       keyId: 'key-1',
       key: privateKeyPEMs['key-1']
@@ -91,7 +91,7 @@ tape('correct key', function (t) {
 })
 
 tape('incorrect key', function (t) {
-  var options = {
+  const options = {
     httpSignature: {
       keyId: 'key-2',
       key: privateKeyPEMs['key-1']

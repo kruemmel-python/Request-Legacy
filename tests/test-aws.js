@@ -1,13 +1,13 @@
 'use strict'
 
-var helpers = require('./helpers')
-var request = helpers.request
-var server = helpers.server
-var tape = helpers.tape
+const helpers = require('./helpers')
+const request = helpers.request
+const server = helpers.server
+const tape = helpers.tape
 
-var s = server.createServer()
+const s = server.createServer()
 
-var path = '/aws.json'
+const path = '/aws.json'
 
 s.on(path, function (req, res) {
   res.writeHead(200, {
@@ -23,7 +23,7 @@ tape('setup', function (t) {
 })
 
 tape('default behaviour: aws-sign2 without sign_version key', function (t) {
-  var options = {
+  const options = {
     url: s.url + path,
     aws: {
       key: 'my_key',
@@ -40,7 +40,7 @@ tape('default behaviour: aws-sign2 without sign_version key', function (t) {
 })
 
 tape('aws-sign4 options', function (t) {
-  var options = {
+  const options = {
     url: s.url + path,
     aws: {
       key: 'my_key',
@@ -59,7 +59,7 @@ tape('aws-sign4 options', function (t) {
 })
 
 tape('aws-sign4 options with session token', function (t) {
-  var options = {
+  const options = {
     url: s.url + path,
     aws: {
       key: 'my_key',
@@ -79,8 +79,8 @@ tape('aws-sign4 options with session token', function (t) {
 })
 
 tape('aws-sign4 options with service', function (t) {
-  var serviceName = 'UNIQUE_SERVICE_NAME'
-  var options = {
+  const serviceName = 'UNIQUE_SERVICE_NAME'
+  const options = {
     url: s.url + path,
     aws: {
       key: 'my_key',
@@ -98,7 +98,7 @@ tape('aws-sign4 options with service', function (t) {
 })
 
 tape('aws-sign4 with additional headers', function (t) {
-  var options = {
+  const options = {
     url: s.url + path,
     headers: {
       'X-Custom-Header': 'custom'

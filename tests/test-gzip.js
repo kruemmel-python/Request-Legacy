@@ -1,19 +1,24 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var request = helpers.request
-var http = helpers.http
-var zlib = helpers.zlib
-var assert = helpers.assert
-var bufferEqual = require('buffer-equal')
-var tape = helpers.tape
+const request = helpers.request
+const http = helpers.http
+const zlib = helpers.zlib
+const assert = helpers.assert
+const bufferEqual = function (left, right) {
+  if (!Buffer.isBuffer(left) || !Buffer.isBuffer(right)) {
+    return false
+  }
+  return left.equals(right)
+}
+const tape = helpers.tape
 
-var testContent = 'Compressible response content.\n'
-var testContentBig
-var testContentBigGzip
-var testContentGzip
+const testContent = 'Compressible response content.\n'
+let testContentBig
+let testContentBigGzip
+let testContentGzip
 
-var server = http.createServer(function (req, res) {
+const server = http.createServer(function (req, res) {
   res.statusCode = 200
   res.setHeader('Content-Type', 'text/plain')
 
@@ -67,11 +72,11 @@ tape('setup', function (t) {
   // Need big compressed content to be large enough to chunk into gzip blocks.
   // Want it to be deterministic to ensure test is reliable.
   // Generate pseudo-random printable ASCII characters using MINSTD
-  var a = 48271
-  var m = 0x7FFFFFFF
-  var x = 1
+  const a = 48271
+  const m = 0x7FFFFFFF
+  let x = 1
   testContentBig = Buffer.alloc(10240)
-  for (var i = 0; i < testContentBig.length; ++i) {
+  for (let i = 0; i < testContentBig.length; ++i) {
     x = (a * x) & m
     // Printable ASCII range from 32-126, inclusive
     testContentBig[i] = (x % 95) + 32
@@ -94,7 +99,7 @@ tape('setup', function (t) {
 })
 
 tape('transparently supports gzip decoding to callbacks', function (t) {
-  var options = { url: server.url + '/foo', gzip: true }
+  const options = { url: server.url + '/foo', gzip: true }
   request.get(options, function (err, res, body) {
     t.equal(err, null)
     t.equal(res.headers['content-encoding'], 'gzip')
@@ -104,7 +109,7 @@ tape('transparently supports gzip decoding to callbacks', function (t) {
 })
 
 tape('supports slightly invalid gzip content', function (t) {
-  var options = { url: server.url + '/just-slightly-truncated', gzip: true }
+  const options = { url: server.url + '/just-slightly-truncated', gzip: true }
   request.get(options, function (err, res, body) {
     t.equal(err, null)
     t.equal(res.headers['content-encoding'], 'gzip')
@@ -114,8 +119,8 @@ tape('supports slightly invalid gzip content', function (t) {
 })
 
 tape('transparently supports gzip decoding to pipes', function (t) {
-  var options = { url: server.url + '/foo', gzip: true }
-  var chunks = []
+  const options = { url: server.url + '/foo', gzip: true }
+  const chunks = []
   request.get(options)
     .on('data', function (chunk) {
       chunks.push(chunk)
@@ -130,10 +135,10 @@ tape('transparently supports gzip decoding to pipes', function (t) {
 })
 
 tape('does not request gzip if user specifies Accepted-Encodings', function (t) {
-  var headers = { 'Accept-Encoding': null }
-  var options = {
+  const headers = { 'Accept-Encoding': null }
+  const options = {
     url: server.url + '/foo',
-    headers: headers,
+    headers,
     gzip: true
   }
   request.get(options, function (err, res, body) {
@@ -145,8 +150,8 @@ tape('does not request gzip if user specifies Accepted-Encodings', function (t) 
 })
 
 tape('does not decode user-requested encoding by default', function (t) {
-  var headers = { 'Accept-Encoding': 'gzip' }
-  var options = { url: server.url + '/foo', headers: headers }
+  const headers = { 'Accept-Encoding': 'gzip' }
+  const options = { url: server.url + '/foo', headers }
   request.get(options, function (err, res, body) {
     t.equal(err, null)
     t.equal(res.headers['content-encoding'], 'gzip')
@@ -156,14 +161,14 @@ tape('does not decode user-requested encoding by default', function (t) {
 })
 
 tape('supports character encoding with gzip encoding', function (t) {
-  var headers = { 'Accept-Encoding': 'gzip' }
-  var options = {
+  const headers = { 'Accept-Encoding': 'gzip' }
+  const options = {
     url: server.url + '/foo',
-    headers: headers,
+    headers,
     gzip: true,
     encoding: 'utf8'
   }
-  var strings = []
+  const strings = []
   request.get(options)
     .on('data', function (string) {
       t.equal(typeof string, 'string')
@@ -179,7 +184,7 @@ tape('supports character encoding with gzip encoding', function (t) {
 })
 
 tape('transparently supports gzip error to callbacks', function (t) {
-  var options = { url: server.url + '/error', gzip: true }
+  const options = { url: server.url + '/error', gzip: true }
   request.get(options, function (err, res, body) {
     t.equal(err.code, 'Z_DATA_ERROR')
     t.equal(res, undefined)
@@ -189,7 +194,7 @@ tape('transparently supports gzip error to callbacks', function (t) {
 })
 
 tape('transparently supports gzip error to pipes', function (t) {
-  var options = { url: server.url + '/error', gzip: true }
+  const options = { url: server.url + '/error', gzip: true }
   request.get(options)
     .on('data', function (chunk) {
       t.fail('Should not receive data event')
@@ -204,12 +209,12 @@ tape('transparently supports gzip error to pipes', function (t) {
 })
 
 tape('pause when streaming from a gzip request object', function (t) {
-  var chunks = []
-  var paused = false
-  var options = { url: server.url + '/chunks', gzip: true }
+  const chunks = []
+  let paused = false
+  const options = { url: server.url + '/chunks', gzip: true }
   request.get(options)
     .on('data', function (chunk) {
-      var self = this
+      const self = this
 
       t.notOk(paused, 'Only receive data when not paused')
 
@@ -231,9 +236,9 @@ tape('pause when streaming from a gzip request object', function (t) {
 })
 
 tape('pause before streaming from a gzip request object', function (t) {
-  var paused = true
-  var options = { url: server.url + '/foo', gzip: true }
-  var r = request.get(options)
+  let paused = true
+  const options = { url: server.url + '/foo', gzip: true }
+  const r = request.get(options)
   r.pause()
   r.on('data', function (data) {
     t.notOk(paused, 'Only receive data when not paused')
@@ -248,7 +253,7 @@ tape('pause before streaming from a gzip request object', function (t) {
 })
 
 tape('transparently supports deflate decoding to callbacks', function (t) {
-  var options = { url: server.url + '/foo', gzip: true, headers: { 'Accept-Encoding': 'deflate' } }
+  const options = { url: server.url + '/foo', gzip: true, headers: { 'Accept-Encoding': 'deflate' } }
 
   request.get(options, function (err, res, body) {
     t.equal(err, null)
@@ -259,7 +264,7 @@ tape('transparently supports deflate decoding to callbacks', function (t) {
 })
 
 tape('do not try to pipe HEAD request responses', function (t) {
-  var options = { method: 'HEAD', url: server.url + '/foo', gzip: true }
+  const options = { method: 'HEAD', url: server.url + '/foo', gzip: true }
 
   request(options, function (err, res, body) {
     t.equal(err, null)
@@ -269,18 +274,19 @@ tape('do not try to pipe HEAD request responses', function (t) {
 })
 
 tape('do not try to pipe responses with no body', function (t) {
-  var options = { url: server.url + '/foo', gzip: true }
+  const options = { url: server.url + '/foo', gzip: true }
 
   // skip 105 on Node >= v10
-  var statusCodes = process.version.split('.')[0].slice(1) >= 10
-    ? [204, 304] : [105, 204, 304]
+  const statusCodes = process.version.split('.')[0].slice(1) >= 10
+    ? [204, 304]
+    : [105, 204, 304]
 
   ;(function next (index) {
     if (index === statusCodes.length) {
       t.end()
       return
     }
-    options.headers = {code: statusCodes[index]}
+    options.headers = { code: statusCodes[index] }
     request.post(options, function (err, res, body) {
       t.equal(err, null)
       t.equal(res.headers.code, statusCodes[index].toString())

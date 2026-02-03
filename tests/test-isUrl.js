@@ -1,11 +1,11 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var request = helpers.request
-var tape = helpers.tape
+const http = helpers.http
+const request = helpers.request
+const tape = helpers.tape
 
-var s = http.createServer(function (req, res) {
+const s = http.createServer(function (req, res) {
   res.statusCode = 200
   res.end('ok')
 })

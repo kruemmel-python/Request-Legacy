@@ -59,5 +59,5 @@ npm run test-ci
 ```
 
 ## Status
-- Stabilisiert fuer Node.js v22.13.0
+- Stabilisiert fuer Node.js >= 18 (validiert mit v22.13.0)
 - Legacy-API: fuer neue Projekte Alternativen pruefen

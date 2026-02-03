@@ -5,6 +5,9 @@ As of Feb 11th 2020, request is fully deprecated. No new changes are expected to
 For more information about why request is deprecated and possible alternatives refer to
 [this issue](https://github.com/request/request/issues/3142).
 
+Fork note (2026): This repository contains a maintained fork for Node.js >= 18 with security hardening.
+Version 3.0.0 is the first release of this fork; the public API remains compatible with 2.x.
+
 # Request - Simplified HTTP client
 
 [![npm package](https://nodei.co/npm/request.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/request/)

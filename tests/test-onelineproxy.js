@@ -1,10 +1,10 @@
 'use strict'
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var http = helpers.http
-var assert = helpers.assert
-var request = helpers.request
-var tape = helpers.tape
+const http = helpers.http
+const assert = helpers.assert
+const request = helpers.request
+const tape = helpers.tape
 
 var server = http.createServer(function (req, resp) {
   resp.statusCode = 200
@@ -15,7 +15,7 @@ var server = http.createServer(function (req, resp) {
     return
   }
   if (req.url === '/put') {
-    var x = ''
+    let x = ''
     assert.equal(req.method, 'PUT')
     req.on('data', function (chunk) {
       x += chunk

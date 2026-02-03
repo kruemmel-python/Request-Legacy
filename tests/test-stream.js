@@ -1,11 +1,11 @@
-var helpers = require('./helpers')
+const helpers = require('./helpers')
 
-var fs = helpers.fs
-var path = helpers.path
-var http = helpers.http
-var tape = helpers.tape
-var request = require('../')
-var server
+const fs = helpers.fs
+const path = helpers.path
+const http = helpers.http
+const tape = helpers.tape
+const request = require('../')
+let server
 
 tape('before', function (t) {
   server = http.createServer()
@@ -19,8 +19,8 @@ tape('before', function (t) {
 })
 
 tape('request body stream', function (t) {
-  var fpath = path.join(__dirname, 'unicycle.jpg')
-  var input = fs.createReadStream(fpath, {highWaterMark: 1000})
+  const fpath = path.join(__dirname, 'unicycle.jpg')
+  const input = fs.createReadStream(fpath, { highWaterMark: 1000 })
   request({
     uri: server.url,
     method: 'POST',

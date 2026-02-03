@@ -1,17 +1,17 @@
 'use strict'
 
-var helpers = require('./helpers')
-var request = helpers.request
-var http = helpers.http
-var tape = helpers.tape
+const helpers = require('./helpers')
+const request = helpers.request
+const http = helpers.http
+const tape = helpers.tape
 
-var s = http.createServer(function (req, res) {
+const s = http.createServer(function (req, res) {
   res.statusCode = 200
   res.end('')
 })
 
-var stderr = []
-var prevStderrLen = 0
+let stderr = []
+let prevStderrLen = 0
 
 tape('setup', function (t) {
   process.stderr._oldWrite = process.stderr.write
@@ -36,8 +36,8 @@ tape('a simple request should not fail with debugging enabled', function (t) {
     t.ok(res, 'the request did not fail')
 
     t.ok(stderr.length, 'stderr has some messages')
-    var url = s.url.replace(/\//g, '\\/')
-    var patterns = [
+    const url = s.url.replace(/\//g, '\\/')
+    const patterns = [
       /^REQUEST { uri: /,
       new RegExp('^REQUEST make request ' + url + '/\n$'),
       /^REQUEST onRequestResponse /,
@@ -47,7 +47,7 @@ tape('a simple request should not fail with debugging enabled', function (t) {
       /^REQUEST emitting complete /
     ]
     patterns.forEach(function (pattern) {
-      var found = false
+      let found = false
       stderr.forEach(function (msg) {
         if (pattern.test(msg)) {
           found = true
