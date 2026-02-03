@@ -9,8 +9,8 @@ Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 Status:
 - Package name: `request`
 - Engines: Node.js >= 18
-- Security/audit: 0 known vulnerabilities in current dependency tree
-- Tests: 1485 core tests green (`npm run test-ci`)
+- Validation (2026-02-03): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 1485 tests
+- Redirect security: 307/308 preserve method/body; cross-host strips auth/proxy/cookie; maxRedirects emits `E_TOO_MANY_REDIRECTS`
 
 Security notes and evidence:
 - `MODERNIZATION_REPORT.md`
@@ -159,14 +159,14 @@ You can still use intermediate proxies, the requests will still follow HTTP forw
 
 `request` supports both streaming and callback interfaces natively. If you'd like `request` to return a Promise instead, you can use an alternative interface wrapper for `request`. These wrappers can be useful if you prefer to work with Promises, or if you'd like to use `async`/`await` in ES2017.
 
-Several alternative interfaces are provided by the request team, including (legacy):
+Legacy community wrappers include:
 - [`request-promise`](https://github.com/request/request-promise) (uses [Bluebird](https://github.com/petkaantonov/bluebird) Promises)
 - [`request-promise-native`](https://github.com/request/request-promise-native) (uses native Promises)
 - [`request-promise-any`](https://github.com/request/request-promise-any) (uses [any-promise](https://www.npmjs.com/package/any-promise) Promises)
 
 Also, [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original) can be used to convert a regular function that takes a callback to return a promise instead.
 
-Note: The request-promise family is legacy and may be unmaintained. Prefer `util.promisify` for existing code or the built-in `fetch` API for new code.
+Note: The request-promise family is legacy and may be unmaintained. Prefer `util.promisify` for existing code or the built-in `fetch` API for new code (Node >= 18).
 
 
 [back to top](#table-of-contents)
@@ -815,8 +815,12 @@ The first argument can be either a `url` or an `options` object. The only requir
 - `followRedirect` - follow HTTP 3xx responses as redirects (default: `true`). This property can also be implemented as function which gets `response` object as a single argument and should return `true` if redirects should continue or `false` otherwise.
 - `followAllRedirects` - follow non-GET HTTP 3xx responses as redirects (default: `false`)
 - `followOriginalHttpMethod` - by default we redirect to HTTP method GET. you can enable this property to redirect to the original HTTP method (default: `false`)
-- `maxRedirects` - the maximum number of redirects to follow (default: `10`)
+- `maxRedirects` - the maximum number of redirects to follow (default: `10`). When exceeded, an error with code `E_TOO_MANY_REDIRECTS` is emitted.
 - `removeRefererHeader` - removes the referer header when a redirect happens (default: `false`). **Note:** if true, referer header set in the initial request is preserved during redirect chain.
+
+Redirect security behavior:
+- 307/308 preserve method and body; 301/302/303 may switch to GET (unless `followOriginalHttpMethod` is true).
+- Cross-host redirects strip `authorization`, `proxy-authorization`, and `cookie` headers.
 
 ---
 
@@ -828,7 +832,7 @@ The first argument can be either a `url` or an `options` object. The only requir
 
 - `agent` - `http(s).Agent` instance to use
 - `agentClass` - alternatively specify your agent's class name
-- `agentOptions` - and pass its options. **Note:** for HTTPS see [tls API doc for TLS/SSL options](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback) and the [documentation above](#using-optionsagentoptions).
+- `agentOptions` - and pass its options. **Note:** for HTTPS see [tls API doc for TLS/SSL options](https://nodejs.org/api/tls.html#tls_tls_connect_options_callback) and the [documentation above](#using-optionsagentoptions).
 - `forever` - set to `true` to use the [forever-agent](https://github.com/request/forever-agent) **Note:** Uses keep-alive sockets in modern Node versions.
 - `pool` - an object describing which agents to use for the request. If this option is omitted the request will use the global agent (as long as your options allow for it). Otherwise, request will search the pool for your custom agent. If no custom agent is found, a new agent will be created and added to the pool. **Note:** `pool` is used only when the `agent` option is not specified.
   - A `maxSockets` property can also be provided on the `pool` object to set the max number of sockets for all agents created (ex: `pool: {maxSockets: Infinity}`).
@@ -978,7 +982,7 @@ There are at least three ways to debug the operation of `request`:
 2. Set `require('request').debug = true` at any time (this does the same thing
    as #1).
 
-3. Use the [request-debug module](https://github.com/request/request-debug) to
+3. Use the [request-debug module](https://github.com/request/request-debug) (legacy; verify maintenance status) to
    view request and response headers and bodies.
 
 [back to top](#table-of-contents)
