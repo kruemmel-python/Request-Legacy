@@ -1,4 +1,4 @@
-# Request-Legacy 3.00.0
+# Request-Legacy 3.00.4
 <img width="2752" height="1536" alt="unnamed (1)" src="https://github.com/user-attachments/assets/b1ed2ae0-ab53-4c95-ba03-571d35a24941" />
 ### ❤️ Support my Work
 If this modernized version of request saved you hours of refactoring or helped you pass a security audit, consider supporting my ongoing efforts to harden legacy software.
@@ -6,7 +6,7 @@ If this modernized version of request saved you hours of refactoring or helped y
 **Donate via PayPal:** [Ralf Krümmel](https://www.paypal.com/donate/?hosted_button_id=XVUDEKSWFGL74)
 
 Maintained fork for Node.js >= 18 with security hardening.
-Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
+Version 3.00.4 is the first release of this fork; the public API remains compatible with 2.x.
 
 Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 [this issue](https://github.com/request/request/issues/3142).
