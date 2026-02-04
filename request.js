@@ -32,6 +32,7 @@ const Tunnel = require('./lib/tunnel').Tunnel
 const now = require('performance-now')
 const Buffer = require('safe-buffer').Buffer
 
+const paramsHaveRequestBody = helpers.paramsHaveRequestBody
 const safeStringify = helpers.safeStringify
 const isReadStream = helpers.isReadStream
 const toBase64 = helpers.toBase64
@@ -92,7 +93,35 @@ function responseToJSON () {
   }
 }
 
-function Request (options) {
+function Request (uri, options, callback) {
+  if (!(this instanceof Request)) {
+    if (typeof uri === 'undefined') {
+      throw new Error('undefined is not a valid uri or options object.')
+    }
+
+    if (typeof options === 'function') {
+      callback = options
+      options = undefined
+    }
+
+    const params = {}
+    if (options !== null && typeof options === 'object') {
+      extend(params, options, { uri })
+    } else if (typeof uri === 'string') {
+      extend(params, { uri })
+    } else {
+      extend(params, uri)
+    }
+
+    params.callback = callback || params.callback
+
+    if (params.method === 'HEAD' && paramsHaveRequestBody(params)) {
+      throw new Error('HTTP HEAD requests MUST NOT include a request body.')
+    }
+
+    return new Request(params)
+  }
+
   // if given the method property in options, set property explicitMethod to true
 
   // extend the Request instance with any non-reserved properties
@@ -101,6 +130,7 @@ function Request (options) {
   // call init
 
   const self = this
+  options = uri
 
   // start with HAR, then override with additional options
   if (options.har) {

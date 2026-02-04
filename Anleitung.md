@@ -1,6 +1,6 @@
 # Anleitung: Request-Legacy
 
-Diese Anleitung beschreibt die Nutzung der stabilisierten Legacy-Version von `request` im Projektstand v1.1.
+Diese Anleitung beschreibt die Nutzung der stabilisierten Legacy-Version von `request-legacy` im Projektstand v1.1.
 
 ## Voraussetzungen
 - Node.js >= 18 (validiert mit Node.js v22.13.0)
@@ -15,7 +15,7 @@ npm install
 
 ### Als Abhaengigkeit in einem Projekt
 ```powershell
-npm install request
+npm install request-legacy
 ```
 
 Wenn du die lokale Repo-Version nutzen willst:
@@ -27,7 +27,7 @@ npm install <pfad-zum-repo>
 
 ### Einfacher GET
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request('https://example.com', function (err, res, body) {
   if (err) throw err
@@ -38,7 +38,7 @@ request('https://example.com', function (err, res, body) {
 
 ### GET mit Querystring und JSON-Antwort
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request.get({
   url: 'https://httpbin.org/get',
@@ -52,7 +52,7 @@ request.get({
 
 ### POST mit JSON
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request.post({
   url: 'https://httpbin.org/post',
@@ -65,7 +65,7 @@ request.post({
 
 ### POST mit Form-Daten
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request.post({
   url: 'https://httpbin.org/post',
@@ -79,7 +79,7 @@ request.post({
 ### Multipart Upload
 ```js
 const fs = require('fs')
-const request = require('request')
+const request = require('request-legacy')
 
 request.post({
   url: 'https://httpbin.org/post',
@@ -118,7 +118,7 @@ request.get({
 
 ## Cookies
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 const jar = request.jar()
 jar.setCookie(request.cookie('session=abc123'), 'https://example.com')
@@ -132,7 +132,7 @@ request.get({ url: 'https://example.com', jar: jar }, function (err, res, body) 
 ## Streaming
 ```js
 const fs = require('fs')
-const request = require('request')
+const request = require('request-legacy')
 
 request.get('https://example.com/file.bin')
   .pipe(fs.createWriteStream('file.bin'))
@@ -169,7 +169,7 @@ request.get({
 ### Eigene Zertifikate
 ```js
 const fs = require('fs')
-const request = require('request')
+const request = require('request-legacy')
 
 request.get({
   url: 'https://example.com',
@@ -193,7 +193,7 @@ request.get({
 
 ## Defaults und Pooling
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 const client = request.defaults({
   timeout: 10000,
@@ -232,3 +232,4 @@ request.get({
 
 ## Hinweise zur Legacy-Nutzung
 `request` ist ein Legacy-Client. Diese Variante wurde fuer Node.js >= 18 (validiert mit v22.13.0) stabilisiert, bleibt aber eine Legacy-API. Fuer neue Projekte sollten moderne Alternativen evaluiert werden.
+
