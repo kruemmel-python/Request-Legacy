@@ -1,5 +1,5 @@
 {
-  "name": "request",
+  "name": "request-legacy",
   "description": "Maintained fork of request for Node.js >= 18 with security hardening.",
   "keywords": [
     "http",
@@ -46,8 +46,7 @@
     "qs": "^6.11.0",
     "safe-buffer": "^5.1.2",
     "tough-cookie": "^4.1.3",
-    "tunnel-agent": "^0.6.0",
-    "uuid": "^3.3.2"
+    "tunnel-agent": "^0.6.0"
   },
   "scripts": {
     "test": "npm run lint && npm run test-ci",
