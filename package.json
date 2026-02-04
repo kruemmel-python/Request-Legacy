@@ -1,21 +1,32 @@
 {
-  "name": "request",
-  "description": "Simplified HTTP request client.",
+  "name": "request-legacy",
+  "version": "3.0.4",
+  "description": "Actively maintained and security-hardened fork of request for Node.js 18-22+.",
   "keywords": [
     "http",
-    "simple",
-    "util",
-    "utility"
+    "request",
+    "legacy",
+    "security-hardened",
+    "maintained",
+    "node22"
   ],
-  "version": "3.0.0",
-  "author": "Mikeal Rogers <mikeal.rogers@gmail.com>",
+  "author": "Ralf Krümmel <ralf.kruemmel-python@outlook.de>",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/kruemmel-python"
+  },
+  "maintenance": {
+    "status": "active",
+    "strategy": "security-first"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/request/request.git"
+    "url": "https://github.com/kruemmel-python/Request-Legacy.git"
   },
   "bugs": {
-    "url": "http://github.com/request/request/issues"
+    "url": "https://github.com/kruemmel-python/Request-Legacy/issues"
   },
+  "homepage": "https://github.com/kruemmel-python/Request-Legacy",
   "license": "Apache-2.0",
   "engines": {
     "node": ">= 18.0.0"
@@ -23,8 +34,22 @@
   "main": "index.js",
   "files": [
     "lib/",
+    "scripts/",
+    "tests/",
+    "examples/",
+    "data/",
     "index.js",
-    "request.js"
+    "request.js",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "MODERNIZATION_REPORT.md",
+    "SECURITY_COMPLIANCE_ARGUMENTATION.md",
+    "Anleitung.md",
+    "Quickstart.md",
+    "ENTERPRISE_POSITIONING.md",
+    "CONTRIBUTING.md"
   ],
   "dependencies": {
     "aws-sign2": "~0.7.0",
@@ -45,14 +70,12 @@
     "qs": "^6.11.0",
     "safe-buffer": "^5.1.2",
     "tough-cookie": "^4.1.3",
-    "tunnel-agent": "^0.6.0",
-    "uuid": "^3.3.2"
+    "tunnel-agent": "^0.6.0"
   },
   "scripts": {
     "test": "npm run lint && npm run test-ci",
     "test-ci": "node --no-deprecation --openssl-config=scripts/openssl-legacy.conf scripts/run-tests.js",
     "test-cov": "nyc --reporter=lcov tape tests/test-*.js",
-    "test-browser": "node tests/browser/start.js",
     "lint": "eslint ."
   },
   "devDependencies": {
@@ -60,11 +83,5 @@
     "eslint": "^9.26.0",
     "globals": "^15.15.0",
     "tape": "^4.6.0"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "hawk",
-      "har-validator"
-    ]
   }
 }

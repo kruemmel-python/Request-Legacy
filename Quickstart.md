@@ -2,12 +2,12 @@
 
 ## 1) Install
 ```powershell
-npm install request
+npm install request-legacy
 ```
 
 ## 2) GET
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request('https://example.com', function (err, res, body) {
   if (err) throw err
@@ -18,7 +18,7 @@ request('https://example.com', function (err, res, body) {
 
 ## 3) POST (JSON)
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request.post({
   url: 'https://httpbin.org/post',
@@ -31,7 +31,7 @@ request.post({
 
 ## 4) POST (Form)
 ```js
-const request = require('request')
+const request = require('request-legacy')
 
 request.post({
   url: 'https://httpbin.org/post',

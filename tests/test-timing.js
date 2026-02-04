@@ -55,7 +55,9 @@ tape('non-redirected request is timed', function (t) {
     t.equal((res.timingPhases.firstByte > 0), true)
     t.equal((res.timingPhases.download > 0), true)
     t.equal((res.timingPhases.total > 0), true)
-    t.equal((res.timingPhases.total <= (end - start)), true)
+    // Allow for coarse Date resolution (notably on Windows) vs high-res timing
+    const clockSkewTolerance = 25
+    t.equal((res.timingPhases.total <= (end - start + clockSkewTolerance)), true)
 
     // validate there are no unexpected properties
     let propNames = []
