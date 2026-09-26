@@ -6,13 +6,13 @@ Dieses Dokument beschreibt die am 26. September 2026 durchgeführten Arbeiten an
 
 Die Arbeiten wurden bewusst auf das bestehende Paket begrenzt. Die öffentliche API von `request-legacy` wurde nicht absichtlich erweitert oder umbenannt. Sicherheitsrelevante Verhaltensänderungen betreffen ausschließlich Fälle, in denen sensible Header bei Redirects nicht weitergegeben werden dürfen.
 
-Der geprüfte Arbeitsstand befindet sich in:
+Der lokale Arbeitsstand befindet sich in:
 
 ```text
-F:\request-legacy-3.0.5-security-hardening
+F:\Request-Legacy-main
 ```
 
-Das Verzeichnis war zum Zeitpunkt der Arbeiten kein Git-Repository. Deshalb existiert für diesen Arbeitsstand kein automatisch erzeugter Git-Diff oder Commit. Dieses Dokument dient zusammen mit `CHANGELOG.md`, `SECURITY_AUDIT.md`, `package-lock.json` und der ausführbaren Release-Prüfung als nachvollziehbares Änderungsprotokoll.
+Der veröffentlichte Stand ist zusätzlich über die Git-Historie des Repositorys nachvollziehbar. Dieses Dokument dient zusammen mit `CHANGELOG.md`, `SECURITY_AUDIT.md`, `package-lock.json` und der ausführbaren Release-Prüfung als technisches Änderungsprotokoll.
 
 ## 2. Ausgangslage
 
@@ -146,7 +146,6 @@ Dieses Verhalten entspricht nicht der von der vorhandenen Suite erwarteten Tape-
 - Direkte Tape-Importe wurden in folgenden Dateien ersetzt:
   - `tests/test-security-regressions.js`
   - `tests/test-tunnel.js`
-  - `tests/browser/test.js`
 - `scripts/run-tests.js` startet den lokalen Runner und beendet den Prozess nach vollständigem Cleanup.
 - `package.json` enthält Tape nicht mehr.
 - `package-lock.json` enthält Tape, `glob@7` und `inflight` nicht mehr.
@@ -217,7 +216,7 @@ Deshalb enthält `eslint.config.cjs` eine auf `tests/**/*.js` begrenzte Regel:
 
 - unbenutzte Funktionsargumente werden in Tests akzeptiert,
 - unbenutzte Variablen bleiben weiterhin Fehler,
-- Browser-Globals und `__karma__` sind nur für Testdateien freigeschaltet,
+- Testdateien erhalten ausschließlich die benötigten Node.js-Globals,
 - für Produktionsdateien bleiben die strengeren Standardregeln aktiv.
 
 ## 7. Aktualisierte Testannahmen
@@ -295,7 +294,7 @@ globals    17.12.0
 
 ### 9.3 Reproduzierbarkeit
 
-Alle direkten Abhängigkeiten sind exakt versioniert. `package-lock.json` wurde durch den sauberen Installationsschritt des Release-Skripts neu erzeugt und bildet den erfolgreich geprüften Baum ab.
+Alle direkten Abhängigkeiten sind exakt versioniert. `package-lock.json` bildet den erfolgreich geprüften Baum ab; die Release-Prüfung installiert diesen Stand unverändert mit `npm ci`.
 
 ## 10. Vollständige Dateiliste der Arbeiten
 
@@ -317,12 +316,11 @@ Alle direkten Abhängigkeiten sind exakt versioniert. `package-lock.json` wurde 
 - `eslint.config.cjs`: passende Testdatei-Regeln ergänzt.
 - `scripts/run-tests.js`: lokalen Runner starten, Cleanup abwarten und zuverlässig beenden.
 - `scripts/security-check.js`: erneute Aufnahme von `tunnel-agent` verhindern.
-- `VERIFY_RELEASE.ps1`: unverändert verwendet; der komplette Ablauf besteht jetzt.
+- `VERIFY_RELEASE.ps1`: verwendet die versionierte Sperrdatei mit `npm ci` und führt den kompletten Prüfablauf aus.
 
 ### Geänderte Tests
 
 - `tests/helpers/index.js`
-- `tests/browser/test.js`
 - `tests/test-security-regressions.js`
 - `tests/test-tunnel.js`
 - `tests/test-form-data.js`
@@ -348,15 +346,14 @@ Verwendeter Befehl:
 
 Das Skript führte folgende Schritte aus:
 
-1. vorhandenes `node_modules` entfernen,
-2. vorhandene Sperrdatei entfernen,
-3. Abhängigkeiten sauber installieren,
-4. Abhängigkeitsbaum prüfen,
-5. Linting ausführen,
-6. vollständige Testsuite ausführen,
-7. interne Sicherheitsprüfungen ausführen,
-8. Produktionsabhängigkeiten mit npm audit prüfen,
-9. npm-Paket als Trockenlauf packen.
+1. vorhandenes `node_modules` durch `npm ci` reproduzierbar ersetzen,
+2. exakt den in `package-lock.json` festgelegten Abhängigkeitsbaum installieren,
+3. den Abhängigkeitsbaum prüfen,
+4. Linting ausführen,
+5. vollständige Testsuite ausführen,
+6. interne Sicherheitsprüfungen ausführen,
+7. Produktionsabhängigkeiten mit npm audit prüfen,
+8. npm-Paket als Trockenlauf packen.
 
 Abschließendes Ergebnis:
 
@@ -406,7 +403,7 @@ Ein Release darf nur erstellt werden, wenn alle sieben Prüfabschnitte erfolgrei
 - Ein Audit mit null bekannten Schwachstellen beweist nicht, dass die Software frei von unbekannten Fehlern ist.
 - Die lokale Tunnelimplementierung reduziert die Lieferkette, muss aber wie jeder netzwerknahe Code bei zukünftigen Node-Versionen weiter getestet werden.
 - Die Windows-Prüfung überspringt die plattformspezifischen Unix-Socket- und Tunnel-TLS-Fälle. Diese sollten in der vorhandenen CI zusätzlich auf Linux ausgeführt werden.
-- Die Browser-Testdatei verweist auf den lokalen Runner; der hier verifizierte Release-Ablauf ist der Node-Testlauf. Falls Browser-Bundling wieder offiziell unterstützt werden soll, ist dafür ein eigener browserfähiger Runner oder Adapter erforderlich.
+- Historisches Browser-Bundling ist kein unterstützter Releasepfad dieses Node.js-Forks. Die nicht mehr ausführbare Karma-/PhantomJS-Struktur wurde bei der Projektbereinigung entfernt.
 
 ## 14. Nachvollziehbare Sicherheitsentscheidung
 
@@ -414,49 +411,65 @@ Die wichtigste Leitlinie dieser Änderung lautet: Sensible Daten bleiben nur inn
 
 Dadurch bleibt `request-legacy` für bestehende Serveranwendungen nutzbar, während die Abhängigkeitsoberfläche verkleinert und die Release-Prüfung wieder zuverlässig ausführbar wird.
 
-## 15. Nachtrag: Bereinigung des separaten Testservers
+## 15. Bereinigung des separaten Testservers
 
-Nach der Veröffentlichung wurde zusätzlich der im Repository enthaltene Ordner `request_testserver` geprüft. Eine Installation in diesem Ordner meldete zunächst 17 Schwachstellen (1 niedrig, 4 mittel, 10 hoch und 2 kritisch). Der Abhängigkeitsbaum bestätigte gleichzeitig, dass `request-legacy@3.0.5` korrekt eingebunden war. Die Meldungen stammten nicht aus dem veröffentlichten Bibliothekspaket, sondern aus den eigenständigen Laufzeit- und Build-Abhängigkeiten der Testserver-Oberfläche.
+Der Ordner `request_testserver` besitzt einen eigenständigen Abhängigkeitsbaum. Eine frühere Installation meldete dort 17 Schwachstellen (1 niedrig, 4 mittel, 10 hoch und 2 kritisch), obwohl `request-legacy@3.0.5` korrekt eingebunden und selbst frei von bekannten npm-Audit-Funden war. Die Meldungen stammten aus den eigenständigen Laufzeit- und Build-Abhängigkeiten der Testserver-Oberfläche.
 
-### 15.1 Geänderte Abhängigkeiten des Testservers
+### 15.1 Geänderte Abhängigkeiten
 
 | Abhängigkeit | Vorher | Nachher | Grund |
 |---|---:|---:|---|
-| `archiver` | `^7.0.1` | `8.0.0` | aktuelle, bereinigte Archivierungskette |
+| `archiver` | `^7.0.1` | `8.0.0` | aktuelle Archivierungskette |
 | `express` | `^4.22.1` | `4.22.3` | Sicherheitskorrekturen in Express und transitiven Paketen |
-| `pdfkit` | `^0.17.2` | `0.20.2` | aktuelle Abhängigkeitskette ohne die gemeldeten Altversionen |
-| `react` / `react-dom` | `^18.2.0` | `18.3.1` | aktueller Stand innerhalb der bestehenden Hauptversion 18 |
-| `@types/react` | `^18.2.0` | `18.3.31` | passend zur verwendeten React-Hauptversion |
-| `@types/react-dom` | `^18.2.0` | `18.3.7` | passend zur verwendeten React-DOM-Hauptversion |
+| `pdfkit` | `^0.17.2` | `0.20.2` | aktuelle Abhängigkeitskette |
+| `react` / `react-dom` | `^18.2.0` | `18.3.1` | aktueller Stand innerhalb der Hauptversion 18 |
+| `@types/react` | `^18.2.0` | `18.3.31` | passend zu React 18 |
+| `@types/react-dom` | `^18.2.0` | `18.3.7` | passend zu React DOM 18 |
 | `@vitejs/plugin-react` | `^5.1.3` | `5.2.0` | aktualisierte React-Buildintegration |
 | `concurrently` | `^9.0.0` | `9.2.4` | aktuelle Wartungsversion |
-| `vite` | `^7.3.1` | `7.3.6` | Sicherheitskorrekturen im Buildwerkzeug und dessen Abhängigkeiten |
-| `tape` | `^4.6.0` | entfernt | im Testserver ungenutzt; entfernte zugleich die alte `glob`-/`inflight`-Kette |
+| `vite` | `^7.3.1` | `7.3.6` | Sicherheitskorrekturen im Buildwerkzeug |
+| `tape` | `^4.6.0` | entfernt | ungenutzt; entfernte zugleich die alte `glob`-/`inflight`-Kette |
 
-Die Abhängigkeit auf die zu prüfende Bibliothek wurde von einer Registry-Version auf `file:..` geändert. Dadurch prüft der Testserver reproduzierbar genau den Quellstand des übergeordneten Repositorys und nicht versehentlich eine ältere Registry-Veröffentlichung.
+Die Bibliothek wird über `file:..` eingebunden. Damit prüft der Testserver exakt den übergeordneten Projektstand statt einer möglicherweise älteren Registry-Veröffentlichung.
 
 ### 15.2 Anpassung an Archiver 8
 
-Archiver 8 stellt keine aufrufbare Standardexport-Funktion mehr bereit. `request_testserver/server.js` importiert deshalb nun die benannte Klasse `ZipArchive` und erzeugt ZIP-Dateien mit:
+Archiver 8 stellt keine aufrufbare Standardexport-Funktion mehr bereit. `request_testserver/server.js` importiert deshalb die benannte Klasse `ZipArchive`:
 
 ```js
 const archive = new ZipArchive({ zlib: { level: 9 } })
 ```
 
-Die vorhandenen Fehlerbehandlung-, Streaming- und Kompressionseinstellungen bleiben dabei erhalten.
+Fehlerbehandlung, Streaming und Kompressionsstufe bleiben erhalten.
 
-### 15.3 Neu erzeugte Sperrdatei und Verifikation
-
-`request_testserver/package-lock.json` wurde aus dem aktualisierten Manifest neu aufgelöst. Ein anschließender sauberer Lauf im Git-Arbeitsverzeichnis ergab:
+### 15.3 Verifikation
 
 ```text
-npm ci:              erfolgreich
-npm audit:           0 Schwachstellen
-request-legacy:      3.0.5 aus dem übergeordneten Repository
-Vite-Build:          erfolgreich, 27 Module verarbeitet
-Syntaxprüfung:       erfolgreich
-Testserver-API:      request-legacy 3.0.5
+npm ci:                erfolgreich
+npm audit:             0 Schwachstellen
+request-legacy:        3.0.5 aus dem übergeordneten Repository
+Vite-Build:            erfolgreich, 27 Module verarbeitet
+ZIP-Erzeugung:         erfolgreich
+Syntaxprüfung:         erfolgreich
+Testserver-API:        request-legacy 3.0.5
 Testserver-Startseite: HTTP 200
 ```
 
-Diese Bereinigung verändert nicht den Inhalt des bereits veröffentlichten npm-Tarballs: `request_testserver` gehört nicht zur `files`-Liste des Pakets. Sie sichert stattdessen die mitgelieferte Entwicklungs- und Prüfoberfläche des GitHub-Repositorys ab.
+`request_testserver` gehört nicht zur `files`-Liste des npm-Pakets. Seine Bereinigung sichert die Entwicklungs- und Prüfoberfläche des GitHub-Repositorys ab, ohne den Laufzeitumfang der Bibliothek zu vergrößern.
+
+## 16. Projekt- und Dokumentationsbereinigung
+
+Am 26. September 2026 wurde der vollständige Projektordner zusätzlich auf generierte, veraltete und nicht mehr ausführbare Bestandteile geprüft. Entfernt wurden:
+
+- installierte `node_modules`-Verzeichnisse und reproduzierbare Buildausgaben,
+- lokale Testserver-Reports und ein entpacktes Paketduplikat,
+- temporäre TAP-, Dateilisten- und QA-Studio-Ausgaben,
+- einmalige Analyse- und Quelltext-Anzeigeskripte,
+- veraltete Travis-, AppVeyor- und Codecov-Konfigurationen,
+- ein auf das alte Upstream-Repository zugeschnittenes Release-Skript,
+- ein nicht eingebundener externer Stresstest mit falschem Paketnamen,
+- die nicht mehr ausführbare Karma-/PhantomJS-Browserteststruktur,
+- eine parallele, nicht mehr verwendete OpenSSL-Zertifikatserzeugung samt CSRs, CRL, Seriennummern, Hilfsservern und überflüssigen privaten Testschlüsseln; erhalten blieb der plattformunabhängige Node.js-Generator,
+- zwei durch dieses Dokument und `SECURITY_AUDIT.md` ersetzte, inhaltlich veraltete Berichte zu Version 3.0.0.
+
+Erhalten blieben der vollständige Laufzeitcode, alle 517 Node.js-Kompatibilitäts- und Sicherheitstests, TLS-Testmaterial samt Zertifikatsgenerator, GitHub Actions, Dependabot, der Testserver und die aktuelle Benutzer-/Sicherheitsdokumentation. `.gitignore` schützt die bereinigte Struktur künftig vor erneut erzeugten Installations-, Build-, Report- und Paketartefakten. Die Release-Prüfung verwendet nun die versionierte Sperrdatei mit `npm ci`, statt sie vor jeder Prüfung zu löschen.

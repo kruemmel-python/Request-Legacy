@@ -25,18 +25,18 @@ We follow a coordinated disclosure process. We will acknowledge reports, provide
 
 The production dependency floor is intentionally explicit for security-sensitive packages:
 
-- `form-data ^4.0.6`
-- `qs ^6.16.0`
+- `form-data 4.0.6`
+- `qs 6.16.0`
+- `tough-cookie 6.0.2`
 - no runtime dependency on deprecated `har-validator`
+- no runtime dependency on deprecated `tunnel-agent`
 
 Before publishing a release, run:
 
 ```bash
-npm install
-npm run lint
-npm run test-ci
-npm run security-check
-npm run audit:prod
+npm ci
+npm run verify:release
+npm pack --dry-run
 ```
 
 `npm audit` is contextual: execute the package audit in a clean checkout. Running it from an unrelated application directory can report findings that are not dependencies of `request-legacy`.

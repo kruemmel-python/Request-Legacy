@@ -207,18 +207,12 @@ function generate () {
   const sslDir = path.join(__dirname, '..', 'tests', 'ssl')
   const caDir = path.join(sslDir, 'ca')
 
-  const caKeyPem = caKeys.privateKey.export({ type: 'pkcs1', format: 'pem' })
-  writeKey(path.join(caDir, 'ca.key'), caKeyPem)
   writeCert(path.join(caDir, 'ca.crt'), caCert.pem)
 
   const serverKeyPem = serverKeys.privateKey.export({ type: 'pkcs1', format: 'pem' })
   writeKey(path.join(caDir, 'localhost.key'), serverKeyPem)
   writeCert(path.join(caDir, 'localhost.crt'), serverCert.pem)
-  writeKey(path.join(caDir, 'server.key'), serverKeyPem)
-  writeCert(path.join(caDir, 'server.crt'), serverCert.pem)
 
-  const clientKeyPem = clientKeys.privateKey.export({ type: 'pkcs1', format: 'pem' })
-  writeKey(path.join(caDir, 'client.key'), clientKeyPem)
   writeCert(path.join(caDir, 'client.crt'), clientCert.pem)
   const clientEncKeyPem = clientKeys.privateKey.export({
     type: 'pkcs8',
@@ -230,8 +224,8 @@ function generate () {
 
   const generalDir = sslDir
   writeKey(path.join(generalDir, 'test.key'), serverKeyPem)
-  writeCert(path.join(generalDir, 'test.crt'), serverCert.pem)
-  writeCert(path.join(generalDir, 'npm-ca.crt'), caCert.pem)
+  writeKey(path.join(generalDir, 'server.key'), serverKeyPem)
+  writeCert(path.join(generalDir, 'server.crt'), serverCert.pem)
 }
 
 generate()

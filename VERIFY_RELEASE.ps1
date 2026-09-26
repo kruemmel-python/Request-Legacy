@@ -10,18 +10,9 @@ $npmVersion = npm --version
 Write-Host "[INFO] Node: $nodeVersion"
 Write-Host "[INFO] npm : $npmVersion"
 
-if (Test-Path node_modules) {
-    Write-Host '[INFO] Removing node_modules ...'
-    Remove-Item -Recurse -Force node_modules
-}
-if (Test-Path package-lock.json) {
-    Write-Host '[INFO] Removing old package-lock.json ...'
-    Remove-Item -Force package-lock.json
-}
-
 Write-Host '[1/7] Clean dependency install ...'
-npm install
-if ($LASTEXITCODE -ne 0) { throw 'npm install failed' }
+npm ci
+if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
 
 Write-Host '[2/7] Dependency tree check ...'
 npm ls request-legacy form-data qs tough-cookie mime-types http-signature aws4 har-validator forever-agent safe-buffer performance-now json-stringify-safe isstream extend

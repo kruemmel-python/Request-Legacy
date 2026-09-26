@@ -59,5 +59,6 @@ npm run test-ci
 ```
 
 ## Status
-- Stabilisiert fuer Node.js >= 18 (validiert mit v22.13.0)
+- Unterstützt Node.js >= 18; die CI prüft Node.js 20, 22 und 24.
+- Release 3.0.5: 517 Tests, interner Security-Check und Produktions-Audit.
 - Legacy-API: fuer neue Projekte Alternativen pruefen

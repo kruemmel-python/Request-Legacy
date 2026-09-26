@@ -62,9 +62,7 @@ Run from the repository root in PowerShell:
 Or manually:
 
 ```powershell
-Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue
-Remove-Item -Force package-lock.json -ErrorAction SilentlyContinue
-npm install
+npm ci
 npm run lint
 npm run test-ci
 npm run security-check

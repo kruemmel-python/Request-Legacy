@@ -5,7 +5,7 @@ const globals = require('globals')
 
 module.exports = [
   {
-    ignores: ['node_modules/**', 'coverage/**', 'data/**', 'reports/**', 'request_testserver/**']
+    ignores: ['node_modules/**', 'coverage/**', 'request_testserver/**']
   },
   js.configs.recommended,
   {
@@ -28,7 +28,7 @@ module.exports = [
   {
     files: ['tests/**/*.js'],
     languageOptions: {
-      globals: { ...globals.node, ...globals.browser, __karma__: 'readonly' }
+      globals: { ...globals.node }
     },
     rules: {
       'no-unused-vars': ['error', { args: 'none' }]

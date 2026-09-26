@@ -1,7 +1,7 @@
-# Request-Legacy 3.00.0
+# Request-Legacy 3.0.5
 
 Maintained fork for Node.js >= 18 with security hardening.
-Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
+Version 3.0.5 is the current security-hardened release; the public API remains compatible with 2.x.
 
 Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 [this issue](https://github.com/request/request/issues/3142).
@@ -9,12 +9,12 @@ Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 Status:
 - Package name: `request-legacy`
 - Engines: Node.js >= 18
-- Validation baseline (2026-02-03): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 1485 tests. Security advisories are time-sensitive; re-run the checks for every release.
+- Validation baseline (2026-09-26): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 517 tests. Security advisories are time-sensitive; re-run the checks for every release.
 - Redirect security: 307/308 preserve method/body; cross-host strips auth/proxy/cookie; maxRedirects emits `E_TOO_MANY_REDIRECTS`
 
 Security notes and evidence:
-- `MODERNIZATION_REPORT.md`
-- `SECURITY_COMPLIANCE_ARGUMENTATION.md`
+- `SECURITY_AUDIT.md`
+- `SICHERHEITSAENDERUNGEN_3.0.5.md`
 
 # Request-Legacy - Simplified HTTP client
 

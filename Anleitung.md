@@ -1,9 +1,9 @@
 # Anleitung: Request-Legacy
 
-Diese Anleitung beschreibt die Nutzung der stabilisierten Legacy-Version von `request-legacy` im Projektstand v1.1.
+Diese Anleitung beschreibt die Nutzung des sicherheitsgehärteten Release `request-legacy` 3.0.5.
 
 ## Voraussetzungen
-- Node.js >= 18 (validiert mit Node.js v22.13.0)
+- Node.js >= 18; die kontinuierliche Integration prüft Node.js 20, 22 und 24.
 - npm
 
 ## Installation
@@ -225,11 +225,12 @@ request.get({
   ```powershell
   npm run test-ci
   ```
-- Letzter TAP-Log:
-  `fixit_neu_analyse/tap-final.log`
-- QA-Report:
-  `fixit_neu_analyse/qa_report_v1.1.md`
+- Vollständige Release-Prüfung:
+  ```powershell
+  .\VERIFY_RELEASE.ps1
+  ```
+- Technischer Sicherheitsnachweis:
+  `SICHERHEITSAENDERUNGEN_3.0.5.md`
 
 ## Hinweise zur Legacy-Nutzung
-`request` ist ein Legacy-Client. Diese Variante wurde fuer Node.js >= 18 (validiert mit v22.13.0) stabilisiert, bleibt aber eine Legacy-API. Fuer neue Projekte sollten moderne Alternativen evaluiert werden.
-
+`request` ist ein Legacy-Client. Diese Variante wird als `request-legacy` fuer Node.js >= 18 gepflegt und bleibt eine Legacy-API. Fuer neue Projekte sollten moderne Alternativen evaluiert werden.

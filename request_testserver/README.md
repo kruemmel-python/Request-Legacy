@@ -54,7 +54,7 @@ Empfohlener, stabiler Weg fuer Unternehmen:
 - Binden Sie diese Version in `package.json` ein (z.B. per `file:` oder `npm link`).
 - Der Testserver verwendet automatisch diesen Pfad, sobald `request-legacy` so installiert ist.
 
-Minimaler Testaufbau (Tape) als Vorlage:
+Minimaler Testaufbau mit dem eingebauten Tape-kompatiblen Runner:
 ```js
 'use strict'
 const helpers = require('./helpers')
@@ -97,7 +97,7 @@ tape('cleanup', function (t) {
 Wichtige Regeln:
 - Dateinamen im Format `tests/test-*.js`.
 - Der Runner laedt nur Tests aus `tests/` oder explizit angegebene Dateien.
-- Nutzen Sie `tests/helpers` (Server, Request-Wrapper, Tape) fuer konsistentes Verhalten.
+- Nutzen Sie `tests/helpers` (Server, Request-Wrapper und lokaler Test-Runner) fuer konsistentes Verhalten. Der Testserver benötigt dafür kein externes `tape`-Paket.
 
 **Tests starten und filtern**
 In der UI koennen Sie einzelne Tests auswaehlen:
