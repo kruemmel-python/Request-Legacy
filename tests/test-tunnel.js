@@ -1,6 +1,6 @@
 'use strict'
 const server = require('./server')
-const tape = require('tape')
+const tape = require('./helpers/tape')
 const request = require('../index')
 const https = require('https')
 const net = require('net')

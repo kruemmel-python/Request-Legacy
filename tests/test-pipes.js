@@ -8,6 +8,7 @@ const request = helpers.request
 const path = helpers.path
 const util = helpers.util
 const tape = helpers.tape
+const mime = helpers.mime
 
 const s = server.createServer()
 
@@ -215,7 +216,7 @@ function testPipeFromFile (testName, hasContentLength) {
   tape(testName, function (t) {
     s.once('/pushjs', function (req, res) {
       if (req.method === 'PUT') {
-        t.equal(req.headers['content-type'], 'application/javascript')
+        t.equal(req.headers['content-type'], mime.lookup(__filename))
         t.equal(
           req.headers['content-length'],
           (hasContentLength ? '' + fileContents.length : undefined))

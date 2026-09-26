@@ -1,3 +1,24 @@
+# 3.0.5 - Security hardening (2026-09-26)
+
+- Removed deprecated `har-validator` and replaced it with an internal structural HAR validator.
+- Updated and pinned security-sensitive runtime dependencies: `form-data` 4.0.6, `qs` 6.16.0, `tough-cookie` 6.0.2, `mime-types` 3.0.2, `http-signature` 1.4.0 and `aws4` 1.13.2.
+- Removed obsolete Node-compatibility dependencies no longer required on Node 18+: `forever-agent`, `performance-now`, `safe-buffer`, `isstream`, and `json-stringify-safe`.
+- Replaced the unmaintained `tunnel-agent` package with an internal HTTP CONNECT agent built on Node's HTTP, HTTPS, and TLS APIs; this also removes its transitive `safe-buffer` dependency.
+- Removed global warning suppression and the weakened OpenSSL test configuration.
+- Added finite callback response buffering (`maxResponseSize`, default 64 MiB; `0` explicitly disables the limit) to mitigate memory-exhaustion/decompression-bomb scenarios.
+- Hardened redirects: credentials/cookies are stripped on any origin change (scheme, host, or port), HTTPS-to-HTTP redirects do not send a Referer, and Referer values never include URL credentials or fragments.
+- `maxRedirects` is now validated as an integer in the range 0..100, preventing NaN/Infinity bypasses of redirect-loop limits.
+- Added release gates, security regression tests, Dependabot, scheduled GitHub security CI, dependency review, and deterministic exact dependency versions.
+- Updated development toolchain to ESLint 10.11.0, @eslint/js 10.0.1 and globals 17.12.0. Replaced Tape with a small internal serial compatibility runner, removing the deprecated `glob@7`/`inflight` development chain.
+
+# 3.0.5 (2026-09-26)
+
+- Raise `form-data` minimum to 4.0.6 for the multipart CRLF-injection fix (GHSA-hmw2-7cc7-3qxx).
+- Raise `qs` minimum to 6.16.0 for the 2025/2026 DoS fixes, including GHSA-4mjr-xmp4-gh2g and GHSA-x5fp-wj9c-mxmx.
+- Remove deprecated `har-validator` from production dependencies and replace it with a local structural HAR request validator.
+- Harden HAR and direct query-string object construction against inherited/prototype keys and tolerate multipart HAR bodies without a `params` array.
+- Add security regression tests and `npm run security-check` / `npm run audit:prod`.
+
 ## Change Log
 
 ### v3.0.0 (2026/02/03)

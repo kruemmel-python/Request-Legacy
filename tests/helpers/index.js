@@ -12,7 +12,7 @@ const os = require('os')
 const qs = require('qs')
 const zlib = require('zlib')
 const mimeTypes = require('mime-types')
-const tape = require('tape')
+const tape = require('./tape')
 const httpSignature = require('http-signature')
 const crypto = require('crypto')
 
@@ -120,7 +120,7 @@ function destroyAgentSockets (agent) {
   destroySocketList(agent.requests || {})
 }
 
-function cleanup () {
+function cleanup (callback) {
   cleanupServers(function () {
     destroyAgent(http.globalAgent)
     destroyAgent(https.globalAgent)
@@ -129,6 +129,7 @@ function cleanup () {
     if (typeof request.resetGlobalPool === 'function') {
       request.resetGlobalPool()
     }
+    if (typeof callback === 'function') callback()
   })
 }
 

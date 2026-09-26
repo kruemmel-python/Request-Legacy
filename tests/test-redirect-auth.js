@@ -88,7 +88,7 @@ function addTests () {
 
   runTest('same host different protocol',
     redirect.from('http', 'localhost').to('https', 'localhost'),
-    true)
+    false)
 
   runTest('different host same protocol',
     redirect.from('https', '127.0.0.1').to('https', 'localhost'),

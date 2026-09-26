@@ -388,7 +388,7 @@ tape('should not have referer header when removeRefererHeader is true', function
     })
 })
 
-tape('should preserve referer header set in the initial request when removeRefererHeader is true', function (t) {
+tape('should remove an initial referer header when removeRefererHeader is true', function (t) {
   request.post({
     uri: s.url + '/temp',
     jar,
@@ -401,7 +401,7 @@ tape('should preserve referer header set in the initial request when removeRefer
     t.end()
   })
     .on('redirect', function () {
-      t.equal(this.headers.referer, 'http://awesome.com')
+      t.equal(this.headers.referer, undefined)
     })
 })
 

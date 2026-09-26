@@ -1,7 +1,5 @@
 'use strict'
 
-process.env.NODE_NO_WARNINGS = '1'
-
 const http = require('http')
 const https = require('https')
 const url = require('url')
@@ -13,10 +11,9 @@ const aws4 = require('aws4')
 const httpSignature = require('http-signature')
 const mime = require('mime-types')
 const caseless = require('caseless')
-const ForeverAgent = require('forever-agent')
 const FormData = require('form-data')
-const extend = require('extend')
-const isstream = require('isstream')
+const extend = require('./lib/extend')
+const isstream = require('./lib/isstream')
 const isTypedArray = require('is-typedarray').strict
 const helpers = require('./lib/helpers')
 const cookies = require('./lib/cookies')
@@ -29,8 +26,8 @@ const hawk = require('./lib/hawk')
 const Multipart = require('./lib/multipart').Multipart
 const Redirect = require('./lib/redirect').Redirect
 const Tunnel = require('./lib/tunnel').Tunnel
-const now = require('performance-now')
-const Buffer = require('safe-buffer').Buffer
+const { performance } = require('node:perf_hooks')
+const Buffer = require('node:buffer').Buffer
 
 const paramsHaveRequestBody = helpers.paramsHaveRequestBody
 const safeStringify = helpers.safeStringify
@@ -38,7 +35,6 @@ const isReadStream = helpers.isReadStream
 const toBase64 = helpers.toBase64
 const defer = helpers.defer
 const copy = helpers.copy
-const version = helpers.version
 const globalCookieJar = cookies.jar()
 
 let globalPool = {}
@@ -177,6 +173,19 @@ Request.prototype.init = function (options) {
   const self = this
   if (!options) {
     options = {}
+  }
+
+  // Callback mode buffers the response body in memory. Keep a finite default
+  // to prevent an untrusted peer (including after decompression) from causing
+  // unbounded memory growth. Set maxResponseSize to 0 to opt out explicitly.
+  if (typeof self.maxResponseSize === 'undefined' && typeof options.maxResponseSize === 'undefined') {
+    self.maxResponseSize = 64 * 1024 * 1024
+  }
+  if (typeof options.maxResponseSize !== 'undefined') {
+    self.maxResponseSize = options.maxResponseSize
+  }
+  if (typeof self.maxResponseSize !== 'number' || !Number.isFinite(self.maxResponseSize) || self.maxResponseSize < 0) {
+    throw new TypeError('options.maxResponseSize must be a finite non-negative number')
   }
   self.headers = self.headers ? copy(self.headers) : {}
 
@@ -509,15 +518,11 @@ Request.prototype.init = function (options) {
     if (options.agentClass) {
       self.agentClass = options.agentClass
     } else if (options.forever) {
-      const v = version()
-      // use ForeverAgent in node 0.10- only
-      if (v.major === 0 && v.minor <= 10) {
-        self.agentClass = protocol === 'http:' ? ForeverAgent : ForeverAgent.SSL
-      } else {
-        self.agentClass = self.httpModule.Agent
-        self.agentOptions = self.agentOptions || {}
-        self.agentOptions.keepAlive = true
-      }
+      // Node.js 18+ has native keep-alive capable agents. The historical
+      // forever-agent dependency is therefore unnecessary attack surface.
+      self.agentClass = self.httpModule.Agent
+      self.agentOptions = self.agentOptions || {}
+      self.agentOptions.keepAlive = true
     } else {
       self.agentClass = self.httpModule.Agent
     }
@@ -752,11 +757,11 @@ Request.prototype.start = function () {
   if (self.timing) {
     // All timings will be relative to this request's startTime.  In order to do this,
     // we need to capture the wall-clock start time (via Date), immediately followed
-    // by the high-resolution timer (via now()).  While these two won't be set
+    // by the high-resolution timer (via performance.now()).  While these two won't be set
     // at the _exact_ same time, they should be close enough to be able to calculate
     // high-resolution, monotonically non-decreasing timestamps relative to startTime.
     var startTime = new Date().getTime()
-    var startTimeNow = now()
+    var startTimeNow = performance.now()
   }
 
   if (self._aborted) {
@@ -824,15 +829,15 @@ Request.prototype.start = function () {
     // `._connecting` was the old property which was made public in node v6.1.0
     const isConnecting = socket._connecting || socket.connecting
     if (self.timing) {
-      self.timings.socket = now() - self.startTimeNow
+      self.timings.socket = performance.now() - self.startTimeNow
 
       if (isConnecting) {
         const onLookupTiming = function () {
-          self.timings.lookup = now() - self.startTimeNow
+          self.timings.lookup = performance.now() - self.startTimeNow
         }
 
         const onConnectTiming = function () {
-          self.timings.connect = now() - self.startTimeNow
+          self.timings.connect = performance.now() - self.startTimeNow
         }
 
         socket.once('lookup', onLookupTiming)
@@ -851,7 +856,7 @@ Request.prototype.start = function () {
             self.timingPhases = {}
           }
           // Wir erfassen den Zeitpunkt relativ zum Start des aktuellen Requests
-          self.timings.secureConnect = now() - self.startTimeNow
+          self.timings.secureConnect = performance.now() - self.startTimeNow
           self.timingPhases.secureConnect = true
         }
 
@@ -894,7 +899,7 @@ Request.prototype.start = function () {
 
         socket.on('connect', onReqSockConnect)
 
-        self.req.on('error', function (err) {
+        self.req.on('error', function () {
           socket.removeListener('connect', onReqSockConnect)
         })
 
@@ -941,13 +946,13 @@ Request.prototype.onRequestResponse = function (response) {
   const self = this
 
   if (self.timing) {
-    self.timings.response = now() - self.startTimeNow
+    self.timings.response = performance.now() - self.startTimeNow
   }
 
   debug('onRequestResponse', self.uri.href, response.statusCode, response.headers)
   response.on('end', function () {
     if (self.timing) {
-      self.timings.end = now() - self.startTimeNow
+      self.timings.end = performance.now() - self.startTimeNow
       response.timingStart = self.startTime
 
       // fill in the blanks for any periods that didn't trigger, such as
@@ -1166,9 +1171,30 @@ Request.prototype.readResponseBody = function (response) {
   debug("reading response's body")
   let buffers = []
   let bufferLength = 0
+  let responseSize = 0
+  let sizeLimitExceeded = false
   const strings = []
 
   self.on('data', function (chunk) {
+    const chunkLength = Buffer.isBuffer(chunk) ? chunk.length : Buffer.byteLength(String(chunk), self.encoding || 'utf8')
+    responseSize += chunkLength
+
+    if (self.maxResponseSize > 0 && responseSize > self.maxResponseSize) {
+      if (!sizeLimitExceeded) {
+        sizeLimitExceeded = true
+        const error = new Error('Response body exceeds maxResponseSize')
+        error.code = 'E_RESPONSE_TOO_LARGE'
+        error.maxResponseSize = self.maxResponseSize
+        error.received = responseSize
+        if (self.responseContent && typeof self.responseContent.destroy === 'function') {
+          self.responseContent.destroy()
+        }
+        self.abort()
+        self.emit('error', error)
+      }
+      return
+    }
+
     if (!Buffer.isBuffer(chunk)) {
       strings.push(chunk)
     } else if (chunk.length) {
@@ -1279,12 +1305,12 @@ Request.prototype.qs = function (q, clobber) {
   if (!clobber && self.uri.query) {
     base = self._qs.parse(self.uri.query)
   } else {
-    base = {}
+    base = Object.create(null)
   }
 
-  for (const i in q) {
-    base[i] = q[i]
-  }
+  Object.keys(q).forEach(function (key) {
+    base[key] = q[key]
+  })
 
   const qs = self._qs.stringify(base)
 

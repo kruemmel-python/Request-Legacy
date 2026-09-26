@@ -55,7 +55,7 @@ function runTest (t, options) {
       return
     }
 
-    t.ok(/multipart\/form-data; boundary=--------------------------\d+/
+    t.ok(/^multipart\/form-data; boundary=[!#$%&'*+.^_`|~0-9A-Za-z-]+$/
       .test(req.headers['content-type']))
 
     // temp workaround

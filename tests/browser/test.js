@@ -15,7 +15,7 @@ if (!Function.prototype.bind) {
   }
 }
 
-const tape = require('tape')
+const tape = require('../helpers/tape')
 const request = require('../../index')
 
 tape('returns on error', function (t) {

@@ -1,12 +1,7 @@
-# Request-Legacy 3.0.4
-<img width="2752" height="1536" alt="unnamed (1)" src="https://github.com/user-attachments/assets/b1ed2ae0-ab53-4c95-ba03-571d35a24941" />
-### ❤️ Support my Work
-If this modernized version of request saved you hours of refactoring or helped you pass a security audit, consider supporting my ongoing efforts to harden legacy software.
-
-**Donate via PayPal:** [Ralf Krümmel](https://www.paypal.com/donate/?hosted_button_id=XVUDEKSWFGL74)
+# Request-Legacy 3.00.0
 
 Maintained fork for Node.js >= 18 with security hardening.
-Version 3.0.4 is the current release of this fork; the public API remains compatible with 2.x.
+Version 3.00.0 is the first release of this fork; the public API remains compatible with 2.x.
 
 Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 [this issue](https://github.com/request/request/issues/3142).
@@ -14,7 +9,7 @@ Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 Status:
 - Package name: `request-legacy`
 - Engines: Node.js >= 18
-- Validation (2026-02-03): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 1485 tests
+- Validation baseline (2026-02-03): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 1485 tests. Security advisories are time-sensitive; re-run the checks for every release.
 - Redirect security: 307/308 preserve method/body; cross-host strips auth/proxy/cookie; maxRedirects emits `E_TOO_MANY_REDIRECTS`
 
 Security notes and evidence:
@@ -22,9 +17,24 @@ Security notes and evidence:
 - `SECURITY_COMPLIANCE_ARGUMENTATION.md`
 
 # Request-Legacy - Simplified HTTP client
+
 [![npm package](https://nodei.co/npm/request-legacy.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/request-legacy/)
 
 Install: `npm install request-legacy`
+
+
+### Security dependency floor (3.0.5)
+
+- `form-data >= 4.0.6` blocks GHSA-hmw2-7cc7-3qxx (multipart CRLF injection).
+- `qs >= 6.16.0` blocks the 2025/2026 `arrayLimit` and `isBuffer` denial-of-service advisories.
+- Deprecated `har-validator` was removed from the runtime dependency graph and replaced by a local structural HAR request validator.
+- `npm run security-check` verifies the local dependency floor; `npm run audit:prod` runs the registry-backed production audit.
+
+Important: run audits in a clean project when evaluating this package. An audit in an existing application also reports vulnerabilities from unrelated packages in that application's dependency tree.
+
+## Security hardening in 3.0.5
+
+Request-Legacy 3.0.5 removes deprecated runtime dependencies, pins current security-sensitive dependencies, hardens redirect credential handling and prototype-pollution boundaries, and adds a finite callback response-body limit. The default `maxResponseSize` is 64 MiB in callback mode; set it explicitly to a lower value for untrusted endpoints. Setting it to `0` disables the limit and should be a deliberate compatibility choice. See `SECURITY_AUDIT.md` for the verification checklist.
 
 
 ## Super simple to use

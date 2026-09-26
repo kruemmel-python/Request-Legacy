@@ -14,7 +14,7 @@
 
 'use strict'
 
-const extend = require('extend')
+const extend = require('./lib/extend')
 const cookies = require('./lib/cookies')
 const helpers = require('./lib/helpers')
 

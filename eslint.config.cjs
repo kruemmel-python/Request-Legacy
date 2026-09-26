@@ -5,43 +5,33 @@ const globals = require('globals')
 
 module.exports = [
   {
-    ignores: [
-      'node_modules/**',
-      'coverage/**',
-      'fixit/**',
-      'fixit_neu_analyse/**',
-      'reports/**',
-      'data/**'
-    ]
+    ignores: ['node_modules/**', 'coverage/**', 'data/**', 'reports/**', 'request_testserver/**']
   },
+  js.configs.recommended,
   {
     files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
-      sourceType: 'script',
-      globals: globals.node
+      sourceType: 'commonjs',
+      globals: { ...globals.node }
     },
-    linterOptions: {
-      reportUnusedDisableDirectives: 'warn'
-    },
-    rules: Object.assign({}, js.configs.recommended.rules, {
-      'no-redeclare': ['error', { builtinGlobals: false }],
-      'no-var': 'off',
-      'prefer-const': 'warn',
-      'no-prototype-builtins': 'warn',
-      'no-unused-expressions': 'warn',
-      'no-empty': 'warn',
-      'no-tabs': 'warn',
-      'no-mixed-spaces-and-tabs': 'warn',
-      'no-unused-vars': ['warn', { args: 'none', ignoreRestSiblings: true }]
-    })
+    rules: {
+      'no-console': 'off',
+      'no-control-regex': 'off',
+      'no-prototype-builtins': 'error',
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
+      'no-with': 'error'
+    }
   },
   {
-    files: ['tests/browser/**/*.js'],
+    files: ['tests/**/*.js'],
     languageOptions: {
-      globals: Object.assign({}, globals.browser, {
-        __karma__: 'readonly'
-      })
+      globals: { ...globals.node, ...globals.browser, __karma__: 'readonly' }
+    },
+    rules: {
+      'no-unused-vars': ['error', { args: 'none' }]
     }
   }
 ]
