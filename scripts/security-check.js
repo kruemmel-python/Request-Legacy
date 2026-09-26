@@ -93,6 +93,34 @@ if (pkg.scripts && /--no-deprecation|NODE_NO_WARNINGS/.test(JSON.stringify(pkg.s
   failures.push('package scripts must not suppress runtime/deprecation warnings')
 }
 
+const testServerPath = path.join(root, 'request_testserver', 'server.js')
+if (fs.existsSync(testServerPath)) {
+  const testServerSource = fs.readFileSync(testServerPath, 'utf8')
+  if (/shell\s*:\s*true/.test(testServerSource)) {
+    failures.push('request_testserver: shell process execution is forbidden')
+  }
+  if (/\bfrom\s+['"]cors['"]|app\.use\(\s*cors\s*\(/.test(testServerSource)) {
+    failures.push('request_testserver: unrestricted CORS middleware is forbidden')
+  }
+  if (!/spawn\(process\.execPath,\s*buildRunnerArgs/.test(testServerSource)) {
+    failures.push('request_testserver: tests must run directly through process.execPath')
+  }
+  if (!/app\.listen\(port, host,/.test(testServerSource)) {
+    failures.push('request_testserver: listen host must be explicit')
+  }
+  if (!/loopbackHosts\.has\(req\.hostname\)/.test(testServerSource) || !/sec-fetch-site/.test(testServerSource)) {
+    failures.push('request_testserver: reject non-loopback Host headers and cross-site browser requests')
+  }
+  if (!/TESTSERVER_API_TOKEN is required/.test(testServerSource)) {
+    failures.push('request_testserver: non-loopback binding must require an API token')
+  }
+}
+
+const testResolverSource = fs.readFileSync(path.join(root, 'scripts', 'resolve-test-files.js'), 'utf8')
+if (!/fs\.realpathSync/.test(testResolverSource) || !/TEST_FILE_PATTERN/.test(testResolverSource)) {
+  failures.push('test runner: canonical tests/test-*.js boundary is missing')
+}
+
 if (failures.length) {
   console.error('Security check FAILED')
   failures.forEach(function (failure) {
@@ -109,5 +137,7 @@ if (failures.length) {
   console.log('- http-signature: >= 1.4.0')
   console.log('- obsolete compatibility-only runtime dependencies: removed where Node 18+ makes them unnecessary')
   console.log('- HTTP CONNECT tunneling: internal implementation, no tunnel-agent/safe-buffer dependency')
+  console.log('- test runner: canonical tests/test-*.js boundary enforced')
+  console.log('- test server: shell-free process launch, loopback default and guarded LAN binding')
   console.log('- warning suppression: forbidden')
 }

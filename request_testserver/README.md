@@ -3,7 +3,7 @@
 Dieser Testserver dient als kontrollierte Test-Umgebung fuer `request-legacy`. Er startet die offizielle Test-Suite, erlaubt eigene Tests (inklusive Firmen-spezifischer Request-Profile) und erzeugt reproduzierbare Reports. Das Ziel ist, Legacy-Requests in Ihrer eigenen Struktur sicher und stabil am Leben zu halten, waehrend Sie Updates oder Anpassungen an `request-legacy` einspielen.
 
 **Kurzfassung**
-Der Server fuehrt `npm run test-ci` im installierten `request-legacy`-Paket aus, streamt TAP-Output live, erzeugt HTML/JSON/PDF/CSV/ZIP-Reports und kann regelmaessige Testlaeufe planen.
+Der Server startet den eingebauten Runner direkt mit Node.js, streamt TAP-Output live, erzeugt HTML/JSON/PDF/CSV/ZIP-Reports und kann regelmaessige Testlaeufe planen. Es wird keine Shell zwischen HTTP-Anfrage und Testprozess verwendet.
 
 **Hauptfunktionen**
 - Live-Streaming der TAP-Ausgabe (Server-Sent Events) fuer schnelle Rueckmeldung.
@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 - UI: `http://localhost:5173`
-- API/Testserver: `http://localhost:3001`
+- API/Testserver: `http://127.0.0.1:3001`
 
 **Schnellstart (Production/Single-Server)**
 ```bash
@@ -33,16 +33,16 @@ npm install
 npm run build
 npm run start
 ```
-- UI + API: `http://localhost:3001`
+- UI + API: `http://127.0.0.1:3001`
 
 **Wie der Testlauf funktioniert**
 Der Server ermittelt den Installationspfad von `request-legacy` und startet dort:
 ```bash
-npm run test-ci
+node scripts/run-tests.js
 ```
 Optional koennen einzelne Tests selektiert werden:
 ```bash
-npm run test-ci -- tests/test-params.js tests/test-timeout.js
+node scripts/run-tests.js tests/test-params.js tests/test-timeout.js
 ```
 Die UI und das API bieten dafuer ein Filter-Feld bzw. den `tests`-Parameter.
 
@@ -96,7 +96,7 @@ tape('cleanup', function (t) {
 
 Wichtige Regeln:
 - Dateinamen im Format `tests/test-*.js`.
-- Der Runner laedt nur Tests aus `tests/` oder explizit angegebene Dateien.
+- Der Runner akzeptiert ausschließlich vorhandene Dateien direkt unter `tests/test-*.js`. Unterordner, absolute Pfade außerhalb dieses Verzeichnisses und symbolische Verweise nach außen werden abgewiesen.
 - Nutzen Sie `tests/helpers` (Server, Request-Wrapper und lokaler Test-Runner) fuer konsistentes Verhalten. Der Testserver benötigt dafür kein externes `tape`-Paket.
 
 **Tests starten und filtern**
@@ -105,7 +105,7 @@ In der UI koennen Sie einzelne Tests auswaehlen:
 
 Per API (SSE):
 ```bash
-curl -N "http://localhost:3001/api/test-ci?tests=tests/test-params.js,tests/test-timeout.js"
+curl -N "http://127.0.0.1:3001/api/test-ci?tests=tests/test-params.js,tests/test-timeout.js"
 ```
 
 **Reports**
@@ -119,7 +119,7 @@ Standard-Retention:
 - Max. 30 Tage
 
 **API Uebersicht**
-- `GET /api/meta`  -> Paketname, Version, Zielpfad, Limits
+- `GET /api/meta`  -> Paketname, Version, logische Zielbezeichnung und Limits; keine lokalen Dateisystempfade
 - `GET /api/test-ci?tests=...` -> Startet Tests (SSE-Stream)
 - `GET /api/report/latest` -> Letzter Report
 - `GET /api/report/list?limit=20` -> Liste der Reports
@@ -139,17 +139,19 @@ Standard-Retention:
 **Scheduler (regelmaessige Testlaeufe)**
 Start per API:
 ```bash
-curl -X POST http://localhost:3001/api/schedule/start \
+curl -X POST http://127.0.0.1:3001/api/schedule/start \
   -H "Content-Type: application/json" \
   -d '{"intervalMinutes":60,"tests":"tests/test-params.js"}'
 ```
 Stop:
 ```bash
-curl -X POST http://localhost:3001/api/schedule/stop
+curl -X POST http://127.0.0.1:3001/api/schedule/stop
 ```
 
 **Konfiguration (Environment-Variablen)**
 - `PORT` (Default: `3001`)
+- `HOST` (Default: `127.0.0.1`)
+- `TESTSERVER_API_TOKEN` (bei jedem Nicht-Loopback-`HOST` zwingend erforderlich)
 - `REPORT_MAX` (Default: `50`)
 - `REPORT_MAX_DAYS` (Default: `30`)
 - `SCHEDULE_INTERVAL_MINUTES` (Default: `60`)
@@ -164,12 +166,24 @@ curl -X POST http://localhost:3001/api/schedule/stop
 - Nutzen Sie die Reports, um Regressionen in Legacy-Pfaden schnell sichtbar zu machen.
 
 **Sicherheit und Betrieb**
-- Der Server hat keine Authentifizierung. Betreiben Sie ihn nur im internen Netz oder hinter einem Reverse-Proxy mit Auth.
+- Standardmäßig bindet der Server ausschließlich an `127.0.0.1`.
+- Es gibt kein pauschal offenes CORS. Lokale Browseraufrufe werden auf die Server-Origin und die Vite-Entwicklungs-Origin begrenzt.
+- Fremde `Host`-Header und Browseranfragen mit `Sec-Fetch-Site: cross-site` werden im lokalen Betrieb abgewiesen; dies schützt zusätzlich gegen DNS-Rebinding und blinde Cross-Site-Auslösung.
+- Tests werden mit `process.execPath`, einer Argumentliste und `shell: false` gestartet.
+- Testfilter werden vor dem Prozessstart kanonisch auf `tests/test-*.js` begrenzt.
+- Bei einem absichtlichen LAN-Binding ist ein API-Token Pflicht. Beispiel:
+  ```powershell
+  $env:HOST='0.0.0.0'
+  $env:TESTSERVER_API_TOKEN='<langes-zufälliges-token>'
+  npm start
+  ```
+- Öffnen Sie die Oberfläche im Token-Modus einmalig mit `?token=<token>`. Die UI sendet den Token anschließend an API-, SSE- und Report-Endpunkte. Verwenden Sie im LAN zusätzlich TLS über einen Reverse-Proxy, damit der Token nicht im Klartext übertragen wird.
 - Testcode laeuft lokal im Prozess des Servers. Behandeln Sie den Host als vertrauenswuerdig.
 
 **Troubleshooting**
 - "A test run is already in progress": Es laeuft bereits ein Test. Es gibt nur einen Runner zur selben Zeit.
-- "Test file not found": Pfad pruefen. Tests muessen unter `tests/` liegen oder als absoluter Pfad angegeben sein.
+- "Test file not found" oder "outside tests/test-*.js": Nur vorhandene Dateien direkt unter `tests/test-*.js` sind zulässig.
+- `401 Unauthorized`: Im LAN-/Token-Modus fehlt der korrekte `TESTSERVER_API_TOKEN`.
 - Lange Haenger: `TEST_MAX_RUNTIME_MS` begrenzt die Laufzeit und bricht notfalls ab.
 
 **Lizenz**

@@ -1,6 +1,6 @@
-import cors from 'cors'
 import express from 'express'
 import { spawn } from 'child_process'
+import crypto from 'crypto'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -15,6 +15,8 @@ const PDFDocument = require('pdfkit')
 
 const app = express()
 const port = process.env.PORT || 3001
+const host = process.env.HOST || '127.0.0.1'
+const apiToken = process.env.TESTSERVER_API_TOKEN || ''
 const distPath = path.join(__dirname, 'dist')
 const reportsDir = path.join(__dirname, 'reports')
 
@@ -25,6 +27,14 @@ let requestPkg = { name: 'request-legacy', version: 'unknown' }
 try {
   requestPkg = require('request-legacy/package.json')
 } catch {}
+const requestTarget = `${requestPkg.name || 'request-legacy'}@${requestPkg.version || 'unknown'}`
+const runnerPath = path.join(requestPkgPath, 'scripts', 'run-tests.js')
+const resolveTestFiles = require(path.join(requestPkgPath, 'scripts', 'resolve-test-files.js'))
+
+const loopbackHosts = new Set(['127.0.0.1', '::1', 'localhost'])
+if (!loopbackHosts.has(host) && !apiToken) {
+  throw new Error('TESTSERVER_API_TOKEN is required when HOST is not a loopback address')
+}
 
 const MAX_REPORTS = Number(process.env.REPORT_MAX || 50)
 const MAX_REPORT_DAYS = Number(process.env.REPORT_MAX_DAYS || 30)
@@ -82,23 +92,20 @@ function unescapeHtml (input) {
 
 function parseTestsInput (input) {
   if (!input) return []
-  if (Array.isArray(input)) {
-    return input.map((item) => String(item).trim()).filter(Boolean)
-  }
-  return String(input)
-    .split(/[,\s]+/)
-    .map((item) => item.trim())
+  const requested = (Array.isArray(input) ? input : String(input).split(/[,\s]+/))
+    .map((item) => String(item).trim())
     .filter(Boolean)
+  return resolveTestFiles(requestPkgPath, requested)
+    .map((name) => `tests/${name}`)
 }
 
 function buildCommand (tests) {
-  if (!tests || tests.length === 0) return 'npm run test-ci'
-  return `npm run test-ci -- ${tests.join(' ')}`
+  if (!tests || tests.length === 0) return 'node scripts/run-tests.js'
+  return `node scripts/run-tests.js ${tests.join(' ')}`
 }
 
-function buildNpmArgs (tests) {
-  if (!tests || tests.length === 0) return ['run', 'test-ci']
-  return ['run', 'test-ci', '--', ...tests]
+function buildRunnerArgs (tests) {
+  return [runnerPath, ...(tests || [])]
 }
 
 function buildReportHtml (report) {
@@ -215,8 +222,8 @@ function getLatestReportFromDisk () {
     finishedAt: null,
     exitCode: null,
     output: '',
-    command: 'npm run test-ci',
-    cwd: requestPkgPath,
+    command: 'node scripts/run-tests.js',
+    cwd: requestTarget,
     tests: []
   }
 }
@@ -260,8 +267,8 @@ function loadReportData (filename) {
   const html = fs.readFileSync(htmlPath, 'utf8')
   return {
     filename,
-    command: 'npm run test-ci',
-    cwd: requestPkgPath,
+    command: 'node scripts/run-tests.js',
+    cwd: requestTarget,
     output: extractOutputFromHtml(html),
     startedAt: null,
     finishedAt: null,
@@ -316,7 +323,7 @@ function buildCsvContent (data, filename) {
 
   const row = [
     filename || data.filename || '',
-    data.command || 'npm run test-ci',
+    data.command || 'node scripts/run-tests.js',
     data.cwd || '',
     tests,
     data.startedAt ? data.startedAt.toISOString() : '',
@@ -351,7 +358,7 @@ function streamPdf (res, reportData, filename) {
   doc.fontSize(9).fillColor('#8d98ad')
   doc.text('Command')
   doc.fontSize(10).fillColor('#e9eef8')
-  doc.text(reportData.command || 'npm run test-ci')
+  doc.text(reportData.command || 'node scripts/run-tests.js')
 
   doc.moveDown(0.6)
   doc.fontSize(9).fillColor('#8d98ad')
@@ -429,7 +436,7 @@ function createReport (tests, source) {
     path: reportPath,
     jsonPath: reportPath.replace(/\.html$/, '.json'),
     url: `/reports/${filename}`,
-    cwd: requestPkgPath,
+    cwd: requestTarget,
     command: buildCommand(tests),
     tests,
     source,
@@ -445,15 +452,14 @@ function startTestRun ({ tests, onOutput, onExit, source }) {
     return { ok: false, reason: 'running' }
   }
 
-  const parsedTests = parseTestsInput(tests)
+  const parsedTests = tests || []
   const report = createReport(parsedTests, source)
   lastReport = report
   isRunning = true
 
-  const cmd = process.platform === 'win32' ? 'npm.cmd' : 'npm'
-  const child = spawn(cmd, buildNpmArgs(parsedTests), {
+  const child = spawn(process.execPath, buildRunnerArgs(parsedTests), {
     cwd: requestPkgPath,
-    shell: true,
+    shell: false,
     env: process.env
   })
 
@@ -605,8 +611,47 @@ function stopSchedule () {
   scheduleNextRun()
 }
 
-app.use(cors())
-app.use(express.json())
+function tokenMatches (candidate) {
+  if (!candidate || !apiToken) return false
+  const actual = Buffer.from(String(candidate))
+  const expected = Buffer.from(apiToken)
+  return actual.length === expected.length && crypto.timingSafeEqual(actual, expected)
+}
+
+function requestToken (req) {
+  const authorization = req.get('authorization') || ''
+  const bearer = authorization.match(/^Bearer\s+(.+)$/i)
+  return req.get('x-api-token') || (bearer && bearer[1]) || req.query.token
+}
+
+function localOriginAllowed (req) {
+  if (!loopbackHosts.has(req.hostname)) return false
+  if (req.get('sec-fetch-site') === 'cross-site') return false
+  const origin = req.get('origin')
+  if (!origin) return true
+  try {
+    const parsed = new URL(origin)
+    return loopbackHosts.has(parsed.hostname) &&
+      (parsed.port === String(port) || parsed.port === '5173')
+  } catch {
+    return false
+  }
+}
+
+function requireAccess (req, res, next) {
+  if (apiToken) {
+    if (!tokenMatches(requestToken(req))) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+  } else if (!localOriginAllowed(req)) {
+    return res.status(403).json({ error: 'Cross-origin access denied' })
+  }
+  next()
+}
+
+app.use('/api', requireAccess)
+app.use('/reports', requireAccess)
+app.use(express.json({ limit: '16kb' }))
 
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath))
@@ -619,8 +664,8 @@ app.get('/api/meta', (req, res) => {
   res.json({
     name: requestPkg.name || 'request-legacy',
     version: requestPkg.version || 'unknown',
-    cwd: requestPkgPath,
-    command: 'npm run test-ci',
+    command: 'node scripts/run-tests.js',
+    target: requestTarget,
     reportMax: MAX_REPORTS,
     reportMaxDays: MAX_REPORT_DAYS
   })
@@ -636,7 +681,11 @@ app.get('/api/schedule', (req, res) => {
 })
 
 app.post('/api/schedule/start', (req, res) => {
-  startSchedule(req.body.intervalMinutes, req.body.tests)
+  try {
+    startSchedule(req.body.intervalMinutes, req.body.tests)
+  } catch (error) {
+    return res.status(400).json({ error: error.message })
+  }
   res.json({
     enabled: schedule.enabled,
     intervalMinutes: schedule.intervalMinutes,
@@ -774,14 +823,20 @@ app.get('/api/zen', (req, res) => {
 })
 
 app.get('/api/test-ci', (req, res) => {
+  let tests
+  try {
+    tests = parseTestsInput(req.query.tests)
+  } catch (error) {
+    return res.status(400).json({ error: error.message })
+  }
+
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Connection', 'keep-alive')
   if (typeof res.flushHeaders === 'function') res.flushHeaders()
 
-  const testsParam = req.query.tests
   const result = startTestRun({
-    tests: testsParam,
+    tests,
     source: 'manual',
     onOutput: (type, text) => sendEvent(res, type, text),
     onExit: (code) => {
@@ -811,6 +866,6 @@ if (fs.existsSync(path.join(distPath, 'index.html'))) {
   })
 }
 
-app.listen(port, () => {
-  console.log(`Server laeuft auf http://localhost:${port}`)
+app.listen(port, host, () => {
+  console.log(`Server laeuft auf http://${host}:${port}`)
 })

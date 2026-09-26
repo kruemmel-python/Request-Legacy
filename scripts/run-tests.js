@@ -1,8 +1,7 @@
 'use strict'
 
-const fs = require('fs')
 const path = require('path')
-
+const resolveTestFiles = require('./resolve-test-files')
 
 const timeoutMs = 300 * 1000
 const timeout = setTimeout(function () {
@@ -13,23 +12,7 @@ timeout.unref()
 
 const testsDir = path.join(__dirname, '..', 'tests')
 const cliTests = process.argv.slice(2)
-let testFiles
-
-if (cliTests.length === 0) {
-  testFiles = fs.readdirSync(testsDir)
-    .filter(function (name) {
-      return /^test-.*\.js$/.test(name)
-    })
-    .sort()
-} else {
-  testFiles = cliTests.map(function (arg) {
-    const target = path.isAbsolute(arg) ? arg : path.join(__dirname, '..', arg)
-    if (!fs.existsSync(target)) {
-      throw new Error('Test file not found: ' + arg)
-    }
-    return path.relative(testsDir, target)
-  })
-}
+const testFiles = resolveTestFiles(path.join(__dirname, '..'), cliTests)
 
 if (testFiles.length === 0) {
   throw new Error('No test files found in tests/')

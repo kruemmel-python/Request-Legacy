@@ -10,6 +10,7 @@
 - `maxRedirects` is now validated as an integer in the range 0..100, preventing NaN/Infinity bypasses of redirect-loop limits.
 - Added release gates, security regression tests, Dependabot, scheduled GitHub security CI, dependency review, and deterministic exact dependency versions.
 - Updated development toolchain to ESLint 10.11.0, @eslint/js 10.0.1 and globals 17.12.0. Replaced Tape with a small internal serial compatibility runner, removing the deprecated `glob@7`/`inflight` development chain.
+- Hardened the optional test server: test selection is confined to canonical `tests/test-*.js` files, child processes are launched without a shell, the default listener is loopback-only, non-loopback use requires an API token, cross-origin requests are denied, and API/report metadata no longer exposes the local project path.
 
 # 3.0.5 (2026-09-26)
 

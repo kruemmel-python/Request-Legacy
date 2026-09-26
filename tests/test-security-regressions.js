@@ -3,7 +3,9 @@
 const tape = require('./helpers/tape')
 const FormData = require('form-data')
 const qs = require('qs')
+const path = require('path')
 const harValidator = require('../lib/har-validator')
+const resolveTestFiles = require('../scripts/resolve-test-files')
 
 tape('security: form-data escapes CRLF in field names', function (t) {
   const form = new FormData()
@@ -100,5 +102,25 @@ tape('security: internal merge blocks prototype-pollution keys', function (t) {
   t.equal({}.polluted, undefined, 'Object prototype is not polluted')
   t.equal(Object.prototype.hasOwnProperty.call(target, '__proto__'), false, '__proto__ is ignored')
   t.equal(Object.prototype.hasOwnProperty.call(target, 'constructor'), false, 'constructor is ignored')
+  t.end()
+})
+
+tape('security: test runner confines input to tests/test-*.js', function (t) {
+  const projectRoot = path.resolve(__dirname, '..')
+
+  t.deepEqual(
+    resolveTestFiles(projectRoot, ['tests/test-security-regressions.js']),
+    ['test-security-regressions.js'],
+    'valid test file is accepted'
+  )
+  t.throws(function () {
+    resolveTestFiles(projectRoot, ['request.js'])
+  }, /outside tests\/test-\*\.js/, 'project file outside tests is rejected')
+  t.throws(function () {
+    resolveTestFiles(projectRoot, ['tests/helpers/tape.js'])
+  }, /outside tests\/test-\*\.js/, 'nested helper file is rejected')
+  t.throws(function () {
+    resolveTestFiles(projectRoot, [path.resolve(projectRoot, 'request.js')])
+  }, /outside tests\/test-\*\.js/, 'absolute path outside tests is rejected')
   t.end()
 })

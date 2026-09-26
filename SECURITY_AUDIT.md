@@ -42,7 +42,7 @@ The remaining compatibility dependencies are pinned exactly in 3.0.5 so a publis
 
 - ESLint 10.11.0, @eslint/js 10.0.1, globals 17.12.0.
 - Tape was replaced by an internal serial compatibility runner. This removes the deprecated `glob@7` and `inflight` development dependency chain while preserving the legacy suite's dynamic test registration semantics.
-- The complete suite contains 517 passing tests on Windows; platform-specific tunnel and Unix-socket cases remain explicit skips.
+- The complete suite contains 518 passing tests on Windows; platform-specific tunnel and Unix-socket cases remain explicit skips.
 - `eslint --max-warnings=0`: warnings fail CI.
 - `prepublishOnly` runs the complete release verification gate.
 - `npm audit --omit=dev --audit-level=moderate` is mandatory for release verification.
@@ -50,6 +50,17 @@ The remaining compatibility dependencies are pinned exactly in 3.0.5 so a publis
 - GitHub dependency review fails pull requests on moderate-or-higher dependency findings.
 - Dependabot is enabled for npm and GitHub Actions.
 - The published npm tarball is reduced to runtime code and documentation; tests, CI helpers, data inventories, and local scripts are excluded from the consumer package.
+
+## Test-server hardening
+
+The optional `request_testserver` is excluded from the npm package, but is maintained as part of the repository's development surface.
+
+- Test names are resolved through a shared canonical-path validator. Only direct files matching `tests/test-*.js` are accepted; traversal, absolute paths outside the directory, nested helpers, and symlink escapes are rejected.
+- Node is launched directly through `process.execPath` with an argument array and `shell: false`. Query input is never interpolated into a shell command.
+- The listener defaults to `127.0.0.1`. Binding `HOST` to a non-loopback address fails at startup unless `TESTSERVER_API_TOKEN` is set.
+- The previous unrestricted CORS middleware was removed. Without token mode, foreign origins, non-loopback Host headers, and browser requests marked `Sec-Fetch-Site: cross-site` receive HTTP 403. This also blocks DNS-rebinding and blind cross-site triggers. In token mode, API and report access requires the token.
+- `/api/meta` and generated HTML, JSON, CSV, PDF, and ZIP report metadata expose a package label instead of the absolute checkout path.
+- JSON request bodies are limited to 16 KiB. The test-server dependency tree audits with zero known vulnerabilities at the recorded release baseline.
 
 ## Clean verification
 

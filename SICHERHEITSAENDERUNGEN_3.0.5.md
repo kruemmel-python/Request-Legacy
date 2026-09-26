@@ -358,8 +358,8 @@ Das Skript führte folgende Schritte aus:
 Abschließendes Ergebnis:
 
 ```text
-517 Tests
-517 bestanden
+518 Tests
+518 bestanden
 0 fehlgeschlagen
 0 bekannte npm-Schwachstellen
 Lint bestanden
@@ -472,4 +472,54 @@ Am 26. September 2026 wurde der vollständige Projektordner zusätzlich auf gene
 - eine parallele, nicht mehr verwendete OpenSSL-Zertifikatserzeugung samt CSRs, CRL, Seriennummern, Hilfsservern und überflüssigen privaten Testschlüsseln; erhalten blieb der plattformunabhängige Node.js-Generator,
 - zwei durch dieses Dokument und `SECURITY_AUDIT.md` ersetzte, inhaltlich veraltete Berichte zu Version 3.0.0.
 
-Erhalten blieben der vollständige Laufzeitcode, alle 517 Node.js-Kompatibilitäts- und Sicherheitstests, TLS-Testmaterial samt Zertifikatsgenerator, GitHub Actions, Dependabot, der Testserver und die aktuelle Benutzer-/Sicherheitsdokumentation. `.gitignore` schützt die bereinigte Struktur künftig vor erneut erzeugten Installations-, Build-, Report- und Paketartefakten. Die Release-Prüfung verwendet nun die versionierte Sperrdatei mit `npm ci`, statt sie vor jeder Prüfung zu löschen.
+Erhalten blieben der vollständige Laufzeitcode, alle 518 Node.js-Kompatibilitäts- und Sicherheitstests, TLS-Testmaterial samt Zertifikatsgenerator, GitHub Actions, Dependabot, der Testserver und die aktuelle Benutzer-/Sicherheitsdokumentation. `.gitignore` schützt die bereinigte Struktur künftig vor erneut erzeugten Installations-, Build-, Report- und Paketartefakten. Die Release-Prüfung verwendet nun die versionierte Sperrdatei mit `npm ci`, statt sie vor jeder Prüfung zu löschen.
+
+## 17. Absicherung der Testserver-Ausführung
+
+Eine nachträgliche Prüfung der HTTP-Schnittstelle des optionalen Testservers ergab, dass der Parameter `tests` früher in einen Prozess mit aktivierter Shell übernommen wurde. Außerdem war der Server ohne Bindungsbeschränkung und mit offenem CORS erreichbar. Diese Punkte betrafen nicht den veröffentlichten Laufzeitcode von `request-legacy`, wohl aber die Entwicklungsumgebung im Repository.
+
+### 17.1 Prozessstart ohne Shell
+
+Der Testserver startet die Tests nun direkt mit `process.execPath`, dem absoluten Pfad zu `scripts/run-tests.js`, einer getrennten Argumentliste und `shell: false`. Benutzereingaben werden nicht mehr zu einem Shell-Befehl zusammengesetzt. Die angezeigte Befehlszeile dient nur noch der lesbaren Dokumentation im Report.
+
+### 17.2 Strikte Begrenzung der Testauswahl
+
+Die neue gemeinsame Datei `scripts/resolve-test-files.js` wird vom Kommandozeilen-Runner und vom Testserver verwendet. Sie löst das echte Ziel mit `realpath` auf und akzeptiert ausschließlich unmittelbare Dateien aus dem kanonischen Verzeichnis `tests`, deren Name dem Muster `test-*.js` entspricht. Abgewiesen werden insbesondere:
+
+- Pfadwechsel mit `..`,
+- absolute Pfade außerhalb von `tests`,
+- Hilfsdateien in Unterverzeichnissen,
+- symbolische Links auf Ziele außerhalb des Testverzeichnisses,
+- nicht vorhandene Dateien und Namen außerhalb des erlaubten Musters.
+
+Ein eigener Sicherheitstest stellt diese Grenze dauerhaft sicher.
+
+### 17.3 Netzwerkzugriff und Authentifizierung
+
+Standardmäßig bindet der Server nur noch an `127.0.0.1`. Für eine absichtliche Bindung an eine andere Adresse muss `TESTSERVER_API_TOKEN` gesetzt sein; andernfalls bricht der Start mit einem Fehler ab. API- und Report-Endpunkte verlangen im Netzwerkmodus dieses Token. Für den Fernzugriff wird zusätzlich ein TLS-terminierender Reverse Proxy empfohlen.
+
+Das uneingeschränkte CORS-Paket wurde entfernt. Im lokalen Betrieb werden Browseranfragen mit fremdem `Origin`, einem nicht lokalen `Host`-Header oder `Sec-Fetch-Site: cross-site` mit HTTP 403 abgewiesen. Das schützt auch vor DNS-Rebinding und blinder Cross-Site-Auslösung; erlaubt bleiben direkte lokale Zugriffe und die Vite-Entwicklungsoberfläche auf Port 5173. JSON-Anfragekörper sind auf 16 KiB begrenzt.
+
+### 17.4 Keine Offenlegung lokaler Pfade
+
+`/api/meta` liefert keinen absoluten Arbeitsverzeichnispfad mehr. Auch HTML-, JSON-, CSV- und PDF-Berichte verwenden nur die neutrale Zielbezeichnung `request-legacy@3.0.5`. Damit werden lokale Laufwerks-, Benutzer- und Verzeichnisnamen nicht mehr über die Oberfläche offengelegt.
+
+### 17.5 Praktische Verifikation
+
+Zusätzlich zur vollständigen Release-Prüfung wurden folgende Fälle gegen einen tatsächlich gestarteten Server geprüft:
+
+```text
+lokale Metadatenanfrage:          HTTP 200, kein cwd-Feld
+Anfrage mit fremdem Origin:       HTTP 403
+Anfrage mit fremdem Host:         HTTP 403
+Cross-Site-Browseranfrage:        HTTP 403
+unerlaubter Testpfad:             HTTP 400
+Netzwerkbindung ohne Token:       Start verweigert
+Netzwerkzugriff ohne Token:       HTTP 401
+Netzwerkzugriff mit Token:        HTTP 200
+Pfadwechsel trotz Token:          HTTP 400
+erlaubter Sicherheitstest:        Exit-Code 0
+absoluter Pfad im Testbericht:     nicht vorhanden
+Testserver npm audit:              0 Schwachstellen
+Testserver Vite-Build:             erfolgreich
+```

@@ -7,6 +7,21 @@ const statusMeta = {
   error: { label: 'Error', tone: 'error' }
 }
 
+const apiToken = new URLSearchParams(window.location.search).get('token') || ''
+
+function authenticatedUrl (url) {
+  if (!apiToken) return url
+  const target = new URL(url, window.location.origin)
+  target.searchParams.set('token', apiToken)
+  return target.toString()
+}
+
+function apiFetch (url, options = {}) {
+  const headers = new Headers(options.headers || {})
+  if (apiToken) headers.set('x-api-token', apiToken)
+  return fetch(url, { ...options, headers })
+}
+
 function formatDate (value) {
   if (!value) return '--'
   const date = new Date(value)
@@ -19,7 +34,7 @@ export default function App () {
   const [log, setLog] = useState('')
   const [exitCode, setExitCode] = useState(null)
   const [duration, setDuration] = useState(null)
-  const [meta, setMeta] = useState({ cwd: 'loading...', command: '', name: 'request-legacy', version: '--' })
+  const [meta, setMeta] = useState({ target: 'loading...', command: '', name: 'request-legacy', version: '--' })
   const [report, setReport] = useState({ available: false })
   const [reports, setReports] = useState([])
   const [testsInput, setTestsInput] = useState('')
@@ -30,21 +45,21 @@ export default function App () {
   const esRef = useRef(null)
 
   const refreshReport = () => {
-    fetch('/api/report/latest')
+    apiFetch('/api/report/latest')
       .then((res) => res.json())
       .then((data) => setReport(data))
       .catch(() => setReport({ available: false }))
   }
 
   const refreshReports = () => {
-    fetch('/api/report/list?limit=15')
+    apiFetch('/api/report/list?limit=15')
       .then((res) => res.json())
       .then((data) => setReports(data.reports || []))
       .catch(() => setReports([]))
   }
 
   const refreshSchedule = () => {
-    fetch('/api/schedule')
+    apiFetch('/api/schedule')
       .then((res) => res.json())
       .then((data) => {
         setSchedule(data)
@@ -56,10 +71,10 @@ export default function App () {
   }
 
   useEffect(() => {
-    fetch('/api/meta')
+    apiFetch('/api/meta')
       .then((res) => res.json())
       .then((data) => setMeta(data))
-      .catch(() => setMeta({ cwd: 'unknown', command: 'npm run test-ci', name: 'request-legacy', version: '--' }))
+      .catch(() => setMeta({ target: 'unknown', command: 'node scripts/run-tests.js', name: 'request-legacy', version: '--' }))
 
     refreshReport()
     refreshReports()
@@ -107,7 +122,7 @@ export default function App () {
     }
 
     const url = params.toString() ? `/api/test-ci?${params.toString()}` : '/api/test-ci'
-    const es = new EventSource(url)
+    const es = new EventSource(authenticatedUrl(url))
     esRef.current = es
 
     es.addEventListener('log', (e) => append(e.data))
@@ -146,7 +161,7 @@ export default function App () {
 
   const openUrl = (url) => {
     if (url) {
-      window.open(url, '_blank', 'noopener')
+      window.open(authenticatedUrl(url), '_blank', 'noopener')
     }
   }
 
@@ -182,7 +197,7 @@ export default function App () {
 
   const startSchedule = () => {
     const interval = Math.max(1, Number(intervalInput) || 60)
-    fetch('/api/schedule/start', {
+    apiFetch('/api/schedule/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -199,7 +214,7 @@ export default function App () {
   }
 
   const stopSchedule = () => {
-    fetch('/api/schedule/stop', { method: 'POST' })
+    apiFetch('/api/schedule/stop', { method: 'POST' })
       .then((res) => res.json())
       .then((data) => setSchedule(data))
       .catch(() => {})
@@ -223,18 +238,18 @@ export default function App () {
           <p className="eyebrow">Request-Legacy</p>
           <h1>Test-CI Control Room</h1>
           <p className="lead">
-            Run <span className="mono">{meta.command || 'npm run test-ci'}</span> from a clean UI, stream logs live, and keep focus on
+            Run <span className="mono">{meta.command || 'node scripts/run-tests.js'}</span> from a clean UI, stream logs live, and keep focus on
             regressions.
           </p>
           <div className="meta-row">
             <div className={`status-pill ${metaInfo.tone}`}>{metaInfo.label}</div>
             <div className="meta">
               <span className="label">Target</span>
-              <span className="value mono">{meta.cwd}</span>
+              <span className="value mono">{meta.target}</span>
             </div>
             <div className="meta">
               <span className="label">Command</span>
-              <span className="value mono">{meta.command || 'npm run test-ci'}</span>
+              <span className="value mono">{meta.command || 'node scripts/run-tests.js'}</span>
             </div>
             <div className="meta">
               <span className="label">Tests</span>

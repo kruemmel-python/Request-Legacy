@@ -40,3 +40,7 @@ npm pack --dry-run
 ```
 
 `npm audit` is contextual: execute the package audit in a clean checkout. Running it from an unrelated application directory can report findings that are not dependencies of `request-legacy`.
+
+## Optional test server
+
+`request_testserver` is a development tool and is not part of the published npm package. It binds to `127.0.0.1` by default. If it is deliberately exposed on another interface through `HOST`, `TESTSERVER_API_TOKEN` is mandatory. For remote use, also put it behind a TLS-enabled reverse proxy and treat generated reports as sensitive test data.

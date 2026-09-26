@@ -9,7 +9,7 @@ Upstream `request` was deprecated on Feb 11, 2020. For historical context, see:
 Status:
 - Package name: `request-legacy`
 - Engines: Node.js >= 18
-- Validation baseline (2026-09-26): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 517 tests. Security advisories are time-sensitive; re-run the checks for every release.
+- Validation baseline (2026-09-26): `npm audit` = 0 vulnerabilities; `npm run lint` = clean; `npm run test-ci` = 518 tests. Security advisories are time-sensitive; re-run the checks for every release.
 - Redirect security: 307/308 preserve method/body; cross-host strips auth/proxy/cookie; maxRedirects emits `E_TOO_MANY_REDIRECTS`
 
 Security notes and evidence:
