@@ -413,3 +413,50 @@ Ein Release darf nur erstellt werden, wenn alle sieben Prüfabschnitte erfolgrei
 Die wichtigste Leitlinie dieser Änderung lautet: Sensible Daten bleiben nur innerhalb desselben Origins, und nicht mehr gepflegte Hilfspakete werden dort durch kleine lokale Implementierungen ersetzt, wo ihr benötigter Funktionsumfang klar begrenzt und vollständig testbar ist.
 
 Dadurch bleibt `request-legacy` für bestehende Serveranwendungen nutzbar, während die Abhängigkeitsoberfläche verkleinert und die Release-Prüfung wieder zuverlässig ausführbar wird.
+
+## 15. Nachtrag: Bereinigung des separaten Testservers
+
+Nach der Veröffentlichung wurde zusätzlich der im Repository enthaltene Ordner `request_testserver` geprüft. Eine Installation in diesem Ordner meldete zunächst 17 Schwachstellen (1 niedrig, 4 mittel, 10 hoch und 2 kritisch). Der Abhängigkeitsbaum bestätigte gleichzeitig, dass `request-legacy@3.0.5` korrekt eingebunden war. Die Meldungen stammten nicht aus dem veröffentlichten Bibliothekspaket, sondern aus den eigenständigen Laufzeit- und Build-Abhängigkeiten der Testserver-Oberfläche.
+
+### 15.1 Geänderte Abhängigkeiten des Testservers
+
+| Abhängigkeit | Vorher | Nachher | Grund |
+|---|---:|---:|---|
+| `archiver` | `^7.0.1` | `8.0.0` | aktuelle, bereinigte Archivierungskette |
+| `express` | `^4.22.1` | `4.22.3` | Sicherheitskorrekturen in Express und transitiven Paketen |
+| `pdfkit` | `^0.17.2` | `0.20.2` | aktuelle Abhängigkeitskette ohne die gemeldeten Altversionen |
+| `react` / `react-dom` | `^18.2.0` | `18.3.1` | aktueller Stand innerhalb der bestehenden Hauptversion 18 |
+| `@types/react` | `^18.2.0` | `18.3.31` | passend zur verwendeten React-Hauptversion |
+| `@types/react-dom` | `^18.2.0` | `18.3.7` | passend zur verwendeten React-DOM-Hauptversion |
+| `@vitejs/plugin-react` | `^5.1.3` | `5.2.0` | aktualisierte React-Buildintegration |
+| `concurrently` | `^9.0.0` | `9.2.4` | aktuelle Wartungsversion |
+| `vite` | `^7.3.1` | `7.3.6` | Sicherheitskorrekturen im Buildwerkzeug und dessen Abhängigkeiten |
+| `tape` | `^4.6.0` | entfernt | im Testserver ungenutzt; entfernte zugleich die alte `glob`-/`inflight`-Kette |
+
+Die Abhängigkeit auf die zu prüfende Bibliothek wurde von einer Registry-Version auf `file:..` geändert. Dadurch prüft der Testserver reproduzierbar genau den Quellstand des übergeordneten Repositorys und nicht versehentlich eine ältere Registry-Veröffentlichung.
+
+### 15.2 Anpassung an Archiver 8
+
+Archiver 8 stellt keine aufrufbare Standardexport-Funktion mehr bereit. `request_testserver/server.js` importiert deshalb nun die benannte Klasse `ZipArchive` und erzeugt ZIP-Dateien mit:
+
+```js
+const archive = new ZipArchive({ zlib: { level: 9 } })
+```
+
+Die vorhandenen Fehlerbehandlung-, Streaming- und Kompressionseinstellungen bleiben dabei erhalten.
+
+### 15.3 Neu erzeugte Sperrdatei und Verifikation
+
+`request_testserver/package-lock.json` wurde aus dem aktualisierten Manifest neu aufgelöst. Ein anschließender sauberer Lauf im Git-Arbeitsverzeichnis ergab:
+
+```text
+npm ci:              erfolgreich
+npm audit:           0 Schwachstellen
+request-legacy:      3.0.5 aus dem übergeordneten Repository
+Vite-Build:          erfolgreich, 27 Module verarbeitet
+Syntaxprüfung:       erfolgreich
+Testserver-API:      request-legacy 3.0.5
+Testserver-Startseite: HTTP 200
+```
+
+Diese Bereinigung verändert nicht den Inhalt des bereits veröffentlichten npm-Tarballs: `request_testserver` gehört nicht zur `files`-Liste des Pakets. Sie sichert stattdessen die mitgelieferte Entwicklungs- und Prüfoberfläche des GitHub-Repositorys ab.

@@ -6,7 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import request from 'request-legacy'
 import { createRequire } from 'module'
-import archiver from 'archiver'
+import { ZipArchive } from 'archiver'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -274,7 +274,7 @@ function streamZip (res, filename, fullPath) {
   res.setHeader('Content-Type', 'application/zip')
   res.setHeader('Content-Disposition', `attachment; filename="${filename.replace(/\.html$/, '')}.zip"`)
 
-  const archive = archiver('zip', { zlib: { level: 9 } })
+  const archive = new ZipArchive({ zlib: { level: 9 } })
   archive.on('error', (err) => {
     console.error('Archive error', err)
     if (!res.headersSent) {
