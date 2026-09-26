@@ -103,10 +103,19 @@ Wichtige Regeln:
 In der UI koennen Sie einzelne Tests auswaehlen:
 - Beispiel: `tests/test-params.js, tests/test-timeout.js`
 
-Per API (SSE):
+Per API (SSE, lokaler Betrieb ohne Token):
 ```bash
 curl -N "http://127.0.0.1:3001/api/test-ci?tests=tests/test-params.js,tests/test-timeout.js"
 ```
+
+Im LAN-/Token-Modus wird der Token ausschließlich als Header übertragen:
+```bash
+curl -N \
+  -H "X-API-Token: <token>" \
+  "http://192.168.1.10:3001/api/test-ci?tests=tests/test-params.js"
+```
+
+`?token=<token>` wird absichtlich **nicht** unterstützt.
 
 **Reports**
 Jeder Testlauf erzeugt einen Report unter `reports/`:
@@ -177,7 +186,11 @@ curl -X POST http://127.0.0.1:3001/api/schedule/stop
   $env:TESTSERVER_API_TOKEN='<langes-zufälliges-token>'
   npm start
   ```
-- Öffnen Sie die Oberfläche im Token-Modus einmalig mit `?token=<token>`. Die UI sendet den Token anschließend an API-, SSE- und Report-Endpunkte. Verwenden Sie im LAN zusätzlich TLS über einen Reverse-Proxy, damit der Token nicht im Klartext übertragen wird.
+- Der API-Token wird **niemals** als Query-Parameter akzeptiert oder erzeugt. Die UI besitzt ein Passwortfeld und hält den eingegebenen Token ausschließlich im Arbeitsspeicher der aktuellen Seite. Ein Reload verwirft ihn.
+- API-Aufrufe senden den Token als `X-API-Token`-Header. Alternativ akzeptiert der Server `Authorization: Bearer <token>`.
+- Der Live-TAP-Stream wird nicht mehr mit nativer `EventSource`-Authentifizierung geöffnet, sondern als `fetch()`-Stream mit Header gelesen. Dadurch ist kein `?token=...` nötig.
+- Report-Ansicht und Downloads werden ebenfalls authentifiziert per `fetch()` geladen und anschließend als temporäre Blob-URL geöffnet bzw. gespeichert. Der Token erscheint dadurch weder in Report-URLs noch in Browser-History oder üblichen Access-Logs.
+- Verwenden Sie im LAN zusätzlich TLS über einen Reverse-Proxy, damit Header und Testdaten nicht im Klartext übertragen werden.
 - Testcode laeuft lokal im Prozess des Servers. Behandeln Sie den Host als vertrauenswuerdig.
 
 **Troubleshooting**

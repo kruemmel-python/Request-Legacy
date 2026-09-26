@@ -621,7 +621,7 @@ function tokenMatches (candidate) {
 function requestToken (req) {
   const authorization = req.get('authorization') || ''
   const bearer = authorization.match(/^Bearer\s+(.+)$/i)
-  return req.get('x-api-token') || (bearer && bearer[1]) || req.query.token
+  return req.get('x-api-token') || (bearer && bearer[1]) || ''
 }
 
 function localOriginAllowed (req) {
