@@ -1,3 +1,10 @@
+# 3.0.9 - Reliable cross-platform security verification (2026-10-24)
+
+- Add the comprehensive `RUN_SECURITY_TESTS.ps1` runner for clean installs, release verification, production and development audits, static guards, test-server checks, package-content checks, and Linux platform verification.
+- Run Unix-domain-socket and tunnel security checks from a unique native WSL workspace, avoiding Windows DrvFs socket limitations and concurrent-run collisions.
+- Treat native-tool stderr notices as diagnostics instead of PowerShell failures while preserving the real exit status.
+- Stabilize test-server clean installs on Windows by removing generated `node_modules` with bounded retries before `npm ci`.
+
 # 3.0.8 - Dynamic security-regression coverage (2026-10-24)
 
 - Add executable regressions proving that cross-origin redirects cannot regenerate deferred credentials or AWS signatures.
