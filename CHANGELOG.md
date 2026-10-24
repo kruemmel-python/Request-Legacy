@@ -1,3 +1,9 @@
+# 3.0.7 - Dependency security maintenance (2026-10-24)
+
+- Update `qs` to 6.16.1 and development tooling to the latest compatible ESLint and globals releases.
+- Update the optional test server's Vite and concurrently toolchain; the complete test-server dependency tree now passes `npm audit` with no moderate-or-higher findings.
+- Make test-server clean install, build, security regressions and audit mandatory release gates, so a clean release verification cannot pass while that nested project is unhealthy.
+
 # 3.0.6 - Redirect, proxy and test-server security fixes (2026-10-24)
 
 - Reject redirects from network destinations to the reserved Unix-socket transport unless an explicit callback authorizes the transition.
