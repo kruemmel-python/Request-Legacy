@@ -1,6 +1,6 @@
 {
   "name": "request-legacy",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "Actively maintained and security-hardened fork of request for Node.js 18+.",
   "keywords": [
     "http",
@@ -70,7 +70,8 @@
     "testserver:verify": "npm --prefix request_testserver ci && npm --prefix request_testserver run build && npm --prefix request_testserver run test:security && npm --prefix request_testserver audit --audit-level=moderate",
     "verify:release": "npm run test && npm run audit:prod && npm run testserver:verify",
     "prepublishOnly": "npm run verify:release",
-    "test:security": "node scripts/run-tests.js tests/test-security-regressions.js tests/test-redirect-auth.js tests/test-redirect.js"
+    "test:security": "node scripts/run-tests.js tests/test-security-regressions.js tests/test-redirect-auth.js tests/test-redirect.js",
+    "test:platform-security": "node scripts/run-tests.js tests/test-unix.js tests/test-tunnel.js tests/test-security-boundaries.js"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

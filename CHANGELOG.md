@@ -1,3 +1,9 @@
+# 3.0.8 - Dynamic security-regression coverage (2026-10-24)
+
+- Add executable regressions proving that cross-origin redirects cannot regenerate deferred credentials or AWS signatures.
+- Add an executable check that decoded response piping does not forward compressed framing, and that advanced agent policies do not share the global agent pool.
+- Add a mandatory Ubuntu CI job for Unix-socket and tunnel coverage; Windows skips remain explicit rather than substituting for Linux execution.
+
 # 3.0.7 - Dependency security maintenance (2026-10-24)
 
 - Update `qs` to 6.16.1 and development tooling to the latest compatible ESLint and globals releases.
