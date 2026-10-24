@@ -1,0 +1,9 @@
+﻿TAP version 13
+ok 1 - security: deferred credentials are not recreated after a cross-origin redirect (39.36ms)
+ok 2 - security: AWS signing state is not reused after a cross-origin redirect (15.02ms)
+ok 3 - security: decoded pipes do not forward compressed Content-Length (10.47ms)
+ok 4 - security: advanced agent policies are not globally pooled (2.13ms)
+1..4
+# tests 4
+# pass 4
+# fail 0

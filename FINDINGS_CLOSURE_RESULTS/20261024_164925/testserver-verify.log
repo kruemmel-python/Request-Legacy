@@ -1,0 +1,35 @@
+
+> request-legacy@3.0.9 testserver:verify
+> node -e "require('fs').rmSync('request_testserver/node_modules', { recursive: true, force: true, maxRetries: 5, retryDelay: 300 })" && npm --prefix request_testserver ci && npm --prefix request_testserver run build && npm --prefix request_testserver run test:security && npm --prefix request_testserver audit --audit-level=moderate
+
+
+added 221 packages, and audited 223 packages in 15s
+
+40 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> biobiz-nexus-vite@1.0.0 build
+> vite build
+
+[36mvite v7.3.7 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 27 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                 [39m[1m[2m  0.41 kB[22m[1m[22m[2m │ gzip:  0.28 kB[22m
+[2mdist/[22m[35massets/index-Bt6s8-IY.css  [39m[1m[2m  4.47 kB[22m[1m[22m[2m │ gzip:  1.53 kB[22m
+[2mdist/[22m[36massets/index-D4ifpkPB.js   [39m[1m[2m153.89 kB[22m[1m[22m[2m │ gzip: 49.38 kB[22m
+[32m✓ built in 1.18s[39m
+
+> biobiz-nexus-vite@1.0.0 test:security
+> node scripts/security-regressions.js
+
+Testserver security regressions PASSED
+- query-string API tokens: rejected
+- X-API-Token: accepted
+- Authorization Bearer: accepted
+- native EventSource token workaround: absent
+- browser token persistence: absent
+found 0 vulnerabilities

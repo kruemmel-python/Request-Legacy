@@ -1,0 +1,330 @@
+{
+  "schema_version": "2.0",
+  "execution_date": "2026-10-24",
+  "runner_exit_code": 0,
+  "summary": {
+    "total": 14,
+    "verified_fixed": 14,
+    "open": 0,
+    "partial": 0,
+    "blocked": 0
+  },
+  "findings": [
+    {
+      "finding_id": "SEC-01",
+      "original_finding_id": "csf_5cb25714a0820ada552822a2",
+      "cwe": "CWE-918",
+      "original_cause": "Network redirect entered Unix-socket transport",
+      "affected_files": [
+        "lib/redirect.js",
+        "request.js"
+      ],
+      "fix_files": [
+        "lib/redirect.js",
+        "request.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-regressions.js: redirects cannot enter Unix-socket transport by default",
+      "platform": "both",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-01.log",
+      "evidence": "Redirect-to-Unix-socket denial assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-02",
+      "original_finding_id": "csf_c4fa0eb72811522873dfd95a",
+      "cwe": "CWE-522 / CWE-200",
+      "original_cause": "Deferred authentication and AWS signing state survived a cross-origin redirect",
+      "affected_files": [
+        "lib/auth.js",
+        "lib/redirect.js",
+        "request.js"
+      ],
+      "fix_files": [
+        "lib/auth.js",
+        "lib/redirect.js",
+        "request.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-boundaries.js: deferred credentials; AWS signing state",
+      "platform": "both",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-02.log",
+      "evidence": "Two named assertions passed: deferred credentials and AWS state are not reused.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-03",
+      "original_finding_id": "csf_f9dd847c940ed602cbdfcb16",
+      "cwe": "CWE-444",
+      "original_cause": "Decoded stream retained compressed Content-Length framing",
+      "affected_files": [
+        "request.js"
+      ],
+      "fix_files": [
+        "request.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-boundaries.js: decoded pipes do not forward compressed Content-Length",
+      "platform": "both",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-03.log",
+      "evidence": "Stale Content-Length removal assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-04",
+      "original_finding_id": "csf_174f2dde19b982931f909ec8",
+      "cwe": "CWE-200",
+      "original_cause": "Cross-origin Referer retained query data",
+      "affected_files": [
+        "lib/redirect.js"
+      ],
+      "fix_files": [
+        "lib/redirect.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/security-closure/sec-04-referer.js",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-04.log",
+      "evidence": "8 dynamic assertions passed for same origin, cross-port, different host, scheme upgrade, downgrade and fragment/query handling.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-05",
+      "original_finding_id": "csf_0f2071078e8610f62d0828c3",
+      "cwe": "CWE-693",
+      "original_cause": "Environment proxy decision was cached through redirect",
+      "affected_files": [
+        "request.js",
+        "lib/getProxyFromURI.js"
+      ],
+      "fix_files": [
+        "request.js",
+        "lib/getProxyFromURI.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/security-closure/sec-05-proxy-policy.js",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-05.log",
+      "evidence": "Nine dynamic assertions passed for direct-to-proxy and proxy-to-direct environment-policy changes plus an explicit proxy across both redirect hops.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-06",
+      "original_finding_id": "csf_8c0469a5209de6ab04461469",
+      "cwe": "CWE-73",
+      "original_cause": "HAR fileName opened a local file without an explicit capability",
+      "affected_files": [
+        "lib/har.js"
+      ],
+      "fix_files": [
+        "lib/har.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-regressions.js: HAR file names do not authorize local reads",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-06.log",
+      "evidence": "HAR local-read denial assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-07",
+      "original_finding_id": "csf_60617f0ffb44092a914af4b3",
+      "cwe": "CWE-441",
+      "original_cause": "CGI context accepted uppercase HTTP_PROXY",
+      "affected_files": [
+        "lib/getProxyFromURI.js"
+      ],
+      "fix_files": [
+        "lib/getProxyFromURI.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-regressions.js: proxy configuration handles CGI and IPv6 NO_PROXY safely",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-07.log",
+      "evidence": "CGI proxy-policy assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-08",
+      "original_finding_id": "csf_c64c2649ef3f2f6398057cdb",
+      "cwe": "CWE-532",
+      "original_cause": "Debug diagnostics exposed sensitive fields",
+      "affected_files": [
+        "request.js"
+      ],
+      "fix_files": [
+        "request.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/security-closure/sec-08-debug-redaction.js",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-08.log",
+      "evidence": "9 dynamic assertions passed for Authorization, bearer token, cookie, AWS secret, URL credentials, query token, nested data and circular values.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-09",
+      "original_finding_id": "csf_1b720bd70da8e58e77c2244a",
+      "cwe": "CWE-693",
+      "original_cause": "NO_PROXY could not parse IPv6 literals",
+      "affected_files": [
+        "lib/getProxyFromURI.js"
+      ],
+      "fix_files": [
+        "lib/getProxyFromURI.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-regressions.js: proxy configuration handles CGI and IPv6 NO_PROXY safely",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-09.log",
+      "evidence": "IPv6 NO_PROXY assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-10",
+      "original_finding_id": "csf_201773c24f2a0e8c51fc0fd5",
+      "cwe": "CWE-295",
+      "original_cause": "Global agent pool shared advanced TLS policy",
+      "affected_files": [
+        "request.js"
+      ],
+      "fix_files": [
+        "request.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-boundaries.js: advanced agent policies are not globally pooled",
+      "platform": "both",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-10.log",
+      "evidence": "TLS agent isolation assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-11",
+      "original_finding_id": "csf_6c8ef1d2f64e0dab874905c8",
+      "cwe": "CWE-93",
+      "original_cause": "Raw multipart headers accepted CR/LF injection",
+      "affected_files": [
+        "lib/multipart.js"
+      ],
+      "fix_files": [
+        "lib/multipart.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/test-security-regressions.js: multipart rejects injected raw part headers",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-11.log",
+      "evidence": "Multipart header-injection rejection assertion passed.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-12",
+      "original_finding_id": "csf_12b3ca913e48f0e35e1d838a",
+      "cwe": "CWE-352",
+      "original_cause": "Browser requests could trigger loopback test execution",
+      "affected_files": [
+        "request_testserver/server.js"
+      ],
+      "fix_files": [
+        "request_testserver/server.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/security-closure/sec-12-testserver-auth.js",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-12.log",
+      "evidence": "7 dynamic assertions passed for missing/wrong token, missing browser metadata, cross-origin request, preflight, X-Requested-With-only request, zero unauthorized reports and valid bearer access.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-13",
+      "original_finding_id": "csf_92f6a98c1f4ca99451f8b12d",
+      "cwe": "CWE-441",
+      "original_cause": "Tunnel fixture listened on a wildcard interface",
+      "affected_files": [
+        "tests/test-tunnel.js"
+      ],
+      "fix_files": [
+        "tests/test-tunnel.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "WSL: npm run test:security; npm run test:platform-security",
+      "platform": "Linux",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-13-linux.log",
+      "evidence": "Real WSL/Linux execution passed 36/36 Unix-socket, redirect-boundary and HTTP/HTTPS tunnel assertions.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    },
+    {
+      "finding_id": "SEC-14",
+      "original_finding_id": "csf_1373fda31a7dbda6a844ce61",
+      "cwe": "CWE-459",
+      "original_cause": "Expired reports remained accessible until a later run",
+      "affected_files": [
+        "request_testserver/server.js"
+      ],
+      "fix_files": [
+        "request_testserver/server.js"
+      ],
+      "fix_commit": "cd651856",
+      "regression_test": "tests/security-closure/sec-14-report-retention.js",
+      "platform": "Windows",
+      "test_status": "PASS",
+      "exit_code": 0,
+      "assertions_verified": true,
+      "log": "FINDINGS_CLOSURE_RESULTS/20261024_164925/SEC-14.log",
+      "evidence": "6 dynamic assertions passed in an isolated server copy and report directory, including startup cleanup, expired access denial, concurrent download/list cleanup and restart cleanup.",
+      "residual_risk": "Caller-controlled opt-ins and host/network policy remain external boundaries.",
+      "closure_status": "VERIFIED_FIXED"
+    }
+  ]
+}

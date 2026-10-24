@@ -1,0 +1,98 @@
+
+added 132 packages in 11s
+
+> request-legacy@3.0.9 test:security
+> node scripts/run-tests.js tests/test-security-regressions.js tests/test-redirect-auth.js tests/test-redirect.js
+
+TAP version 13
+ok 1 - security: form-data escapes CRLF in field names (1.64ms)
+ok 2 - security: qs enforces arrayLimit for bracket-key comma parsing (0.66ms)
+ok 3 - security: qs stringify resists attacker-controlled constructor.isBuffer (1.53ms)
+ok 4 - security: internal HAR validator rejects malformed structures (0.24ms)
+ok 5 - security: direct qs objects do not import inherited properties (5.41ms)
+ok 6 - security: maxRedirects rejects non-finite and excessive values (2.70ms)
+ok 7 - security: maxResponseSize rejects invalid values (1.95ms)
+ok 8 - security: internal merge blocks prototype-pollution keys (3.93ms)
+ok 9 - security: test runner confines input to tests/test-*.js (28.58ms)
+ok 10 - security: multipart rejects injected raw part headers (0.43ms)
+ok 11 - security: HAR file names do not authorize local reads (0.41ms)
+ok 12 - security: proxy configuration handles CGI and IPv6 NO_PROXY safely (0.33ms)
+ok 13 - security: redirects cannot enter Unix-socket transport by default (16.63ms)
+ok 14 - setup (0.50ms)
+ok 15 - redirect URL helper (0.09ms)
+ok 16 - setup (0.39ms)
+ok 17 - permanent bounce (11.90ms)
+ok 18 - preserve HEAD method when using followAllRedirects (3.42ms)
+ok 19 - temporary bounce (2.58ms)
+ok 20 - prevent bouncing (1.08ms)
+ok 21 - should not follow post redirects by default (1.38ms)
+ok 22 - should follow post redirects when followallredirects true (1.82ms)
+ok 23 - should follow post redirects when followallredirects true and followOriginalHttpMethod is enabled (2.32ms)
+ok 24 - should not follow post redirects when followallredirects false (0.96ms)
+ok 25 - should not follow delete redirects by default (0.86ms)
+ok 26 - should not follow delete redirects even if followredirect is set to true (0.89ms)
+ok 27 - should follow delete redirects when followallredirects true (1.68ms)
+ok 28 - should follow 307 delete redirects when followallredirects true (1.41ms)
+ok 29 - double bounce (3.80ms)
+ok 30 - double bounce terminated after first redirect (0.86ms)
+ok 31 - triple bounce terminated after second redirect (3.81ms)
+ok 32 - http to https redirect (34.99ms)
+ok 33 - should have referer header by default when following redirect (2.36ms)
+ok 34 - should not have referer header when removeRefererHeader is true (1.43ms)
+ok 35 - should remove an initial referer header when removeRefererHeader is true (1.30ms)
+ok 36 - should use same agent class on redirect (2.73ms)
+ok 37 - cleanup (0.25ms)
+ok 38 - redirect to same host and protocol (3.57ms)
+ok 39 - redirect to same host different protocol (4.99ms)
+ok 40 - redirect to different host same protocol (5.90ms)
+ok 41 - redirect to different host and protocol (3.45ms)
+ok 42 - cleanup (0.16ms)
+1..42
+# tests 42
+# pass 42
+# fail 0
+
+> request-legacy@3.0.9 test:platform-security
+> node scripts/run-tests.js tests/test-unix.js tests/test-tunnel.js tests/test-security-boundaries.js
+
+TAP version 13
+ok 1 - setup (1.89ms)
+ok 2 - unix socket connection (13.88ms)
+ok 3 - unix socket connection with qs (3.19ms)
+ok 4 - cleanup (2.70ms)
+ok 5 - setup (1.95ms)
+ok 6 - security: deferred credentials are not recreated after a cross-origin redirect (4.16ms)
+ok 7 - security: AWS signing state is not reused after a cross-origin redirect (5.44ms)
+ok 8 - security: decoded pipes do not forward compressed Content-Length (4.41ms)
+ok 9 - security: advanced agent policies are not globally pooled (1.06ms)
+ok 10 - http over http, tunnel=true (5.26ms)
+ok 11 - http over http, tunnel=false (4.68ms)
+ok 12 - http over http, tunnel=default (3.10ms)
+ok 13 - http over https, tunnel=true (13.26ms)
+ok 14 - http over https, tunnel=false (6.91ms)
+ok 15 - http over https, tunnel=default (5.56ms)
+ok 16 - https over http, tunnel=true (5.45ms)
+ok 17 - https over http, tunnel=false (6.09ms)
+ok 18 - https over http, tunnel=default (5.27ms)
+ok 19 - https over https, tunnel=true (7.31ms)
+ok 20 - https over https, tunnel=false (8.49ms)
+ok 21 - https over https, tunnel=default (6.87ms)
+ok 22 - http->http over http, tunnel=true (4.45ms)
+ok 23 - http->http over http, tunnel=false (4.23ms)
+ok 24 - http->http over http, tunnel=default (4.05ms)
+ok 25 - http->https over http, tunnel=true (7.62ms)
+ok 26 - http->https over http, tunnel=false (7.08ms)
+ok 27 - http->https over http, tunnel=default (6.19ms)
+ok 28 - https->http over http, tunnel=true (6.81ms)
+ok 29 - https->http over http, tunnel=false (6.38ms)
+ok 30 - https->http over http, tunnel=default (6.82ms)
+ok 31 - https->https over http, tunnel=true (9.93ms)
+ok 32 - https->https over http, tunnel=false (9.79ms)
+ok 33 - https->https over http, tunnel=default (10.36ms)
+ok 34 - mutual https over http, tunnel=true (7.50ms)
+ok 35 - mutual https over http, tunnel=default (7.31ms)
+ok 36 - cleanup (0.59ms)
+1..36
+# tests 36
+# pass 36
+# fail 0

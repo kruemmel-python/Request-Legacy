@@ -1,0 +1,128 @@
+﻿[
+    {
+        "finding_id":  "SEC-01",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "redirects cannot enter Unix-socket transport by default",
+        "log":  "SEC-01.log"
+    },
+    {
+        "finding_id":  "SEC-02",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "(?s)deferred credentials are not recreated.*AWS signing state is not reused",
+        "log":  "SEC-02.log"
+    },
+    {
+        "finding_id":  "SEC-03",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "decoded pipes do not forward compressed Content-Length",
+        "log":  "SEC-03.log"
+    },
+    {
+        "finding_id":  "SEC-06",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "HAR file names do not authorize local reads",
+        "log":  "SEC-06.log"
+    },
+    {
+        "finding_id":  "SEC-07",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "proxy configuration handles CGI and IPv6 NO_PROXY safely",
+        "log":  "SEC-07.log"
+    },
+    {
+        "finding_id":  "SEC-09",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "proxy configuration handles CGI and IPv6 NO_PROXY safely",
+        "log":  "SEC-09.log"
+    },
+    {
+        "finding_id":  "SEC-10",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "advanced agent policies are not globally pooled",
+        "log":  "SEC-10.log"
+    },
+    {
+        "finding_id":  "SEC-11",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "multipart rejects injected raw part headers",
+        "log":  "SEC-11.log"
+    },
+    {
+        "finding_id":  "SEC-04",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "CLOSURE SEC-04 PASS assertions=[1-9][0-9]*",
+        "log":  "SEC-04.log"
+    },
+    {
+        "finding_id":  "SEC-05",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "CLOSURE SEC-05 PASS assertions=[1-9][0-9]*",
+        "log":  "SEC-05.log"
+    },
+    {
+        "finding_id":  "SEC-08",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "CLOSURE SEC-08 PASS assertions=[1-9][0-9]*",
+        "log":  "SEC-08.log"
+    },
+    {
+        "finding_id":  "SEC-12",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "CLOSURE SEC-12 PASS assertions=[1-9][0-9]*",
+        "log":  "SEC-12.log"
+    },
+    {
+        "finding_id":  "SEC-14",
+        "platform":  "Windows",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "CLOSURE SEC-14 PASS assertions=[1-9][0-9]*",
+        "log":  "SEC-14.log"
+    },
+    {
+        "finding_id":  "SEC-13",
+        "platform":  "Linux",
+        "status":  "PASS",
+        "exit_code":  0,
+        "assertions_verified":  true,
+        "expected":  "Unix socket and HTTP/HTTPS tunnel assertions",
+        "log":  "SEC-13-linux.log"
+    }
+]

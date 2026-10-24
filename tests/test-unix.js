@@ -22,7 +22,7 @@ if (process.platform === 'win32') {
   const rawPath = [null, 'raw', 'path'].join('/')
   const queryPath = [null, 'query', 'path'].join('/')
   const searchString = '?foo=bar'
-  const socket = [__dirname, 'tmp-socket'].join('/')
+  const socket = process.env.REQUEST_LEGACY_UNIX_SOCKET || [__dirname, 'tmp-socket'].join('/')
   const expectedBody = 'connected'
   const statusCode = 200
 

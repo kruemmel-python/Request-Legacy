@@ -1,0 +1,5 @@
+
+> request-legacy@3.0.9 audit:prod
+> npm audit --omit=dev --audit-level=moderate
+
+found 0 vulnerabilities

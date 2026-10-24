@@ -1,0 +1,18 @@
+﻿TAP version 13
+ok 1 - security: form-data escapes CRLF in field names (1.58ms)
+ok 2 - security: qs enforces arrayLimit for bracket-key comma parsing (1.06ms)
+ok 3 - security: qs stringify resists attacker-controlled constructor.isBuffer (2.30ms)
+ok 4 - security: internal HAR validator rejects malformed structures (0.49ms)
+ok 5 - security: direct qs objects do not import inherited properties (132.64ms)
+ok 6 - security: maxRedirects rejects non-finite and excessive values (0.79ms)
+ok 7 - security: maxResponseSize rejects invalid values (0.26ms)
+ok 8 - security: internal merge blocks prototype-pollution keys (0.69ms)
+ok 9 - security: test runner confines input to tests/test-*.js (3.83ms)
+ok 10 - security: multipart rejects injected raw part headers (0.54ms)
+ok 11 - security: HAR file names do not authorize local reads (0.66ms)
+ok 12 - security: proxy configuration handles CGI and IPv6 NO_PROXY safely (0.71ms)
+ok 13 - security: redirects cannot enter Unix-socket transport by default (32.90ms)
+1..13
+# tests 13
+# pass 13
+# fail 0
