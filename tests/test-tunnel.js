@@ -441,8 +441,8 @@ function runTunnelTests () {
   }
 
   tape('setup', function (t) {
-    s.listen(0, function () {
-      ss.listen(0, function () {
+    s.listen(0, '127.0.0.1', function () {
+      ss.listen(0, '127.0.0.1', function () {
         ss2.listen(0, 'localhost', function () {
           addTests()
           tape('cleanup', function (t) {

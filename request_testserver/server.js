@@ -162,6 +162,7 @@ function listReportFiles () {
 }
 
 function listReports (limit = 20) {
+  cleanupReports(MAX_REPORTS, MAX_REPORT_DAYS)
   const entries = listReportFiles()
   return entries.slice(0, limit).map((entry) => ({
     filename: entry.filename,
@@ -234,6 +235,11 @@ function resolveReportPath (filename) {
   }
   const fullPath = path.join(reportsDir, filename)
   if (!fs.existsSync(fullPath)) {
+    return null
+  }
+  const maxAgeMs = MAX_REPORT_DAYS > 0 ? MAX_REPORT_DAYS * 24 * 60 * 60 * 1000 : null
+  if (maxAgeMs && Date.now() - fs.statSync(fullPath).mtimeMs > maxAgeMs) {
+    removeReportFiles({ fullPath })
     return null
   }
   return fullPath
@@ -658,6 +664,12 @@ if (fs.existsSync(distPath)) {
 }
 
 ensureReportsDir()
+cleanupReports(MAX_REPORTS, MAX_REPORT_DAYS)
+setInterval(() => cleanupReports(MAX_REPORTS, MAX_REPORT_DAYS), 60 * 60 * 1000).unref()
+app.use('/reports', (req, res, next) => {
+  cleanupReports(MAX_REPORTS, MAX_REPORT_DAYS)
+  next()
+})
 app.use('/reports', express.static(reportsDir))
 
 app.get('/api/meta', (req, res) => {
@@ -822,10 +834,13 @@ app.get('/api/zen', (req, res) => {
   })
 })
 
-app.get('/api/test-ci', (req, res) => {
+app.post('/api/test-ci', (req, res) => {
+  if (!apiToken && req.get('x-requested-with') !== 'Request-Legacy-Testserver') {
+    return res.status(403).json({ error: 'Missing same-origin request header' })
+  }
   let tests
   try {
-    tests = parseTestsInput(req.query.tests)
+    tests = parseTestsInput(req.body && req.body.tests)
   } catch (error) {
     return res.status(400).json({ error: error.message })
   }

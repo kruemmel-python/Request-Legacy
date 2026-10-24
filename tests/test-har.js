@@ -2,6 +2,7 @@
 const helpers = require('./helpers')
 
 const path = helpers.path
+const fs = require('fs')
 const request = require('..')
 const tape = helpers.tape
 const fixture = require('./fixtures/har.json')
@@ -111,6 +112,9 @@ tape('multipart-file', function (t) {
   }
   const absolutePath = path.resolve(__dirname, options.har.postData.params[0].fileName)
   options.har.postData.params[0].fileName = absolutePath
+  options.harFileResolver = function (fileName) {
+    return fs.createReadStream(fileName)
+  }
 
   request(options, function (err, res, body) {
     const json = JSON.parse(body)

@@ -161,10 +161,28 @@ util.inherits(Request, stream.Stream)
 Request.debug = process.env.NODE_DEBUG && /\brequest\b/.test(process.env.NODE_DEBUG)
 function debug () {
   if (Request.debug) {
-    console.error('REQUEST %s', util.format.apply(util, arguments))
+    const seen = new WeakSet()
+    console.error('REQUEST %s', util.format.apply(util, Array.prototype.map.call(arguments, function (value) { return redactDiagnostic(value, seen) })))
   }
 }
 Request.prototype.debug = debug
+
+function redactDiagnostic (value, seen) {
+  if (typeof value === 'string') {
+    return value.replace(/(https?:\/\/)[^@\s]+@/gi, '$1[REDACTED]@')
+      .replace(/([?&](?:access_token|token|password|secret|key)=)[^&#\s]*/gi, '$1[REDACTED]')
+  }
+  if (!value || typeof value !== 'object') return value
+  if (seen.has(value)) return '[Circular]'
+  seen.add(value)
+  const result = Array.isArray(value) ? [] : {}
+  Object.keys(value).forEach(function (key) {
+    result[key] = /authorization|cookie|password|token|secret|passphrase|private|pfx|cert|key|body/i.test(key)
+      ? '[REDACTED]'
+      : redactDiagnostic(value[key], seen)
+  })
+  return result
+}
 
 Request.prototype.init = function (options) {
   // init() contains all the code to setup the request object.
@@ -314,7 +332,10 @@ Request.prototype.init = function (options) {
     return self.emit('error', new Error(message))
   }
 
-  if (!Object.prototype.hasOwnProperty.call(self, 'proxy')) {
+  if (typeof self._proxyExplicit === 'undefined') {
+    self._proxyExplicit = Object.prototype.hasOwnProperty.call(options, 'proxy')
+  }
+  if (!self._proxyExplicit) {
     self.proxy = getProxyFromURI(self.uri)
   }
 
@@ -634,6 +655,13 @@ Request.prototype.getNewAgent = function () {
     for (const i in self.agentOptions) {
       options[i] = self.agentOptions[i]
     }
+  }
+  // agentOptions can contain functions and TLS policy that cannot be safely
+  // represented by the historic global pool key.  Keep such agents private.
+  if (self.pool === globalPool && self.agentOptions && Object.keys(self.agentOptions).some(function (key) {
+    return key !== 'keepAlive' && key !== 'maxSockets'
+  })) {
+    self.pool = {}
   }
   if (self.ca) {
     options.ca = self.ca
@@ -1265,6 +1293,8 @@ Request.prototype.pipeDest = function (dest) {
   const self = this
   const response = self.response
   // Called after the response is received
+  const contentEncoding = String(response.headers['content-encoding'] || '').trim().toLowerCase()
+  const decoded = self.gzip && (contentEncoding === 'gzip' || contentEncoding === 'deflate')
   if (dest.headers && !dest.headersSent) {
     if (response.caseless.has('content-type')) {
       const ctname = response.caseless.has('content-type')
@@ -1275,7 +1305,7 @@ Request.prototype.pipeDest = function (dest) {
       }
     }
 
-    if (response.caseless.has('content-length')) {
+    if (!decoded && response.caseless.has('content-length')) {
       const clname = response.caseless.has('content-length')
       if (dest.setHeader) {
         dest.setHeader(clname, response.headers[clname])
@@ -1288,7 +1318,7 @@ Request.prototype.pipeDest = function (dest) {
     for (const i in response.headers) {
       // If the response content is being decoded, the Content-Encoding header
       // of the response doesn't represent the piped content, so don't pass it.
-      if (!self.gzip || i !== 'content-encoding') {
+      if (!decoded || (i !== 'content-encoding' && i !== 'content-length')) {
         dest.setHeader(i, response.headers[i])
       }
     }
@@ -1505,7 +1535,7 @@ Request.prototype.httpSignature = function (opts) {
     method: self.method,
     path: self.path
   }, opts)
-  debug('httpSignature authorization', self.getHeader('authorization'))
+  debug('httpSignature authorization configured')
 
   return self
 }

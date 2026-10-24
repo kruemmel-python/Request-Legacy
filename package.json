@@ -1,6 +1,6 @@
 {
   "name": "request-legacy",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Actively maintained and security-hardened fork of request for Node.js 18+.",
   "keywords": [
     "http",

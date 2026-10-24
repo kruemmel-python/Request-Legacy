@@ -6,6 +6,10 @@ const qs = require('qs')
 const path = require('path')
 const harValidator = require('../lib/har-validator')
 const resolveTestFiles = require('../scripts/resolve-test-files')
+const getProxyFromURI = require('../lib/getProxyFromURI')
+const Multipart = require('../lib/multipart').Multipart
+const Har = require('../lib/har').Har
+const http = require('http')
 
 tape('security: form-data escapes CRLF in field names', function (t) {
   const form = new FormData()
@@ -123,4 +127,58 @@ tape('security: test runner confines input to tests/test-*.js', function (t) {
     resolveTestFiles(projectRoot, [path.resolve(projectRoot, 'request.js')])
   }, /outside tests\/test-\*\.js/, 'absolute path outside tests is rejected')
   t.end()
+})
+
+tape('security: multipart rejects injected raw part headers', function (t) {
+  const multipart = new Multipart({ preambleCRLF: false, postambleCRLF: false })
+  t.throws(function () {
+    multipart.build([{ 'X-Name\r\nInjected': 'value', body: 'safe' }], false)
+  }, /Invalid multipart part header/, 'header-name CRLF is rejected')
+  t.throws(function () {
+    multipart.build([{ 'X-Name': 'value\r\nInjected: yes', body: 'safe' }], false)
+  }, /Invalid multipart part header/, 'header-value CRLF is rejected')
+  t.end()
+})
+
+tape('security: HAR file names do not authorize local reads', function (t) {
+  const har = new Har({ debug: function () {} })
+  const options = {
+    har: {
+      method: 'POST', url: 'http://example.invalid/', httpVersion: 'HTTP/1.1',
+      cookies: [], headers: [], queryString: [], headersSize: 0, bodySize: 0,
+      postData: { mimeType: 'multipart/form-data', size: 0, params: [{ name: 'upload', fileName: 'C:/secret.txt' }] }
+    }
+  }
+  t.throws(function () { har.options(options) }, /harFileResolver/, 'untrusted HAR filename is rejected by default')
+  t.end()
+})
+
+tape('security: proxy configuration handles CGI and IPv6 NO_PROXY safely', function (t) {
+  const old = { HTTP_PROXY: process.env.HTTP_PROXY, http_proxy: process.env.http_proxy, NO_PROXY: process.env.NO_PROXY, no_proxy: process.env.no_proxy, REQUEST_METHOD: process.env.REQUEST_METHOD }
+  process.env.HTTP_PROXY = 'http://attacker.invalid:8080'
+  delete process.env.http_proxy
+  process.env.REQUEST_METHOD = 'GET'
+  t.equal(getProxyFromURI({ protocol: 'http:', hostname: 'example.invalid', port: '' }), null, 'CGI ignores uppercase HTTP_PROXY')
+  delete process.env.REQUEST_METHOD
+  process.env.NO_PROXY = '[::1]:8443'
+  t.equal(getProxyFromURI({ protocol: 'https:', hostname: '::1', port: '8443' }), null, 'bracketed IPv6 NO_PROXY entry matches')
+  Object.keys(old).forEach(function (key) {
+    if (old[key] === undefined) delete process.env[key]
+    else process.env[key] = old[key]
+  })
+  t.end()
+})
+
+tape('security: redirects cannot enter Unix-socket transport by default', function (t) {
+  const request = require('..')
+  const server = http.createServer(function (req, res) {
+    res.writeHead(302, { location: 'http://unix:/tmp/blocked.sock:/admin' })
+    res.end()
+  })
+  server.listen(0, '127.0.0.1', function () {
+    request('http://127.0.0.1:' + server.address().port + '/', function (err) {
+      t.equal(err && err.code, 'E_REDIRECT_TO_UNIX_SOCKET', 'network redirect is rejected before local socket access')
+      server.close(function () { t.end() })
+    })
+  })
 })

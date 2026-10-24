@@ -1,3 +1,12 @@
+# 3.0.6 - Redirect, proxy and test-server security fixes (2026-10-24)
+
+- Reject redirects from network destinations to the reserved Unix-socket transport unless an explicit callback authorizes the transition.
+- Clear deferred Basic/Bearer/Digest and AWS signing state on cross-origin redirects; reduce cross-origin Referer values to the source origin.
+- Re-evaluate environment-derived proxy policy on every redirect, ignore CGI-injected uppercase `HTTP_PROXY`, and support bracketed IPv6 `NO_PROXY` entries.
+- Prevent stale compressed `Content-Length` headers when decoded responses are piped, isolate advanced TLS agent options from the global pool, and redact request diagnostics.
+- Require an explicit HAR file resolver for file attachments and reject CR/LF in raw multipart part headers.
+- Harden the optional test server's report retention and test-run request boundary; bind tunnel proxy fixtures to loopback.
+
 # 3.0.5 - Security hardening (2026-09-26)
 
 - Removed deprecated `har-validator` and replaced it with an internal structural HAR validator.

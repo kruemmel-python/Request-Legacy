@@ -171,14 +171,14 @@ export default function App () {
     setDuration(null)
     setStatus('running')
 
-    const params = new URLSearchParams()
-    if (testsInput.trim()) params.set('tests', testsInput.trim())
-    const url = params.toString() ? `/api/test-ci?${params}` : '/api/test-ci'
+    const url = '/api/test-ci'
 
     try {
       const response = await apiFetch(url, {
         signal: controller.signal,
-        headers: { Accept: 'text/event-stream' }
+        method: 'POST',
+        headers: { Accept: 'text/event-stream', 'content-type': 'application/json', 'x-requested-with': 'Request-Legacy-Testserver' },
+        body: JSON.stringify({ tests: testsInput.trim() })
       })
       await consumeSse(response, (event, data) => {
         if (event === 'log' || event === 'err') append(data)
